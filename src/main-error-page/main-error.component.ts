@@ -2,9 +2,9 @@ import {Component} from '@angular/core';
 
 @Component({
   selector: 'app-main-error-page',
-  templateUrl: './main-error-page.component.html',
+  templateUrl: './main-error.component.html',
 })
 
-export class MainErrorPageComponent {
+export class MainErrorComponent {
 
 }

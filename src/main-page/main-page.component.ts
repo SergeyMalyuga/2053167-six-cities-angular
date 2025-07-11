@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, signal} from '@angular/core';
 import {CardComponent} from '../card/card.component';
 
 @Component({
@@ -8,5 +8,5 @@ import {CardComponent} from '../card/card.component';
 })
 
 export class MainPageComponent {
-  @Input() countOffers!: number;
+  countOffers = signal(5);
 }

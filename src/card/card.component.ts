@@ -1,4 +1,5 @@
-import {Component} from '@angular/core';
+import {Component, Input, signal} from '@angular/core';
+import {OfferPreview} from '../types/offers';
 
 @Component({
   selector: 'app-card',
@@ -6,5 +7,6 @@ import {Component} from '@angular/core';
 })
 
 export class CardComponent {
-
+  @Input() offer: OfferPreview| undefined = undefined;
+  isActivate = signal(false);
 }

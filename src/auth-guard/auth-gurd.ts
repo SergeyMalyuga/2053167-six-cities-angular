@@ -7,11 +7,11 @@ import {AppRoute} from '../app/app.routes';
 })
 
 export class AuthGuard implements CanActivate {
-  authStatus = false;
+  authStatus = true;
   route = inject(Router);
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {
-    if (this.authStatus === true) {
+    if (this.authStatus) {
       return true;
     } else {
       return this.route.createUrlTree([AppRoute.Login], {queryParams: {redirectUrl: state.url}})

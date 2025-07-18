@@ -1,0 +1,7 @@
+<ul class="favorites__list">
+  @for (city of cities; track city) {
+    @for (offer of sortFavoritesOffers.get(city); track offer.id) {
+      <app-favorites-offers-list-item [city]="city" [offers]="sortFavoritesOffers.get(city)"></app-favorites-offers-list-item>
+    }
+  }
+</ul>

@@ -1,12 +1,12 @@
 import {Component, inject, OnInit, signal} from '@angular/core';
-import {CardComponent} from '../card/card.component';
 import {OfferPreview} from '../types/offers';
 import {MockOffersService} from '../mock-offers-service';
+import {OffersListComponent} from '../offers-list/offers-list.component';
 
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
-  imports: [CardComponent]
+  imports: [OffersListComponent]
 })
 
 export class MainPageComponent implements  OnInit {

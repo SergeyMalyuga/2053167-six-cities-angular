@@ -51,3 +51,5 @@ export interface OfferPreview {
   previewImage: string;
 }
 
+export type SortOffers = Map<string, OfferPreview[]>;
+

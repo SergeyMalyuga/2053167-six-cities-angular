@@ -1,10 +1,11 @@
-import {Component, Input, signal, WritableSignal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, Input, signal, WritableSignal} from '@angular/core';
 import {nanoid} from 'nanoid';
 import {Comment} from '../types/comments';
 
 @Component({
   selector: 'app-comment-form',
   templateUrl: './comment-form.component.html',
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class CommentFormComponent {

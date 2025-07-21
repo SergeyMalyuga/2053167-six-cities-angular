@@ -1,4 +1,4 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit, signal} from '@angular/core';
 import {OfferPreview} from '../types/offers';
 import {MockOffersService} from '../mock-offers-service';
 import {OffersListComponent} from '../offers-list/offers-list.component';
@@ -6,7 +6,8 @@ import {OffersListComponent} from '../offers-list/offers-list.component';
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
-  imports: [OffersListComponent]
+  imports: [OffersListComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class MainPageComponent implements  OnInit {

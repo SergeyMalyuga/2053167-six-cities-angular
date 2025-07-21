@@ -1,0 +1,5 @@
+<ul class="reviews__list">
+  @for (comment of comments; track comment.id) {
+    <app-comments-list-item [comment]="comment"></app-comments-list-item>
+  }
+</ul>

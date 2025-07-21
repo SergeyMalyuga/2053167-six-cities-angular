@@ -1,6 +1,6 @@
 import {Component, Input} from '@angular/core';
 import {Comment} from '../types/comments';
-import {DateFormatPipe} from './date-format';
+import {DateFormatPipe} from './date-format.pipe';
 
 @Component({
   selector: 'app-comments-list-item',

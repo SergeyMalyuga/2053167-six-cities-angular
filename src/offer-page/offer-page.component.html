@@ -149,11 +149,7 @@
           </div>
           <section class="offer__reviews reviews">
             <h2 class="reviews__title">Reviews &middot; <span class="reviews__amount">1</span></h2>
-            <ul class="reviews__list">
-              @for (comment of comments(); track comment.id) {
-                <app-comments-list-item [comment]="comment"></app-comments-list-item>
-              }
-            </ul>
+            <app-comment-list [comments]="comments()"></app-comment-list>
             <app-comment-form [comments]="comments"></app-comment-form>
           </section>
         </div>

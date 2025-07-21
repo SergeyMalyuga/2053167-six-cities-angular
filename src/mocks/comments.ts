@@ -1,7 +1,7 @@
-import {Review} from '../types/reviews';
+import {Comment} from '../types/comments';
 
 
-export const reviews: Review[] = [
+export const comments: Comment[] = [
   {
     id: '0b',
     date: '2019-05-08T14:13:56.569Z',
@@ -11,7 +11,7 @@ export const reviews: Review[] = [
       isPro: false
     },
     comment: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam.',
-    rating: 4
+    rating: 1
   },
   {
     id: '0bc',

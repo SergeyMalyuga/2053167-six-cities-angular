@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {OfferPreview} from '../types/offers';
 import {CardComponent} from '../card/card.component';
 
@@ -10,4 +10,10 @@ import {CardComponent} from '../card/card.component';
 
 export class OffersListComponent {
   @Input() offers: OfferPreview[] = [];
+
+  @Output() cardActivated = new EventEmitter<OfferPreview | null>();
+
+  onCardActivated(offer: OfferPreview | null) {
+    this.cardActivated.emit(offer);
+  }
 }

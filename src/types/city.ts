@@ -7,4 +7,3 @@ export interface City {
   };
 }
 
-export type Cities = City[];

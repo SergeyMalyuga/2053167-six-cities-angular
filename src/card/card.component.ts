@@ -1,4 +1,4 @@
-import {Component, Input, signal} from '@angular/core';
+import {Component, EventEmitter, Input, Output, signal} from '@angular/core';
 import {OfferPreview} from '../types/offers';
 import {CapitalizePipe} from './capitalize.pipe';
 import {RouterModule} from '@angular/router';
@@ -11,17 +11,21 @@ import {AppRoute} from '../app/app.routes';
 })
 
 export class CardComponent {
+
   protected readonly Math = Math;
   protected readonly AppRoute = AppRoute;
   @Input() offer: OfferPreview | undefined = undefined;
   @Input() isFavoritePage = false;
   isActive = signal(false);
 
-  onMouseEnter = () => {
-    this.isActive.set(true);
+  @Output() cardMouseEnter = new EventEmitter<OfferPreview>();
+  @Output() cardMouseLeave = new EventEmitter<void>();
+
+  onMouseEnter() {
+    this.cardMouseEnter.emit(this.offer);
   }
   onMouseLeave = () => {
-    this.isActive.set(false);
+   this.cardMouseLeave.emit();
   }
 }
 

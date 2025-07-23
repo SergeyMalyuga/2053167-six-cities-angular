@@ -93,29 +93,5 @@ export const offers: OfferPreview[] = [
     isPremium: false,
     rating: 5,
     previewImage: 'img/apartment-03.jpg',
-  },
-  {
-    id: '5',
-    title: 'Beautiful & luxurious apartment at great location',
-    type: 'Apartment',
-    price: 120,
-    city: {
-      name: 'Paris',
-      location: {
-        latitude: 48.8534,
-        longitude: 2.3488,
-        zoom: 8
-      }
-    },
-    location: {
-      latitude: 48.8534,
-      longitude: 2.3488,
-      zoom: 8
-    },
-    isFavorite: true,
-    isPremium: false,
-    rating: 1,
-
-    previewImage: 'img/apartment-01.jpg',
   }
 ];

@@ -1,5 +1,5 @@
 <div class="cities__places-list places__list tabs__content">
   @for (offer of offers; track offer.id) {
-    <app-card [offer]="offer"></app-card>
+    <app-card (cardMouseEnter)="onCardActivated($event)" (cardMouseLeave)="onCardActivated(null)" [offer]="offer"></app-card>
   }
 </div>

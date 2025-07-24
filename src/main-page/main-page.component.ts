@@ -1,13 +1,16 @@
-import {Component, inject, OnInit, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, inject, OnInit, signal} from '@angular/core';
 import {OfferPreview} from '../types/offers';
 import {MockOffersService} from '../mock-offers-service';
 import {OffersListComponent} from '../offers-list/offers-list.component';
 import {MapComponent} from '../map/map.component';
+import {AppRoute} from '../app/app.routes';
+import {HeaderComponent} from '../header/header.component';
 
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
-  imports: [OffersListComponent, MapComponent]
+  imports: [OffersListComponent, MapComponent, HeaderComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class MainPageComponent implements OnInit {
@@ -27,4 +30,6 @@ export class MainPageComponent implements OnInit {
       this.activeCard.set(offer);
     }
   }
+
+  protected readonly AppRoute = AppRoute;
 }

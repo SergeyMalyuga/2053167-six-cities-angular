@@ -1,12 +1,13 @@
 import {MockFavoriteOffers} from '../mocks/mock-favorite-offers';
-import {Component, OnInit} from '@angular/core';
+import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
 import {SortOffers} from '../types/offers';
 import {FavoritesOffersListItemComponent} from '../favorites-offers-list-item/favorites-offers-list-item.component';
 
 @Component({
   selector: 'app-favorites-offers-list',
   templateUrl: './favorites-offers-list.component.html',
-  imports: [FavoritesOffersListItemComponent]
+  imports: [FavoritesOffersListItemComponent],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class FavoritesOffersListComponent implements OnInit {

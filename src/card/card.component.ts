@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, Output, signal} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output, signal} from '@angular/core';
 import {OfferPreview} from '../types/offers';
 import {CapitalizePipe} from './capitalize.pipe';
 import {RouterModule} from '@angular/router';
@@ -8,6 +8,7 @@ import {AppRoute} from '../app/app.routes';
   selector: 'app-card',
   templateUrl: './card.component.html',
   imports: [CapitalizePipe, RouterModule],
+  changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class CardComponent {

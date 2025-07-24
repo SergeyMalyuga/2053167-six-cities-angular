@@ -1,12 +1,22 @@
-<article [class]="isFavoritePage ? 'favorites__card place-card' : 'cities__card place-card'"
+<article [class]="
+    (isOfferPage ? 'near-places__card ' : '') +
+    (isFavoritePage ? 'favorites__card ' : '') +
+    (!isFavoritePage && !isOfferPage ? 'cities__card ' : '') +
+    'place-card'
+  "
          (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
   @if (offer?.isFavorite) {
     <div class="place-card__mark">
       <span>Premium</span>
     </div>
   }
-  <div
-    [class]="isFavoritePage ? 'favorites__image-wrapper place-card__image-wrapper' : 'cities__image-wrapper place-card__image-wrapper'">
+  <div [class]="
+  (isOfferPage ? 'class.near-places__image-wrapper ' : '') +
+  (isFavoritePage ? 'favorites__image-wrapper ' : '') +
+  (!isFavoritePage && !isOfferPage ? 'cities__image-wrapper ' : '') +
+  'place-card__image-wrapper'
+">
+
     <a [routerLink]="[AppRoute.Offer, offer?.id]">
       <img class="place-card__image" src="{{offer?.previewImage}}" [style.width]="isFavoritePage ? '150' : '260'"
            [style.height]="isFavoritePage ? '110' : '200'" alt="Place image">

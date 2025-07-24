@@ -16,6 +16,7 @@ export class CardComponent {
   protected readonly AppRoute = AppRoute;
   @Input() offer: OfferPreview | undefined = undefined;
   @Input() isFavoritePage = false;
+  @Input() isOfferPage = false;
   isActive = signal(false);
 
   @Output() cardMouseEnter = new EventEmitter<OfferPreview>();

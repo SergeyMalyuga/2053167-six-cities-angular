@@ -10,7 +10,6 @@ import {
 
 import * as L from 'leaflet';
 import {OfferPreview} from '../types/offers';
-import {offers} from '../mocks/offers';
 
 @Component({
   selector: 'app-map',
@@ -76,10 +75,10 @@ export class MapComponent implements AfterViewInit, OnChanges, OnDestroy {
   }
 
   private addMarkers(): void {
-    offers.forEach(offer => {
+    this.offers.forEach(offer => {
       const marker = L.marker([offer.location.latitude, offer.location.longitude] as L.LatLngExpression);
       this.markers.push(marker);
-      marker.setIcon(this.activeCard !== null && this.activeCard.id === offer.id ?
+      marker.setIcon(this.activeCard !== null && this.activeCard?.id === offer.id ?
         this.currentCustomIcon
         :
         this.defaultCustomIcon

@@ -15,14 +15,22 @@
     <div class="page__login-container container">
       <section class="login">
         <h1 class="login__title">Sign in</h1>
-        <form class="login__form form" action="#" method="post">
+        <form (submit)="onSubmit()" [formGroup]="loginGroup" class="login__form form" action="#" method="post">
           <div class="login__input-wrapper form__input-wrapper">
             <label for="login__input-email" class="visually-hidden">E-mail</label>
-            <input id="login__input-email" class="login__input form__input" type="email" name="email" placeholder="Email" required="">
+            <input formControlName="email" id="login__input-email" class="login__input form__input" type="email" name="email" placeholder="Email" required="">
+            <div class="form__error-email" *ngIf="loginGroup.get('email')?.invalid && loginGroup.get('email')?.touched">
+              <small *ngIf="loginGroup.get('email')?.errors?.['required']">Email is required</small>
+              <small *ngIf="loginGroup.get('email')?.errors?.['email']">Invalid email format</small>
+            </div>
           </div>
           <div class="login__input-wrapper form__input-wrapper">
             <label for="login__input-password" class="visually-hidden">Password</label>
-            <input id="login__input-password" class="login__input form__input" type="password" name="password" placeholder="Password" required="">
+            <input formControlName="password" id="login__input-password" class="login__input form__input" type="password" name="password" placeholder="Password" required="">
+            <div class="form__error-password" *ngIf="loginGroup.get('password')?.invalid && loginGroup.get('password')?.touched">
+              <small *ngIf="loginGroup.get('password')?.errors?.['required']">Password is required</small>
+              <small *ngIf="loginGroup.get('password')?.errors?.['pattern']">Invalid password format</small>
+            </div>
           </div>
           <button class="login__submit form__submit button" type="submit">Sign in</button>
         </form>

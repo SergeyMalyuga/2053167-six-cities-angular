@@ -7,7 +7,7 @@ import {AppRoute} from '../app/app.routes';
 })
 
 export class AuthGuard implements CanActivate {
-  authStatus = true;
+  authStatus = false;
   route = inject(Router);
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): boolean | UrlTree {

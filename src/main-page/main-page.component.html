@@ -58,11 +58,11 @@
               <li class="places__option" tabindex="0">Top rated first</li>
             </ul>
           </form>
-          <app-offers-list (cardActivated)="handleCardMouseEnter($event)" [offers]="offers"></app-offers-list>
+          <app-offers-list (cardActivated)="handleCardMouseEnter($event)" [offers]="currentOffers"></app-offers-list>
         </section>
         <div class="cities__right-section">
           <section class="cities__map map">
-            <app-map [activeCard]="activeCard()" [offers]="offers"></app-map>
+            <app-map [activeCard]="activeCard()" [offers]="currentOffers"></app-map>
           </section>
         </div>
       </div>

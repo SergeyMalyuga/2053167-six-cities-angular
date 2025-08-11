@@ -10,7 +10,7 @@ import {CardComponent} from '../card/card.component';
 })
 
 export class OffersListComponent {
-  @Input() offers: OfferPreview[] = [];
+  @Input() offers: OfferPreview[] | null = [];
 
   @Output() cardActivated = new EventEmitter<OfferPreview | null>();
 

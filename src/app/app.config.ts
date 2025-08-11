@@ -3,7 +3,8 @@ import {provideRouter} from '@angular/router';
 
 import {routes} from './app.routes';
 import {provideStore} from '@ngrx/store';
-import {appReducer} from './app.component';
+import {appReducer} from '../store/app.reducer';
+
 
 export const appConfig: ApplicationConfig = {
   providers: [provideZoneChangeDetection({eventCoalescing: true}),

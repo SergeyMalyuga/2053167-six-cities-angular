@@ -50,3 +50,12 @@ export const CITY_LOCATIONS: City[] = [
     }
   }
 ];
+
+export const DEFAULT_CITY: City = {
+  name: 'Paris',
+  location: {
+    latitude: 48.8534,
+    longitude: 2.3488,
+    zoom: 10
+  }
+}

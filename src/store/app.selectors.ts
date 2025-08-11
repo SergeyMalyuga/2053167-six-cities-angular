@@ -1,6 +1,7 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 import {AppState} from './app.state';
-import {offersAdapter} from '../app/app.component';
+import {offersAdapter} from './app.reducer';
+
 
 const selectAppState = createFeatureSelector<AppState>('appStore')
 export const selectOffersState = createSelector(

@@ -10,11 +10,12 @@ import {selectAllOffers, selectCity} from '../store/app.selectors';
 import {combineLatest, map, Subject, takeUntil, tap} from 'rxjs';
 import {CitiesListComponent} from '../cities-list/cities-list';
 import {DEFAULT_CITY} from '../const';
+import {PlacesSortingFormComponent} from '../places-sorting-form/places-sorting-form.component';
 
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
-  imports: [OffersListComponent, MapComponent, HeaderComponent, CitiesListComponent],
+  imports: [OffersListComponent, MapComponent, HeaderComponent, CitiesListComponent, PlacesSortingFormComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 

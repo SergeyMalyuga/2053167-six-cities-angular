@@ -1,9 +1,9 @@
 <div class="page page--gray page--main">
-<app-header></app-header>
+  <app-header></app-header>
   <main class="page__main page__main--index" [class.page__main--index-empty]="currentOffers.length === 0">
     <h1 class="visually-hidden">Cities</h1>
     <div class="tabs">
-      <app-cities-list [currentCity]="currentCity" ></app-cities-list>
+      <app-cities-list [currentCity]="currentCity"></app-cities-list>
     </div>
     <div class="cities">
       @if (currentOffers.length === 0) {
@@ -12,7 +12,8 @@
             <section class="cities__no-places">
               <div class="cities__status-wrapper tabs__content">
                 <b class="cities__status">No places to stay available</b>
-                <p class="cities__status-description">We could not find any property available at the moment in Dusseldorf</p>
+                <p class="cities__status-description">We could not find any property available at the moment in
+                  Dusseldorf</p>
               </div>
             </section>
             <div class="cities__right-section"></div>
@@ -22,22 +23,9 @@
         <div class="cities__places-container container">
           <section class="cities__places places">
             <h2 class="visually-hidden">Places</h2>
-            <b class="places__found">{{currentOffers.length}} {{currentOffers.length > 1 ? 'places' : 'place' }} to stay in Amsterdam</b>
-            <form class="places__sorting" action="#" method="get">
-              <span class="places__sorting-caption">Sort by</span>
-              <span class="places__sorting-type" tabindex="0">
-                  Popular
-                  <svg class="places__sorting-arrow" width="7" height="4">
-                    <use xlink:href="#icon-arrow-select"></use>
-                  </svg>
-                </span>
-              <ul class="places__options places__options--custom places__options--opened">
-                <li class="places__option places__option--active" tabindex="0">Popular</li>
-                <li class="places__option" tabindex="0">Price: low to high</li>
-                <li class="places__option" tabindex="0">Price: high to low</li>
-                <li class="places__option" tabindex="0">Top rated first</li>
-              </ul>
-            </form>
+            <b class="places__found">{{ currentOffers.length }} {{ currentOffers.length > 1 ? 'places' : 'place' }} to
+              stay in Amsterdam</b>
+            <app-places-sorting-form></app-places-sorting-form>
             <app-offers-list (cardActivated)="handleCardMouseEnter($event)" [offers]="currentOffers"></app-offers-list>
           </section>
           <div class="cities__right-section">

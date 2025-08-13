@@ -14,9 +14,12 @@ export enum AppRoute {
 }
 
 export const routes: Routes = [
-  {path: AppRoute.Main , component: MainPageComponent},
+  {path: AppRoute.Main, component: MainPageComponent},
   {path: AppRoute.Favorites, component: FavoritesPageComponent, canActivate: [AuthGuard]},
-  {path: AppRoute.Login , component: LoginPageComponent},
-  {path: `${AppRoute.Offer}/:id` , component: OfferPageComponent},
+  {
+    path: AppRoute.Login,
+    loadComponent: () => import('../login-page/login-page.component').then(m => m.LoginPageComponent)
+  },
+  {path: `${AppRoute.Offer}/:id`, component: OfferPageComponent},
   {path: '**', component: NotFoundPageComponent},
 ];

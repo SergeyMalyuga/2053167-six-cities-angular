@@ -59,3 +59,10 @@ export const DEFAULT_CITY: City = {
     zoom: 10
   }
 }
+
+export enum SORT_TYPE {
+  POPULAR = 'Popular',
+  PRICE_LOW_TO_HIGH = 'Price: low to high',
+  PRICE_HIGH_TO_LOW = 'Price: high to low',
+  TOP_RATED_FIRST = 'Top rated first'
+}

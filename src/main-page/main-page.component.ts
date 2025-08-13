@@ -2,7 +2,6 @@ import {ChangeDetectionStrategy, Component, OnDestroy, OnInit, signal} from '@an
 import {OfferPreview} from '../types/offers';
 import {OffersListComponent} from '../offers-list/offers-list.component';
 import {MapComponent} from '../map/map.component';
-import {AppRoute} from '../app/app.routes';
 import {HeaderComponent} from '../header/header.component';
 import {Store} from '@ngrx/store';
 import {AppState} from '../store/app.state';
@@ -26,6 +25,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   activeCard = signal<OfferPreview | null>(null);
   protected currentOffers: OfferPreview[] = [];
+  protected basicOffers: OfferPreview[] = [];
   protected currentCity = DEFAULT_CITY;
 
   private notifier$ = new Subject<void>();
@@ -35,7 +35,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
       .pipe(tap(([, city]) => this.currentCity = city), map(([offers, city]) =>
           offers.filter(offer => offer.city.name === city.name)),
         takeUntil(this.notifier$))
-      .subscribe(offers => this.currentOffers = offers);
+      .subscribe(offers => {this.currentOffers = offers; this.basicOffers = [...offers]});
   }
 
   ngOnDestroy(): void {
@@ -51,5 +51,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected readonly AppRoute = AppRoute;
+  changeOffers(offers: OfferPreview[]) {
+    this.currentOffers = offers;
+  }
 }

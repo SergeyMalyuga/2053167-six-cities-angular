@@ -66,3 +66,19 @@ export enum SORT_TYPE {
   PRICE_HIGH_TO_LOW = 'Price: high to low',
   TOP_RATED_FIRST = 'Top rated first'
 }
+
+export enum AuthorizationStatus {
+  Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN',
+}
+
+export enum APIRoute {
+  Login = 'login',
+  Logout = 'logout',
+  Comments = 'comments',
+  Favorite = 'favorite',
+  Offers = 'offers',
+}
+
+export const BASE_URL = 'https://15.design.htmlacademy.pro/six-cities';

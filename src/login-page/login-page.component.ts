@@ -1,6 +1,8 @@
 import {Component} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NgIf} from '@angular/common';
+import {RouterLink} from '@angular/router';
+import {AppRoute} from '../app/app.routes';
 
 @Component({
   selector: 'app-login-page',
@@ -8,7 +10,8 @@ import {NgIf} from '@angular/common';
   styleUrls: ['./login-page.component.css'],
   imports: [
     ReactiveFormsModule,
-    NgIf
+    NgIf,
+    RouterLink
   ]
 })
 
@@ -24,4 +27,6 @@ export class LoginPageComponent {
       console.log(this.loginGroup.value);
     }
   }
+
+  protected readonly AppRoute = AppRoute;
 }

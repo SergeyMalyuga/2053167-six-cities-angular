@@ -1,11 +1,20 @@
 import {createEntityAdapter, EntityAdapter} from '@ngrx/entity';
 import {OfferPreview} from '../types/offers';
 import {createReducer, on} from '@ngrx/store';
-import {changeCity, loadOffersData} from './app.actions';
+import {
+  changeCity, checkAuthorizationStatus,
+  checkAuthorizationStatusFailure,
+  checkAuthorizationStatusSuccess,
+  loadOffersData
+} from './app.actions';
+import {AuthorizationStatus} from '../const';
+import {InitialStateApp} from '../types/initial-state-app';
 
 export const offersAdapter: EntityAdapter<OfferPreview> = createEntityAdapter<OfferPreview>();
 
-const initialState = {
+const initialState: InitialStateApp = {
+  authorizationStatus: AuthorizationStatus.Unknown,
+  user: undefined,
   offers: offersAdapter.getInitialState(
     {
       isLoading: false,
@@ -29,5 +38,14 @@ export const appReducer = createReducer(
   })),
   on(changeCity, (state, {city}) => ({
     ...state, currentCity: city
-  }))
-);
+  })),
+  on(checkAuthorizationStatus, (state) => ({
+    ...state, isLoading: true
+  })),
+  on(checkAuthorizationStatusSuccess, (state, {user}) => ({
+    ...state, user: user, authorizationStatus: AuthorizationStatus.Auth, isLoading: false
+  })),
+  on(checkAuthorizationStatusFailure, (state) => ({
+    ...state, authorizationStatus: AuthorizationStatus.NoAuth, isLoading: false
+  })));
+

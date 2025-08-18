@@ -8,13 +8,14 @@ import {AppState} from '../store/app.state';
 import {selectAllOffers, selectCity} from '../store/app.selectors';
 import {combineLatest, map, Subject, takeUntil, tap} from 'rxjs';
 import {CitiesListComponent} from '../cities-list/cities-list';
-import {DEFAULT_CITY} from '../const';
+import {DEFAULT_CITY, SORT_TYPE} from '../const';
 import {PlacesSortingFormComponent} from '../places-sorting-form/places-sorting-form.component';
+import {LoaderComponent} from '../loader/loader.component';
 
 @Component({
   selector: 'app-main-page',
   templateUrl: './main-page.component.html',
-  imports: [OffersListComponent, MapComponent, HeaderComponent, CitiesListComponent, PlacesSortingFormComponent],
+  imports: [OffersListComponent, MapComponent, HeaderComponent, CitiesListComponent, PlacesSortingFormComponent, LoaderComponent],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -27,15 +28,19 @@ export class MainPageComponent implements OnInit, OnDestroy {
   protected currentOffers: OfferPreview[] = [];
   protected basicOffers: OfferPreview[] = [];
   protected currentCity = DEFAULT_CITY;
+  protected isLoading = signal<boolean>(false);
+  protected currentSortType = signal<string>(SORT_TYPE.POPULAR);
 
   private notifier$ = new Subject<void>();
 
   ngOnInit(): void {
     combineLatest([this.store.select(selectAllOffers), this.store.select(selectCity)])
-      .pipe(tap(([, city]) => this.currentCity = city), map(([offers, city]) =>
+      .pipe(tap(([, city]) => this.currentCity = {...city}), map(([offers, city]) =>
           offers.filter(offer => offer.city.name === city.name)),
         takeUntil(this.notifier$))
-      .subscribe(offers => {this.currentOffers = offers; this.basicOffers = [...offers]});
+      .subscribe(offers => {this.currentOffers = [...offers]; this.basicOffers = [...offers]});
+
+    this.store.select(state => state).pipe(takeUntil(this.notifier$)).subscribe(state => this.isLoading.set(state.appStore.isLoading));
   }
 
   ngOnDestroy(): void {
@@ -53,5 +58,9 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   changeOffers(offers: OfferPreview[]) {
     this.currentOffers = offers;
+  }
+
+  changeCurrentSortType(sortType: SORT_TYPE) {
+    this.currentSortType.set(sortType);
   }
 }

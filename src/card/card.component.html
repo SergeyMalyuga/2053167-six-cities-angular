@@ -5,7 +5,7 @@
     'place-card'
   "
          (mouseenter)="onMouseEnter()" (mouseleave)="onMouseLeave()">
-  @if (offer?.isFavorite) {
+  @if (offer?.isPremium) {
     <div class="place-card__mark">
       <span>Premium</span>
     </div>

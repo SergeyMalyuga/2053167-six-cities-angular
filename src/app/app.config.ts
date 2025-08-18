@@ -7,6 +7,7 @@ import {provideEffects} from '@ngrx/effects';
 import {appReducer} from '../store/app.reducer';
 import {AppAuthEffects} from '../store/app-auth.effects';
 import {provideHttpClient} from '@angular/common/http';
+import {AppOffersEffects} from '../store/app-offers.effects';
 
 
 export const appConfig: ApplicationConfig = {
@@ -15,5 +16,5 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(),
     provideRouter(routes),
     provideStore({appStore: appReducer}),
-    provideEffects(AppAuthEffects)]
+    provideEffects(AppAuthEffects, AppOffersEffects)]
 };

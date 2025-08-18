@@ -1,5 +1,5 @@
-import {Component, ElementRef, Input, ViewChild} from '@angular/core';
-import {CITY_LOCATIONS} from '../const';
+import {Component, ElementRef, EventEmitter, Input, Output, ViewChild} from '@angular/core';
+import {CITY_LOCATIONS, SORT_TYPE} from '../const';
 import {City} from '../types/city';
 import {Store} from '@ngrx/store';
 import {AppState} from '../store/app.state';
@@ -17,10 +17,11 @@ export class CitiesListComponent {
   protected readonly CITY_LOCATIONS = CITY_LOCATIONS;
 
   @Input() currentCity!: City;
-
+  @Output() changeSortType = new EventEmitter<SORT_TYPE>();
   @ViewChild('citiesList') citiesListComponent!: ElementRef;
 
   onClickCityButton(evt: MouseEvent) {
+    this.changeSortType.emit(SORT_TYPE.POPULAR);
     const target = evt.target as HTMLElement;
 
     const ul = this.citiesListComponent.nativeElement as HTMLElement;

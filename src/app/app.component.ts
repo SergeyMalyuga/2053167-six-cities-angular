@@ -3,7 +3,6 @@ import {RouterOutlet} from '@angular/router';
 import {Store} from '@ngrx/store';
 import {AppState} from '../store/app.state';
 import {checkAuthorizationStatus, loadOffersData} from '../store/app.actions';
-import {offers} from '../mocks/offers';
 
 @Component({
   selector: 'app-root',
@@ -16,7 +15,7 @@ export class AppComponent implements OnInit {
   constructor(private store: Store<{ appStore: AppState }>) {}
 
   ngOnInit(): void {
-    this.store.dispatch(loadOffersData({offers}));
+    this.store.dispatch(loadOffersData());
     this.store.dispatch(checkAuthorizationStatus());
   }
 }

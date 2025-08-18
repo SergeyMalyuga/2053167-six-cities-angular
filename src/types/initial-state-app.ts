@@ -7,6 +7,7 @@ import {User} from './user';
 
 export interface InitialStateApp {
   authorizationStatus: AuthorizationStatus;
+  isLoading: boolean;
   user: User | undefined;
   offers: EntityState<OfferPreview>;
   currentCity: City

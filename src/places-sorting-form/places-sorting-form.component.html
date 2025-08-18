@@ -2,7 +2,7 @@
   <span class="places__sorting-caption">Sort by</span>
   <span class="places__sorting-type" (click)="onClickPlacesSorting()" (keydown)="onKeydown($event)"
         tabindex="0">
-                  Popular
+                  {{sortType}}
                   <svg class="places__sorting-arrow" width="7" height="4">
                     <use xlink:href="#icon-arrow-select"></use>
                   </svg>

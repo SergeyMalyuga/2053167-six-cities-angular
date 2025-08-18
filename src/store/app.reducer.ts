@@ -5,7 +5,7 @@ import {
   changeCity, checkAuthorizationStatus,
   checkAuthorizationStatusFailure,
   checkAuthorizationStatusSuccess,
-  loadOffersData
+  loadOffersData, loadOffersDataFailure, loadOffersDataSuccess
 } from './app.actions';
 import {AuthorizationStatus} from '../const';
 import {InitialStateApp} from '../types/initial-state-app';
@@ -13,6 +13,7 @@ import {InitialStateApp} from '../types/initial-state-app';
 export const offersAdapter: EntityAdapter<OfferPreview> = createEntityAdapter<OfferPreview>();
 
 const initialState: InitialStateApp = {
+  isLoading: false,
   authorizationStatus: AuthorizationStatus.Unknown,
   user: undefined,
   offers: offersAdapter.getInitialState(
@@ -32,20 +33,28 @@ const initialState: InitialStateApp = {
 };
 
 export const appReducer = createReducer(
-  initialState,
-  on(loadOffersData, (state, {offers}) => ({
-    ...state, offers: offersAdapter.setAll(offers, {...state.offers})
-  })),
-  on(changeCity, (state, {city}) => ({
-    ...state, currentCity: city
-  })),
-  on(checkAuthorizationStatus, (state) => ({
-    ...state, isLoading: true
-  })),
-  on(checkAuthorizationStatusSuccess, (state, {user}) => ({
-    ...state, user: user, authorizationStatus: AuthorizationStatus.Auth, isLoading: false
-  })),
-  on(checkAuthorizationStatusFailure, (state) => ({
-    ...state, authorizationStatus: AuthorizationStatus.NoAuth, isLoading: false
-  })));
+    initialState,
+    on(loadOffersData, (state) => ({
+      ...state, isLoading: true
+    })),
+    on(loadOffersDataSuccess, (state, {offers}) => ({
+      ...state, offers: offersAdapter.setAll(offers, {...state.offers}), isLoading: false
+    })),
+    on(loadOffersDataFailure, (state) => ({
+      ...state, isLoading: false
+    })),
+    on(changeCity, (state, {city}) => ({
+      ...state, currentCity: city
+    })),
+    on(checkAuthorizationStatus, (state) => ({
+      ...state
+    })),
+    on(checkAuthorizationStatusSuccess, (state, {user}) => ({
+      ...state, user: user, authorizationStatus: AuthorizationStatus.Auth
+    })),
+    on(checkAuthorizationStatusFailure, (state) => ({
+      ...state, authorizationStatus: AuthorizationStatus.NoAuth
+    }))
+  )
+;
 

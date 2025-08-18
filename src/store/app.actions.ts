@@ -3,7 +3,10 @@ import {OfferPreview} from '../types/offers';
 import {City} from '../types/city';
 import {User} from '../types/user';
 
-export const loadOffersData = createAction('[App component] Set all offers]', props<{ offers: OfferPreview[] }>());
+export const loadOffersData = createAction('[App component] Load all offers]');
+export const loadOffersDataSuccess = createAction('[App component] Set all offers]', props<{ offers: OfferPreview[] }>());
+export const loadOffersDataFailure = createAction('[App component] Set all offers (error)')
+
 export const changeCity = createAction('[Main page component] Change city]', props<{ city: City }>());
 
 export const checkAuthorizationStatus = createAction('[Main page component] Check authorization status')

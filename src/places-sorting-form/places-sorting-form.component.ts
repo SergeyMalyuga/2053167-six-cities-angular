@@ -25,7 +25,9 @@ import {SORT_TYPE} from '../const';
 export class PlacesSortingFormComponent implements AfterViewInit, OnDestroy {
 
   @Input() offers!: OfferPreview[];
+  @Input() sortType!: string;
   @Output() offersChange = new EventEmitter<OfferPreview[]>();
+  @Output() changeSotType = new EventEmitter<SORT_TYPE>();
   @ViewChild('sortOptionsList') sortOptionsList!: ElementRef;
 
   constructor(private store: Store<{ appStore: AppState }>) {
@@ -112,18 +114,22 @@ export class PlacesSortingFormComponent implements AfterViewInit, OnDestroy {
   }
 
   onClickSortPriceHighToLowBtn(evt: MouseEvent | KeyboardEvent) {
+    this.changeSotType.emit(SORT_TYPE.PRICE_HIGH_TO_LOW);
     this.sortOffers(evt, this.sortPriceHighToLow);
   }
 
   onClickPriceLowToHigh(evt: MouseEvent | KeyboardEvent) {
+    this.changeSotType.emit(SORT_TYPE.PRICE_LOW_TO_HIGH);
     this.sortOffers(evt, this.sortPriceLowToHigh);
   }
 
   onClickTopRatedFirst(evt: MouseEvent | KeyboardEvent) {
+    this.changeSotType.emit(SORT_TYPE.TOP_RATED_FIRST);
     this.sortOffers(evt, this.sortTopRatedFirst);
   }
 
   onClickPopular(evt: MouseEvent | KeyboardEvent) {
+    this.changeSotType.emit(SORT_TYPE.POPULAR);
     this.sortPopular(evt);
   }
 

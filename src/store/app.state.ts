@@ -5,6 +5,7 @@ import {User} from '../types/user';
 
 export interface AppState {
   authorizationStatus: AuthorizationStatus;
+  isLoading: boolean;
   user: User | undefined;
   currentCity: City;
   offers: OffersState;

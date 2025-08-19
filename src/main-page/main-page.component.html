@@ -2,7 +2,7 @@
   <app-loader></app-loader>
 } @else {
   <div class="page page--gray page--main">
-    <app-header></app-header>
+    <app-header [authorizationStatus]="authorizationStatus()"></app-header>
     <main class="page__main page__main--index" [class.page__main--index-empty]="currentOffers.length === 0">
       <h1 class="visually-hidden">Cities</h1>
       <div class="tabs">

@@ -1,11 +1,11 @@
 import {createEntityAdapter, EntityAdapter} from '@ngrx/entity';
 import {OfferPreview} from '../types/offers';
-import {createReducer, on} from '@ngrx/store';
+import {ActionReducerMap, createReducer, on} from '@ngrx/store';
 import {
   changeCity, checkAuthorizationStatus,
   checkAuthorizationStatusFailure,
   checkAuthorizationStatusSuccess,
-  loadOffersData, loadOffersDataFailure, loadOffersDataSuccess
+  loadOffersData, loadOffersDataFailure, loadOffersDataSuccess, loginFailure, loginSuccess
 } from './app.actions';
 import {AuthorizationStatus} from '../const';
 import {InitialStateApp} from '../types/initial-state-app';
@@ -50,11 +50,23 @@ export const appReducer = createReducer(
       ...state
     })),
     on(checkAuthorizationStatusSuccess, (state, {user}) => ({
-      ...state, user: user, authorizationStatus: AuthorizationStatus.Auth
+      ...state, user, authorizationStatus: AuthorizationStatus.Auth
     })),
     on(checkAuthorizationStatusFailure, (state) => ({
       ...state, authorizationStatus: AuthorizationStatus.NoAuth
+    })),
+    on(loginSuccess, (state, {user}) => ({
+      ...state, user, authorizationStatus: AuthorizationStatus.Auth
+    })),
+    on(loginFailure, (state) => ({
+      ...state, authorizationStatus: AuthorizationStatus.NoAuth
     }))
-  )
-;
+  );
 
+export interface AppState {
+  app: InitialStateApp;
+}
+
+export const reducers: ActionReducerMap<AppState> = {
+  app: appReducer // Ключ 'app' вместо 'appStore'
+};

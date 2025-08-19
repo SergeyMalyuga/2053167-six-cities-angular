@@ -14,3 +14,7 @@ export const checkAuthorizationStatusSuccess = createAction('[Main page componen
   user: User
 }>());
 export const checkAuthorizationStatusFailure = createAction('[Main page component] Check authorization status failure');
+
+export const loginAction = createAction('[Login page component] Login action', props<{email: string, password: string}>());
+export const loginSuccess = createAction('[Login page component] Login Successfully', props<{user: User}>());
+export const loginFailure = createAction('[Login page component] Login failure');

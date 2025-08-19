@@ -1,8 +1,11 @@
-import {Component} from '@angular/core';
+import {Component, inject} from '@angular/core';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {NgIf} from '@angular/common';
-import {RouterLink} from '@angular/router';
+import {Router, RouterLink} from '@angular/router';
 import {AppRoute} from '../app/app.routes';
+import {Store} from '@ngrx/store';
+import {AppState} from '../store/app.state';
+import {loginAction} from '../store/app.actions';
 
 @Component({
   selector: 'app-login-page',
@@ -22,9 +25,16 @@ export class LoginPageComponent {
     password: ['', [Validators.required, Validators.pattern("^(?=.*[A-Za-z])(?=.*\\d).+$")]]
   })
 
+  private store = inject(Store<{ appStore: AppState }>);
+  private route = inject(Router);
+
   onSubmit() {
     if (this.loginGroup.valid) {
-      console.log(this.loginGroup.value);
+      const {email, password} = this.loginGroup.getRawValue();
+      if (email && password) {
+        this.store.dispatch(loginAction({email, password}));
+      }
+      this.route.navigate([AppRoute.Main]);
     }
   }
 

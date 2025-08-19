@@ -8,7 +8,7 @@ import {AppState} from '../store/app.state';
 import {selectAllOffers, selectCity} from '../store/app.selectors';
 import {combineLatest, map, Subject, takeUntil, tap} from 'rxjs';
 import {CitiesListComponent} from '../cities-list/cities-list';
-import {DEFAULT_CITY, SORT_TYPE} from '../const';
+import {AuthorizationStatus, DEFAULT_CITY, SORT_TYPE} from '../const';
 import {PlacesSortingFormComponent} from '../places-sorting-form/places-sorting-form.component';
 import {LoaderComponent} from '../loader/loader.component';
 
@@ -30,6 +30,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   protected currentCity = DEFAULT_CITY;
   protected isLoading = signal<boolean>(false);
   protected currentSortType = signal<string>(SORT_TYPE.POPULAR);
+  protected authorizationStatus = signal<AuthorizationStatus>(AuthorizationStatus.Unknown);
 
   private notifier$ = new Subject<void>();
 
@@ -38,9 +39,15 @@ export class MainPageComponent implements OnInit, OnDestroy {
       .pipe(tap(([, city]) => this.currentCity = {...city}), map(([offers, city]) =>
           offers.filter(offer => offer.city.name === city.name)),
         takeUntil(this.notifier$))
-      .subscribe(offers => {this.currentOffers = [...offers]; this.basicOffers = [...offers]});
+      .subscribe(offers => {
+        this.currentOffers = [...offers];
+        this.basicOffers = [...offers]
+      });
 
-    this.store.select(state => state).pipe(takeUntil(this.notifier$)).subscribe(state => this.isLoading.set(state.appStore.isLoading));
+    this.store.select(state => state).pipe(takeUntil(this.notifier$)).subscribe(state => {
+      this.isLoading.set(state.appStore.isLoading);
+      this.authorizationStatus.set(state.appStore.authorizationStatus);
+    });
   }
 
   ngOnDestroy(): void {

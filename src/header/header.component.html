@@ -10,10 +10,10 @@
         <ul class="header__nav-list">
           @if (authorizationStatus === AuthorizationStatus.Auth) {
             <li class="header__nav-item user">
-              <a class="header__nav-link header__nav-link--profile" href="#">
+              <a (click)="navigateToFavorites($event)" class="header__nav-link header__nav-link--profile" href="#">
                 <div class="header__avatar-wrapper user__avatar-wrapper">
                 </div>
-                <span class="header__user-name user__name">Oliver.conner&#64;gmail.com</span>
+                <span class="header__user-name user__name">{{user()?.email}}</span>
                 <span class="header__favorite-count">3</span>
               </a>
             </li>

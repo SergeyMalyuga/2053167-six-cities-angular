@@ -1,4 +1,13 @@
-import {AfterViewInit, ChangeDetectionStrategy, Component, ElementRef, inject, Input, ViewChild} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  ElementRef,
+  inject,
+  Input, OnDestroy,
+  OnInit, signal,
+  ViewChild
+} from '@angular/core';
 import {AppRoute} from '../app/app.routes';
 import {Router, RouterLink} from '@angular/router';
 import {AuthorizationStatus} from '../const';
@@ -6,6 +15,8 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../store/app.state';
 import {logout} from '../store/app.actions';
 import {AuthService} from '../sirvices/auth.service';
+import {User} from '../types/user';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-header',
@@ -16,12 +27,23 @@ import {AuthService} from '../sirvices/auth.service';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class HeaderComponent implements AfterViewInit {
+export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
+
+  ngOnInit(): void {
+      this.store.select(state => state.appStore.user).pipe(takeUntil(this.notifier$)).subscribe(user => this.user.set(user));
+  }
+
+  ngOnDestroy(): void {
+    this.notifier$.next();
+    this.notifier$.complete();
+  }
 
   private store = inject(Store<{ appStore: AppState }>)
   private route = inject(Router);
   private authService = inject(AuthService);
   private authToggleElementNative: HTMLElement | null = null;
+  protected user = signal<User | null>(null);
+  private notifier$ = new Subject<void>();
 
   ngAfterViewInit(): void {
     this.authToggleElementNative = this.authToggleElement?.nativeElement;
@@ -43,8 +65,9 @@ export class HeaderComponent implements AfterViewInit {
   onKeyDown(evt: KeyboardEvent) {
     if (evt.key === 'Escape') {
       this.authToggleElementNative?.blur();
+    } else if (evt.key === 'Enter' || evt.key === ' ') {
+      this.handleLogout(evt)
     }
-    this.handleLogout(evt)
   }
 
   private handleLogout(evt: MouseEvent | KeyboardEvent) {
@@ -54,5 +77,10 @@ export class HeaderComponent implements AfterViewInit {
       this.route.navigate([AppRoute.Main])
       this.authService.removeToken();
     }
+  }
+
+  navigateToFavorites(evt: MouseEvent): void {
+    evt.preventDefault();
+    this.route.navigate([AppRoute.Favorites]);
   }
 }

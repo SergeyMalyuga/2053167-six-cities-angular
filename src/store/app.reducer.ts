@@ -1,22 +1,41 @@
 import {createEntityAdapter, EntityAdapter} from '@ngrx/entity';
-import {OfferPreview} from '../types/offers';
-import {ActionReducerMap, createReducer, on} from '@ngrx/store';
+import {Offer, OfferPreview} from '../types/offers';
+import {createReducer, on} from '@ngrx/store';
 import {
-  changeCity, checkAuthorizationStatus,
+  changeCity,
+  changeFavoriteStatus,
+  changeFavoriteStatusFailure,
+  changeFavoriteStatusSuccess,
+  checkAuthorizationStatus,
   checkAuthorizationStatusFailure,
   checkAuthorizationStatusSuccess,
-  loadOffersData, loadOffersDataFailure, loadOffersDataSuccess, loginFailure, loginSuccess, logout,
-  logoutFailure, logoutSuccess
+  loadFavoriteOffersData,
+  loadFavoriteOffersDataSuccess,
+  loadOffersData,
+  loadOffersDataFailure,
+  loadOffersDataSuccess,
+  loginFailure,
+  loginSuccess,
+  logout,
+  logoutFailure,
+  logoutSuccess
 } from './app.actions';
 import {AuthorizationStatus} from '../const';
 import {InitialStateApp} from '../types/initial-state-app';
 
 export const offersAdapter: EntityAdapter<OfferPreview> = createEntityAdapter<OfferPreview>();
+export const favoriteOffersAdapter: EntityAdapter<Offer> = createEntityAdapter();
 
 const initialState: InitialStateApp = {
   isLoading: false,
   authorizationStatus: AuthorizationStatus.Unknown,
   user: undefined,
+  favoriteOffers: favoriteOffersAdapter.getInitialState(
+    {
+      isLoading: false,
+      error: null,
+    }
+  ),
   offers: offersAdapter.getInitialState(
     {
       isLoading: false,
@@ -70,13 +89,24 @@ export const appReducer = createReducer(
   })),
   on(logoutFailure, (state) => ({
     ...state
+  })),
+  on(loadFavoriteOffersData, state => ({
+    ...state
+  })),
+  on(loadFavoriteOffersDataSuccess, (state, {favoriteOffers}) => ({
+    ...state, favoriteOffers: favoriteOffersAdapter.setAll(favoriteOffers, {...state.favoriteOffers})
+  })),
+  on(loadOffersDataFailure, (state) => ({
+    ...state
+  })),
+  on(changeFavoriteStatus, (state) => ({
+    ...state
+  })),
+  on(changeFavoriteStatusSuccess, (state, {favoriteOffers, offer}) => ({
+    ...state, offers: offersAdapter.updateOne({id: offer.id, changes: {isFavorite: offer.isFavorite}}, {...state.offers}), favoriteOffers: favoriteOffersAdapter.setAll(favoriteOffers, {...state.favoriteOffers})
+  })),
+  on(changeFavoriteStatusFailure, (state) => ({
+    ...state
   }))
 );
 
-export interface AppState {
-  app: InitialStateApp;
-}
-
-export const reducers: ActionReducerMap<AppState> = {
-  app: appReducer // Ключ 'app' вместо 'appStore'
-};

@@ -1,17 +1,21 @@
 import {
+  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   ElementRef,
   EventEmitter,
-  Input,
+  inject,
+  Input, OnInit,
   Output,
-  signal,
   ViewChild
 } from '@angular/core';
 import {OfferPreview} from '../types/offers';
 import {CapitalizePipe} from './capitalize.pipe';
 import {RouterModule} from '@angular/router';
 import {AppRoute} from '../app/app.routes';
+import {Store} from '@ngrx/store';
+import {AppState} from '../store/app.state';
+import {changeFavoriteStatus} from '../store/app.actions';
 
 @Component({
   selector: 'app-card',
@@ -20,10 +24,14 @@ import {AppRoute} from '../app/app.routes';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class CardComponent {
+export class CardComponent implements OnInit, AfterViewInit {
+  ngOnInit(): void {
+    this.isFavorite = this.offer ? this.offer.isFavorite : false;
+  }
 
   protected readonly Math = Math;
   protected readonly AppRoute = AppRoute;
+  private isFavorite = false;
 
   @Input() offer: OfferPreview | undefined = undefined;
   @Input() isFavoritePage = false;
@@ -34,6 +42,14 @@ export class CardComponent {
 
   @ViewChild('favoriteButton') favoriteButton!: ElementRef;
 
+  private store = inject(Store<{ appStore: AppState }>);
+  private favoriteButtonNative: HTMLElement | null = null;
+
+  ngAfterViewInit(): void {
+    this.favoriteButtonNative = this.favoriteButton.nativeElement as HTMLElement;
+  }
+
+
   onMouseEnter() {
     this.cardMouseEnter.emit(this.offer);
   }
@@ -43,8 +59,12 @@ export class CardComponent {
   }
 
   toggleOfferFavorite() {
-    const target = this.favoriteButton.nativeElement as HTMLElement
-    target.classList.toggle('place-card__bookmark-button--active');
+    this.favoriteButtonNative?.classList.toggle('place-card__bookmark-button--active');
+    this.store.dispatch(changeFavoriteStatus({
+      id: this.offer?.id,
+      status: +!this.isFavorite
+    }));
+    this.isFavorite = !this.isFavorite;
   }
 }
 

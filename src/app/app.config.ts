@@ -11,13 +11,15 @@ import {AppOffersEffects} from '../store/app-offers.effects';
 import {AuthInterceptor} from '../interceptors/auth.interceptor';
 import {AppLoginEffects} from '../store/app-login.effects';
 import {AppLogoutEffects} from '../store/app-logout.effects';
+import {AppFavoriteOffersEffects} from '../store/app-favorite-offers.effects';
+import {AppChangeOfferStatusEffects} from '../store/app-change-offer-status.effects';
 
 
 export const appConfig: ApplicationConfig = {
   providers: [
 
     provideRouter(routes),
-    provideStore({ appStore: appReducer }),
+    provideStore({appStore: appReducer}),
     provideHttpClient(
       withInterceptorsFromDi()
     ),
@@ -26,5 +28,6 @@ export const appConfig: ApplicationConfig = {
       useClass: AuthInterceptor,
       multi: true
     },
-    provideEffects(AppAuthEffects, AppOffersEffects, AppLoginEffects, AppLogoutEffects)]
+    provideEffects(AppAuthEffects, AppOffersEffects, AppLoginEffects,
+      AppLogoutEffects, AppFavoriteOffersEffects, AppChangeOfferStatusEffects)]
 };

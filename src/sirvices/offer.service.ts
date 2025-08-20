@@ -12,7 +12,6 @@ export class OffersService {
   }
 
   getOffers() {
-    console.log('getOffers');
     return this.http.get<OfferPreview[]>(`${BASE_URL}/${APIRoute.Offers}`);
   }
 

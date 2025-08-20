@@ -1,14 +1,16 @@
 import {AuthorizationStatus} from '../const';
-import {OfferPreview} from './offers';
+import {Offer, OfferPreview} from './offers';
 import {City} from './city';
 import {EntityState} from '@ngrx/entity';
 import {User} from './user';
+import {FavoriteOffersState} from '../store/offers-favorite.state';
 
 
 export interface InitialStateApp {
   authorizationStatus: AuthorizationStatus;
   isLoading: boolean;
   user: User | undefined;
+  favoriteOffers: EntityState<Offer>;
   offers: EntityState<OfferPreview>;
   currentCity: City
 }

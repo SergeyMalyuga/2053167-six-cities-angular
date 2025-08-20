@@ -10,6 +10,7 @@ import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@ang
 import {AppOffersEffects} from '../store/app-offers.effects';
 import {AuthInterceptor} from '../interceptors/auth.interceptor';
 import {AppLoginEffects} from '../store/app-login.effects';
+import {AppLogoutEffects} from '../store/app-logout.effects';
 
 
 export const appConfig: ApplicationConfig = {
@@ -25,5 +26,5 @@ export const appConfig: ApplicationConfig = {
       useClass: AuthInterceptor,
       multi: true
     },
-    provideEffects(AppAuthEffects, AppOffersEffects, AppLoginEffects)]
+    provideEffects(AppAuthEffects, AppOffersEffects, AppLoginEffects, AppLogoutEffects)]
 };

@@ -5,7 +5,8 @@ import {
   changeCity, checkAuthorizationStatus,
   checkAuthorizationStatusFailure,
   checkAuthorizationStatusSuccess,
-  loadOffersData, loadOffersDataFailure, loadOffersDataSuccess, loginFailure, loginSuccess
+  loadOffersData, loadOffersDataFailure, loadOffersDataSuccess, loginFailure, loginSuccess, logout,
+  logoutFailure, logoutSuccess
 } from './app.actions';
 import {AuthorizationStatus} from '../const';
 import {InitialStateApp} from '../types/initial-state-app';
@@ -33,35 +34,44 @@ const initialState: InitialStateApp = {
 };
 
 export const appReducer = createReducer(
-    initialState,
-    on(loadOffersData, (state) => ({
-      ...state, isLoading: true
-    })),
-    on(loadOffersDataSuccess, (state, {offers}) => ({
-      ...state, offers: offersAdapter.setAll(offers, {...state.offers}), isLoading: false
-    })),
-    on(loadOffersDataFailure, (state) => ({
-      ...state, isLoading: false
-    })),
-    on(changeCity, (state, {city}) => ({
-      ...state, currentCity: city
-    })),
-    on(checkAuthorizationStatus, (state) => ({
-      ...state
-    })),
-    on(checkAuthorizationStatusSuccess, (state, {user}) => ({
-      ...state, user, authorizationStatus: AuthorizationStatus.Auth
-    })),
-    on(checkAuthorizationStatusFailure, (state) => ({
-      ...state, authorizationStatus: AuthorizationStatus.NoAuth
-    })),
-    on(loginSuccess, (state, {user}) => ({
-      ...state, user, authorizationStatus: AuthorizationStatus.Auth
-    })),
-    on(loginFailure, (state) => ({
-      ...state, authorizationStatus: AuthorizationStatus.NoAuth
-    }))
-  );
+  initialState,
+  on(loadOffersData, (state) => ({
+    ...state, isLoading: true
+  })),
+  on(loadOffersDataSuccess, (state, {offers}) => ({
+    ...state, offers: offersAdapter.setAll(offers, {...state.offers}), isLoading: false
+  })),
+  on(loadOffersDataFailure, (state) => ({
+    ...state, isLoading: false
+  })),
+  on(changeCity, (state, {city}) => ({
+    ...state, currentCity: city
+  })),
+  on(checkAuthorizationStatus, (state) => ({
+    ...state
+  })),
+  on(checkAuthorizationStatusSuccess, (state, {user}) => ({
+    ...state, user, authorizationStatus: AuthorizationStatus.Auth
+  })),
+  on(checkAuthorizationStatusFailure, (state) => ({
+    ...state, authorizationStatus: AuthorizationStatus.NoAuth
+  })),
+  on(loginSuccess, (state, {user}) => ({
+    ...state, user, authorizationStatus: AuthorizationStatus.Auth
+  })),
+  on(loginFailure, (state) => ({
+    ...state
+  })),
+  on(logout, (state) => ({
+    ...state, user: undefined, authorizationStatus: AuthorizationStatus.NoAuth
+  })),
+  on(logoutSuccess, (state) => ({
+    ...state, user: undefined, authorizationStatus: AuthorizationStatus.NoAuth
+  })),
+  on(logoutFailure, (state) => ({
+    ...state
+  }))
+);
 
 export interface AppState {
   app: InitialStateApp;

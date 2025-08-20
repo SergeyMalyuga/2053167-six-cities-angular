@@ -7,6 +7,10 @@ export const loadOffersData = createAction('[App component] Load all offers]');
 export const loadOffersDataSuccess = createAction('[App component] Set all offers]', props<{ offers: OfferPreview[] }>());
 export const loadOffersDataFailure = createAction('[App component] Set all offers (error)')
 
+export const logout = createAction('[Header component] Logout');
+export const logoutSuccess = createAction('[Header component] Logout Success');
+export const logoutFailure = createAction('[Header component] Logout Failure');
+
 export const changeCity = createAction('[Main page component] Change city]', props<{ city: City }>());
 
 export const checkAuthorizationStatus = createAction('[Main page component] Check authorization status')

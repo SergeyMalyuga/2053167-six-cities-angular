@@ -10,6 +10,9 @@ import {CardComponent} from '../card/card.component';
 })
 
 export class FavoritesOffersListItemComponent {
+
   @Input() offers: OfferPreview[] | undefined = [];
   @Input() city: string | undefined = undefined;
+
+
 }

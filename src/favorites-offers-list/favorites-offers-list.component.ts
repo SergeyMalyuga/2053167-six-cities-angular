@@ -1,6 +1,5 @@
-import {MockFavoriteOffers} from '../mocks/mock-favorite-offers';
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
-import {SortOffers} from '../types/offers';
+import {ChangeDetectionStrategy, Component, Input, OnChanges, SimpleChanges} from '@angular/core';
+import {OfferPreview, SortOffers} from '../types/offers';
 import {FavoritesOffersListItemComponent} from '../favorites-offers-list-item/favorites-offers-list-item.component';
 
 @Component({
@@ -10,20 +9,24 @@ import {FavoritesOffersListItemComponent} from '../favorites-offers-list-item/fa
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class FavoritesOffersListComponent implements OnInit {
+export class FavoritesOffersListComponent implements OnChanges {
 
-  favoritesOffers = MockFavoriteOffers
+  @Input() favoritesOffers!: OfferPreview[];
+
   sortFavoritesOffers: SortOffers = new Map();
   cities: string[] = [];
 
-  ngOnInit(): void {
-    this.favoritesOffers.forEach(offer => {
-      if(offer.city.name in this.sortFavoritesOffers) {
-        this.sortFavoritesOffers.get(offer?.city.name)?.push(offer);
+  ngOnChanges(changes: SimpleChanges): void {
+      if(changes['favoritesOffers']) {
+        this.sortFavoritesOffers.clear();
+        this.favoritesOffers.forEach(offer => {
+          if(this.sortFavoritesOffers.has(offer.city.name)) {
+            this.sortFavoritesOffers.get(offer?.city.name)?.push(offer);
+          } else {
+            this.sortFavoritesOffers.set(offer.city.name, [offer]);
+          }
+        })
+        this.cities = Array.from(this.sortFavoritesOffers.keys())
       }
-      this.sortFavoritesOffers.set(offer.city.name, [offer]);
-    })
-
-    this.cities = Array.from(this.sortFavoritesOffers.keys())
   }
 }

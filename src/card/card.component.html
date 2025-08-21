@@ -18,8 +18,8 @@
 ">
 
     <a [routerLink]="[AppRoute.Offer, offer?.id]">
-      <img class="place-card__image" src="{{offer?.previewImage}}" [style.width]="isFavoritePage ? '150' : '260'"
-           [style.height]="isFavoritePage ? '110' : '200'" alt="Place image">
+      <img class="place-card__image" src="{{offer?.previewImage}}" [style.width.px]="isFavoritePage ? '150' : '260'"
+           [style.height.px]="isFavoritePage ? '110' : '200'" alt="Place image">
     </a>
   </div>
   <div [class.favorites__card-info]="isFavoritePage" class="place-card__info">

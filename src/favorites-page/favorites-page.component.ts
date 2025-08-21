@@ -27,8 +27,9 @@ export class FavoritesPageComponent implements OnInit, OnDestroy {
     combineLatest([this.store.select(selectAuthorizationStatus), this.store.select(selectAllFavoriteOffers)])
       .pipe(takeUntil(this.notifier$))
       .subscribe(([authorizationStatus, favoriteOffers]) => {
-        this.favoritesOffers.set(favoriteOffers);
+        this.favoritesOffers.set([...favoriteOffers]);
         this.authorizationStatus.set(authorizationStatus);
+        console.log(this.favoritesOffers());
       });
   }
 

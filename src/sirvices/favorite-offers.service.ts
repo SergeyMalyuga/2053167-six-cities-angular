@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
-import {Offer} from '../types/offers';
+import {Offer, OfferPreview} from '../types/offers';
 import {APIRoute, BASE_URL} from '../const';
 
 @Injectable(
@@ -14,7 +14,7 @@ export class FavoriteOffersService {
   constructor(private http: HttpClient) {}
 
   getFavoriteOffers() {
-    return this.http.get<Offer[]>(`${BASE_URL}/${APIRoute.Favorite}`);
+    return this.http.get<OfferPreview[]>(`${BASE_URL}/${APIRoute.Favorite}`);
   }
 
   changeOfferStatus(id: string | undefined, status: number) {

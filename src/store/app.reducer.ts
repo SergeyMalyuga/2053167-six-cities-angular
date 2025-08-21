@@ -1,5 +1,5 @@
 import {createEntityAdapter, EntityAdapter} from '@ngrx/entity';
-import {Offer, OfferPreview} from '../types/offers';
+import {OfferPreview} from '../types/offers';
 import {createReducer, on} from '@ngrx/store';
 import {
   changeCity,
@@ -24,7 +24,7 @@ import {AuthorizationStatus} from '../const';
 import {InitialStateApp} from '../types/initial-state-app';
 
 export const offersAdapter: EntityAdapter<OfferPreview> = createEntityAdapter<OfferPreview>();
-export const favoriteOffersAdapter: EntityAdapter<Offer> = createEntityAdapter();
+export const favoriteOffersAdapter: EntityAdapter<OfferPreview> = createEntityAdapter();
 
 const initialState: InitialStateApp = {
   isLoading: false,
@@ -103,7 +103,9 @@ export const appReducer = createReducer(
     ...state
   })),
   on(changeFavoriteStatusSuccess, (state, {favoriteOffers, offer}) => ({
-    ...state, offers: offersAdapter.updateOne({id: offer.id, changes: {isFavorite: offer.isFavorite}}, {...state.offers}), favoriteOffers: favoriteOffersAdapter.setAll(favoriteOffers, {...state.favoriteOffers})
+    ...state,
+    offers: offersAdapter.updateOne({id: offer.id, changes: {isFavorite: offer.isFavorite}}, {...state.offers}),
+    favoriteOffers: favoriteOffersAdapter.setAll(favoriteOffers, {...state.favoriteOffers})
   })),
   on(changeFavoriteStatusFailure, (state) => ({
     ...state

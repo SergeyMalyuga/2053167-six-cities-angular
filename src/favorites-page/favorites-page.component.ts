@@ -1,12 +1,12 @@
-import {ChangeDetectionStrategy, Component, inject, OnInit, signal} from '@angular/core';
-import {MockOffersService} from '../mock-offers-service';
+import {ChangeDetectionStrategy, Component, inject, OnDestroy, OnInit, signal} from '@angular/core';
 import {OfferPreview} from '../types/offers';
 import {FavoritesOffersListComponent} from '../favorites-offers-list/favorites-offers-list.component';
 import {HeaderComponent} from '../header/header.component';
 import {AuthorizationStatus} from '../const';
 import {Store} from '@ngrx/store';
 import {AppState} from '../store/app.state';
-import {Subject, takeUntil} from 'rxjs';
+import {combineLatest, Subject, takeUntil} from 'rxjs';
+import {selectAllFavoriteOffers, selectAuthorizationStatus} from '../store/app.selectors';
 
 @Component({
   selector: 'app-favorites-page',
@@ -15,19 +15,25 @@ import {Subject, takeUntil} from 'rxjs';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class FavoritesPageComponent implements OnInit {
+export class FavoritesPageComponent implements OnInit, OnDestroy {
 
-  private mockOffersService = inject(MockOffersService);
   private store = inject(Store<{ appStore: AppState }>);
   private notifier$ = new Subject<void>();
-  protected favoritesOffers: OfferPreview[] = [];
+  protected favoritesOffers = signal<OfferPreview[]>([]);
   protected authorizationStatus = signal<AuthorizationStatus>(AuthorizationStatus.Unknown);
 
   ngOnInit(): void {
-    this.favoritesOffers = this.mockOffersService.getOffers();
-    this.store.select(state => state.appStore.authorizationStatus).pipe(takeUntil(this.notifier$))
-      .subscribe(authorizationStatus => this.authorizationStatus.set(authorizationStatus));
+
+    combineLatest([this.store.select(selectAuthorizationStatus), this.store.select(selectAllFavoriteOffers)])
+      .pipe(takeUntil(this.notifier$))
+      .subscribe(([authorizationStatus, favoriteOffers]) => {
+        this.favoritesOffers.set(favoriteOffers);
+        this.authorizationStatus.set(authorizationStatus);
+      });
   }
 
-
+  ngOnDestroy() {
+    this.notifier$.next();
+    this.notifier$.complete();
+  }
 }

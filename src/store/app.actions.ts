@@ -8,11 +8,11 @@ export const loadOffersDataSuccess = createAction('[App component] Set all offer
 export const loadOffersDataFailure = createAction('[App component] Set all offers (error)')
 
 export const loadFavoriteOffersData = createAction('[App component] Set all offers (favorite)');
-export const loadFavoriteOffersDataSuccess = createAction('[App component] Set all offers (favorite) success', props<{favoriteOffers: Offer[]}>());
+export const loadFavoriteOffersDataSuccess = createAction('[App component] Set all offers (favorite) success', props<{favoriteOffers: OfferPreview[]}>());
 export const loadFavoriteOffersDataFailure = createAction('[App component] Set all offers (favorite) failure');
 
 export const changeFavoriteStatus = createAction('[Card component] Change status', props<{id: string | undefined, status: number}>());
-export const changeFavoriteStatusSuccess = createAction('[Card component] Change status success', props<{favoriteOffers: Offer[], offer: Offer}>());
+export const changeFavoriteStatusSuccess = createAction('[Card component] Change status success', props<{favoriteOffers: OfferPreview[], offer: Offer}>());
 export const changeFavoriteStatusFailure = createAction('[Card component] Change status failure');
 
 export const logout = createAction('[Header component] Logout');

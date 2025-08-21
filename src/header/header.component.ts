@@ -19,7 +19,7 @@ import {logout} from '../store/app.actions';
 import {AuthService} from '../sirvices/auth.service';
 import {User} from '../types/user';
 import {combineLatest, Subject, takeUntil} from 'rxjs';
-import {Offer} from '../types/offers';
+import {Offer, OfferPreview} from '../types/offers';
 import {selectAllFavoriteOffers, selectUser} from '../store/app.selectors';
 
 @Component({
@@ -51,7 +51,7 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
   private authService = inject(AuthService);
   private authToggleElementNative: HTMLElement | null = null;
   protected user = signal<User | undefined>(undefined);
-  protected favoriteOffers = signal<Offer[] | null>(null);
+  protected favoriteOffers = signal<OfferPreview[] | null>(null);
   private notifier$ = new Subject<void>();
 
   ngAfterViewInit(): void {

@@ -10,7 +10,7 @@ export interface InitialStateApp {
   authorizationStatus: AuthorizationStatus;
   isLoading: boolean;
   user: User | undefined;
-  favoriteOffers: EntityState<Offer>;
+  favoriteOffers: EntityState<OfferPreview>;
   offers: EntityState<OfferPreview>;
   currentCity: City
 }

@@ -7,11 +7,13 @@ import {Store} from '@ngrx/store';
 import {AppState} from '../store/app.state';
 import {combineLatest, Subject, takeUntil} from 'rxjs';
 import {selectAllFavoriteOffers, selectAuthorizationStatus} from '../store/app.selectors';
+import {RouterLink} from '@angular/router';
+import {AppRoute} from '../app/app.routes';
 
 @Component({
   selector: 'app-favorites-page',
   templateUrl: './favorites-page.component.html',
-  imports: [FavoritesOffersListComponent, HeaderComponent],
+  imports: [FavoritesOffersListComponent, HeaderComponent, RouterLink],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
@@ -37,4 +39,6 @@ export class FavoritesPageComponent implements OnInit, OnDestroy {
     this.notifier$.next();
     this.notifier$.complete();
   }
+
+  protected readonly AppRoute = AppRoute;
 }

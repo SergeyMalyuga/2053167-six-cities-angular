@@ -1,6 +1,21 @@
-import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  Component,
+  EventEmitter,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  Output,
+  signal
+} from '@angular/core';
 import {OfferPreview} from '../types/offers';
 import {CardComponent} from '../card/card.component';
+import {Store} from '@ngrx/store';
+import {AppState} from '../store/app.state';
+import {AuthorizationStatus} from '../const';
+import {selectAuthorizationStatus} from '../store/app.selectors';
+import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-offers-list',
@@ -10,6 +25,7 @@ import {CardComponent} from '../card/card.component';
 })
 
 export class OffersListComponent {
+
   @Input() offers: OfferPreview[] | null = [];
 
   @Output() cardActivated = new EventEmitter<OfferPreview | null>();

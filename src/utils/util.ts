@@ -1,4 +1,5 @@
 import {Offer, OfferPreview} from '../types/offers';
+import {Comment} from '../types/comments';
 
 export function offerAdapter(offer: Offer): OfferPreview {
   return {
@@ -24,4 +25,10 @@ export function offerAdapter(offer: Offer): OfferPreview {
     rating: offer.rating,
     previewImage: ''
   };
+}
+
+export function sortByDate(commentOne: Comment, commentTwo: Comment): number{
+  const dateOne = new Date(commentOne.date).getTime();
+  const dateTwo = new Date(commentTwo.date).getTime();
+  return dateTwo - dateOne;
 }

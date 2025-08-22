@@ -22,6 +22,7 @@ import {
 } from './app.actions';
 import {AuthorizationStatus} from '../const';
 import {InitialStateApp} from '../types/initial-state-app';
+import {Comment} from '../types/comments';
 
 export const offersAdapter: EntityAdapter<OfferPreview> = createEntityAdapter<OfferPreview>();
 export const favoriteOffersAdapter: EntityAdapter<OfferPreview> = createEntityAdapter();

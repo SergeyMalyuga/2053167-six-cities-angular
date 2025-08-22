@@ -2,7 +2,7 @@
   <app-loader></app-loader>
 } @else {
   <div class="page">
-    <app-header></app-header>
+    <app-header [authorizationStatus]="authorizationStatus()"></app-header>
     <main class="page__main page__main--offer">
       <section class="offer">
         <div class="offer__gallery-container container">
@@ -57,64 +57,40 @@
             <div class="offer__inside">
               <h2 class="offer__inside-title">What&apos;s inside</h2>
               <ul class="offer__inside-list">
-                <li class="offer__inside-item">
-                  Wi-Fi
-                </li>
-                <li class="offer__inside-item">
-                  Washing machine
-                </li>
-                <li class="offer__inside-item">
-                  Towels
-                </li>
-                <li class="offer__inside-item">
-                  Heating
-                </li>
-                <li class="offer__inside-item">
-                  Coffee machine
-                </li>
-                <li class="offer__inside-item">
-                  Baby seat
-                </li>
-                <li class="offer__inside-item">
-                  Kitchen
-                </li>
-                <li class="offer__inside-item">
-                  Dishwasher
-                </li>
-                <li class="offer__inside-item">
-                  Cabel TV
-                </li>
-                <li class="offer__inside-item">
-                  Fridge
-                </li>
+                @for (item of offer()?.goods; track item) {
+                  <li class="offer__inside-item">
+                    {{item}}
+                  </li>
+                }
               </ul>
             </div>
             <div class="offer__host">
               <h2 class="offer__host-title">Meet the host</h2>
               <div class="offer__host-user user">
                 <div class="offer__avatar-wrapper offer__avatar-wrapper--pro user__avatar-wrapper">
-                  <img class="offer__avatar user__avatar" src="img/avatar-angelina.jpg" width="74" height="74" alt="Host avatar">
+                  <img class="offer__avatar user__avatar" src="{{offer()?.host?.avatarUrl ?? ''}}" width="74" height="74" alt="Host avatar">
                 </div>
                 <span class="offer__user-name">
-                    Angelina
+                    {{offer()?.host?.name ?? ''}}
                   </span>
-                <span class="offer__user-status">
+                @if (offer()?.host?.isPro) {
+                  <span class="offer__user-status">
                     Pro
                   </span>
+                }
               </div>
               <div class="offer__description">
                 <p class="offer__text">
-                  A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.
-                </p>
-                <p class="offer__text">
-                  An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.
+                  {{offer()?.description}}
                 </p>
               </div>
             </div>
             <section class="offer__reviews reviews">
               <h2 class="reviews__title">Reviews &middot; <span class="reviews__amount">{{comments().length}}</span></h2>
-              <app-comment-list [comments]="comments()"></app-comment-list>
-              <app-comment-form [comments]="comments"></app-comment-form>
+              <app-comment-list [comments]="comments() | sortCommentsByDate"></app-comment-list>
+              @if (authorizationStatus() === AuthorizationStatus.Auth) {
+                <app-comment-form (newCommentCreated)="addNewComment($event)" [offerId]="offer()?.id" [comments]="comments"></app-comment-form>
+              }
             </section>
           </div>
         </div>

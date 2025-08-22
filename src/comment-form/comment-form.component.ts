@@ -1,42 +1,82 @@
-import {ChangeDetectionStrategy, Component, Input, signal, WritableSignal} from '@angular/core';
-import {nanoid} from 'nanoid';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component, ElementRef,
+  EventEmitter,
+  inject,
+  Input,
+  Output,
+  signal, ViewChild,
+  WritableSignal
+} from '@angular/core';
 import {Comment} from '../types/comments';
+import {CommentService} from '../sirvices/comment.service';
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 
 @Component({
   selector: 'app-comment-form',
   templateUrl: './comment-form.component.html',
+  imports: [
+    ReactiveFormsModule
+  ],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
-export class CommentFormComponent {
-  @Input() comments!: WritableSignal<Comment[]>;
-  newComment = signal({comment: 'This comment has a comment.', rating: 0});
+export class CommentFormComponent implements AfterViewInit {
 
-  onInputComment(evt: Event): void {
-    const target = evt.target as HTMLTextAreaElement;
-    this.newComment.set({...this.newComment(), comment: target.value});
+  @Input() comments!: WritableSignal<Comment[]>;
+  @Input() offerId!: string | undefined;
+  @Output() newCommentCreated = new EventEmitter();
+  @ViewChild('commentSubmitButton') commentSubmitButton!: ElementRef;
+
+  private newComment = signal({comment: 'This comment has a comment.', rating: 0});
+  private commentService = inject(CommentService);
+  private commentSubmitButtonNative: HTMLButtonElement | null = null;
+  private formBuilder = inject(FormBuilder);
+
+  protected commentForm = this.formBuilder.group({
+    comment: ['', [Validators.required, Validators.minLength(50)]],
+    rating: ['', Validators.required],
+  });
+
+  ngAfterViewInit(): void {
+    this.commentSubmitButtonNative = this.commentSubmitButton.nativeElement as HTMLButtonElement;
   }
 
-  onRatingChanged(evt: Event): void {
-    const target = evt.target as HTMLInputElement;
-    const rating = Number(target.value);
-    this.newComment.set({...this.newComment(), rating});
+  onInputComment(): void {
+    this.commentForm.valueChanges.subscribe(({comment}) =>  {if (comment) {
+        this.newComment.set({...this.newComment(), comment})
+    }});
+  }
+
+  onRatingChanged(): void {
+    const rating = Number(this.commentForm.value['rating']);
+    if(rating) {
+      this.newComment.set({...this.newComment(), rating});
+    }
   }
 
   onSubmit(evt: Event): void {
     evt.preventDefault();
-    const newComments= this.comments();
-    newComments.push({
-      id: nanoid(),
-      date: '2019-05-08T14:13:56.569Z',
-      user: {
-        name: 'Oliver Conner',
-        avatarUrl: 'img/avatar-max.jpg',
-        isPro: false
-      },
-      comment: this.newComment().comment,
-      rating: this.newComment().rating
-    });
-    this.comments.set(newComments)
+    if(this.commentSubmitButtonNative) {
+      this.commentSubmitButtonNative.disabled = true;
+    }
+    this.commentService.postComment(this.offerId, this.newComment().comment, this.newComment().rating)
+      .subscribe({
+        next: (offer) => this.newCommentCreated.emit(offer),
+        error: () => this.unlockCommentSubmitButton(),
+        complete: () => {this.unlockCommentSubmitButton();
+          this.newComment.set({comment: '', rating: 0});
+          this.commentForm.reset({
+          comment: '',
+          rating: null
+        })},
+      })
+  }
+
+  private unlockCommentSubmitButton() {
+    if(this.commentSubmitButtonNative) {
+      this.commentSubmitButtonNative.disabled = false;
+    }
   }
 }

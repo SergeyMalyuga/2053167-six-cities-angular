@@ -1,9 +1,9 @@
 import {AuthorizationStatus} from '../const';
-import {Offer, OfferPreview} from './offers';
+import {OfferPreview} from './offers';
 import {City} from './city';
 import {EntityState} from '@ngrx/entity';
 import {User} from './user';
-import {FavoriteOffersState} from '../store/offers-favorite.state';
+import {Comment} from './comments';
 
 
 export interface InitialStateApp {

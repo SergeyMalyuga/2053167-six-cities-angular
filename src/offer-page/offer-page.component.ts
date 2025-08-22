@@ -1,6 +1,17 @@
-import {ChangeDetectionStrategy, Component, effect, inject, Input, OnDestroy, OnInit, signal} from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  Component,
+  effect,
+  ElementRef,
+  inject,
+  Input,
+  OnDestroy,
+  OnInit,
+  signal,
+  ViewChild
+} from '@angular/core';
 import {CommentFormComponent} from '../comment-form/comment-form.component';
-import {comments} from '../mocks/comments';
 import {Comment} from '../types/comments';
 import {CommentListComponent} from '../comment-list/comment-list.component';
 import {MapComponent} from '../map/map.component';
@@ -8,10 +19,10 @@ import {neighborOffers} from '../mocks/neghbor-offers';
 import {OffersListNearbyComponent} from '../offers-list-nearby/offers-list-nearby.component';
 import {AppRoute} from '../app/app.routes';
 import {HeaderComponent} from '../header/header.component';
-import {ActivatedRoute} from '@angular/router';
+import {ActivatedRoute, Router} from '@angular/router';
 import {OffersService} from '../sirvices/offer.service';
 import {Offer} from '../types/offers';
-import {of, Subject, takeUntil, combineLatest} from 'rxjs';
+import {combineLatest, of, Subject, takeUntil} from 'rxjs';
 import {LoaderComponent} from '../loader/loader.component';
 import {CapitalizePipe} from '../card/capitalize.pipe';
 import {User} from '../types/user';
@@ -21,6 +32,8 @@ import {selectAuthorizationStatus, selectUser} from '../store/app.selectors';
 import {AuthorizationStatus} from '../const';
 import {CommentService} from '../sirvices/comment.service';
 import {SortCommentsByDatePipe} from './pipe/sort-comments-by-date.pipe';
+import {changeFavoriteStatus} from '../store/app.actions';
+
 
 @Component({
   selector: 'app-offer-page',
@@ -30,13 +43,17 @@ import {SortCommentsByDatePipe} from './pipe/sort-comments-by-date.pipe';
 })
 
 export class OfferPageComponent implements OnInit, OnDestroy {
+
   @Input() neighborOffers = neighborOffers;
+
 
   private notifier$ = new Subject<void>();
   private paramId = signal<string | null>(null);
   private offersService = inject(OffersService);
   private commentsService = inject(CommentService);
   private store = inject(Store<{ appStore: AppState }>);
+  private router = inject(Router);
+  private toggleFavoriteButtonNative: HTMLElement | null = null;
 
   protected route = inject(ActivatedRoute);
   protected offer = signal<Offer | undefined>(undefined);
@@ -56,7 +73,16 @@ export class OfferPageComponent implements OnInit, OnDestroy {
       }
     });
 
+
+
     this.route.paramMap.pipe(takeUntil(this.notifier$)).subscribe(params => this.paramId.set(params.get('id')));
+  }
+
+  @ViewChild('toggleFavoriteButton') set toggleFavoriteButton(button: ElementRef | undefined) {
+    if (button) {
+      this.toggleFavoriteButtonNative = button.nativeElement as HTMLElement;
+      // Можно сразу добавить обработчики или выполнить действия
+    }
   }
 
   ngOnInit() {
@@ -70,6 +96,19 @@ export class OfferPageComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.notifier$.next();
     this.notifier$.complete();
+  }
+
+  toggleOfferFavorite() {
+    if(this.authorizationStatus() === AuthorizationStatus.Auth) {
+      this.toggleFavoriteButtonNative?.classList.toggle('offer__bookmark-button--active');
+      this.store.dispatch(changeFavoriteStatus({
+        id: this.offer()?.id,
+        status: +!this.offer()?.isFavorite
+      }));
+    } else {
+      this.router.navigate([AppRoute.Login]);
+    }
+
   }
 
   protected addNewComment(comment: Comment) {

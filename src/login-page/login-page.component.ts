@@ -5,7 +5,9 @@ import {Router, RouterLink} from '@angular/router';
 import {AppRoute} from '../app/app.routes';
 import {Store} from '@ngrx/store';
 import {AppState} from '../store/app.state';
-import {loginAction} from '../store/app.actions';
+import {changeCity, loginAction} from '../store/app.actions';
+import {CITY_LOCATIONS} from '../const';
+import {RandomCityPipe} from './random-city.pipe';
 
 @Component({
   selector: 'app-login-page',
@@ -14,7 +16,8 @@ import {loginAction} from '../store/app.actions';
   imports: [
     ReactiveFormsModule,
     NgIf,
-    RouterLink
+    RouterLink,
+    RandomCityPipe
   ]
 })
 
@@ -26,7 +29,7 @@ export class LoginPageComponent {
   })
 
   private store = inject(Store<{ appStore: AppState }>);
-  private route = inject(Router);
+  private router = inject(Router);
 
   onSubmit() {
     if (this.loginGroup.valid) {
@@ -34,9 +37,21 @@ export class LoginPageComponent {
       if (email && password) {
         this.store.dispatch(loginAction({email, password}));
       }
-      this.route.navigate([AppRoute.Main]);
+      this.router.navigate([AppRoute.Main]);
     }
   }
 
+  navigateToCityOffers(event: MouseEvent) {
+    event.preventDefault();
+    const target = event.target as HTMLElement;
+    const currentCity = CITY_LOCATIONS.find((city) => city.name === target.textContent);
+    console.log(currentCity);
+    if(currentCity) {
+      this.store.dispatch(changeCity({city: currentCity}))
+    }
+    this.router.navigate([AppRoute.Main]);
+  }
+
   protected readonly AppRoute = AppRoute;
+  protected readonly CITY_LOCATIONS = CITY_LOCATIONS;
 }

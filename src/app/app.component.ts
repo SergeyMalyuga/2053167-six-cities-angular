@@ -1,8 +1,8 @@
 import {Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {Store} from '@ngrx/store';
-import {AppState} from '../store/app.state';
-import {checkAuthorizationStatus, loadFavoriteOffersData, loadOffersData} from '../store/app.actions';
+import {AppState} from '../core/models/app.state';
+import {checkAuthorizationStatus, loadFavoriteOffersData, loadOffersData} from '../store/actions/app.actions';
 
 @Component({
   selector: 'app-root',

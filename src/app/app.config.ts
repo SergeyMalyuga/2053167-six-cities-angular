@@ -4,15 +4,15 @@ import {provideRouter} from '@angular/router';
 import {routes} from './app.routes';
 import {provideStore} from '@ngrx/store';
 import {provideEffects} from '@ngrx/effects';
-import {appReducer} from '../store/app.reducer';
-import {AppAuthEffects} from '../store/app-auth.effects';
+import {appReducer} from '../store/reducers/app.reducer';
+import {AppAuthEffects} from '../store/effects/app-auth.effects';
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
-import {AppOffersEffects} from '../store/app-offers.effects';
-import {AuthInterceptor} from '../interceptors/auth.interceptor';
-import {AppLoginEffects} from '../store/app-login.effects';
-import {AppLogoutEffects} from '../store/app-logout.effects';
-import {AppFavoriteOffersEffects} from '../store/app-favorite-offers.effects';
-import {AppChangeOfferStatusEffects} from '../store/app-change-offer-status.effects';
+import {AppOffersEffects} from '../store/effects/app-offers.effects';
+import {AuthInterceptor} from '../core/interceptors/auth.interceptor';
+import {AppLoginEffects} from '../store/effects/app-login.effects';
+import {AppLogoutEffects} from '../store/effects/app-logout.effects';
+import {AppFavoriteOffersEffects} from '../store/effects/app-favorite-offers.effects';
+import {AppChangeOfferStatusEffects} from '../store/effects/app-change-offer-status.effects';
 
 
 export const appConfig: ApplicationConfig = {

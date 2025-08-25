@@ -1,5 +1,4 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
   effect,
@@ -21,7 +20,7 @@ import {AppRoute} from '../app/app.routes';
 import {HeaderComponent} from '../header/header.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {OffersService} from '../sirvices/offer.service';
-import {Offer} from '../types/offers';
+import {Offer, OfferPreview} from '../types/offers';
 import {combineLatest, of, Subject, takeUntil} from 'rxjs';
 import {LoaderComponent} from '../loader/loader.component';
 import {CapitalizePipe} from '../card/capitalize.pipe';
@@ -33,19 +32,17 @@ import {AuthorizationStatus} from '../const';
 import {CommentService} from '../sirvices/comment.service';
 import {SortCommentsByDatePipe} from './pipe/sort-comments-by-date.pipe';
 import {changeFavoriteStatus} from '../store/app.actions';
+import {LimitToThreeOffersPipe} from '../offers-list-nearby/limit-to-three-offers.pipe';
 
 
 @Component({
   selector: 'app-offer-page',
   templateUrl: './offer-page.component.html',
-  imports: [CommentFormComponent, CommentListComponent, MapComponent, OffersListNearbyComponent, HeaderComponent, LoaderComponent, CapitalizePipe, SortCommentsByDatePipe],
+  imports: [CommentFormComponent, CommentListComponent, MapComponent, OffersListNearbyComponent, HeaderComponent, LoaderComponent, CapitalizePipe, SortCommentsByDatePipe, LimitToThreeOffersPipe],
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 
 export class OfferPageComponent implements OnInit, OnDestroy {
-
-  @Input() neighborOffers = neighborOffers;
-
 
   private notifier$ = new Subject<void>();
   private paramId = signal<string | null>(null);
@@ -60,6 +57,7 @@ export class OfferPageComponent implements OnInit, OnDestroy {
   protected user = signal<User | undefined>(undefined);
   protected authorizationStatus = signal<AuthorizationStatus>(AuthorizationStatus.Unknown);
   protected comments = signal<Comment[]>([]);
+  protected nearbyOffers = signal<OfferPreview[]>([]);
   protected readonly AppRoute = AppRoute;
 
   constructor() {
@@ -70,6 +68,7 @@ export class OfferPageComponent implements OnInit, OnDestroy {
           this.offer.set(offer)
         });
         this.commentsService.getComments(id).pipe(takeUntil(this.notifier$)).subscribe((comments) => this.comments.set(comments));
+      this.offersService.getNearbyOffers(id).pipe(takeUntil(this.notifier$)).subscribe((nearby) => this.nearbyOffers.set(nearby))
       }
     });
 

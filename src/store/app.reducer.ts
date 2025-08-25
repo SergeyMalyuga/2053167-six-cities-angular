@@ -20,7 +20,7 @@ import {
   logoutFailure,
   logoutSuccess
 } from './app.actions';
-import {AuthorizationStatus} from '../const';
+import {AuthorizationStatus, DEFAULT_CITY} from '../const';
 import {InitialStateApp} from '../types/initial-state-app';
 import {Comment} from '../types/comments';
 
@@ -43,14 +43,7 @@ const initialState: InitialStateApp = {
       error: null,
     }
   ),
-  currentCity: {
-    name: 'Paris',
-    location: {
-      latitude: 48.8534,
-      longitude: 2.3488,
-      zoom: 10
-    }
-  }
+  currentCity: DEFAULT_CITY
 };
 
 export const appReducer = createReducer(

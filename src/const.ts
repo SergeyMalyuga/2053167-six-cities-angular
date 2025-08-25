@@ -75,10 +75,11 @@ export enum AuthorizationStatus {
 
 export enum APIRoute {
   Login = 'login',
-  Logout = 'logout',
   Comments = 'comments',
   Favorite = 'favorite',
   Offers = 'offers',
 }
+
+export const MAX_OFFERS_LENGTH = 3;
 
 export const BASE_URL = 'https://15.design.htmlacademy.pro/six-cities';

@@ -1,14 +1,15 @@
-import {Component} from '@angular/core';
+import {Component, Input, Signal} from '@angular/core';
 import {OfferPreview} from '../types/offers';
-import {neighborOffers} from '../mocks/neghbor-offers';
 import {CardComponent} from '../card/card.component';
+import {LimitToThreeOffersPipe} from './limit-to-three-offers.pipe';
 
 @Component({
   selector: 'app-offers-list-nearby',
   templateUrl: './offers-list-nearby.component.html',
-  imports: [CardComponent]
+  imports: [CardComponent, LimitToThreeOffersPipe]
 })
 
 export class OffersListNearbyComponent {
-  neighborsOffers: OfferPreview[] = neighborOffers;
+
+  @Input() neighborsOffers!: Signal<OfferPreview[]>
 }

@@ -18,4 +18,9 @@ export class OffersService {
   getOfferById(id: string) {
     return this.http.get<Offer>(`${BASE_URL}/${APIRoute.Offers}/${id}`);
   }
+
+
+  getNearbyOffers(id: string | undefined) {
+    return this.http.get<OfferPreview[]>(`${BASE_URL}/${APIRoute.Offers}/${id}/nearby`);
+  }
 }

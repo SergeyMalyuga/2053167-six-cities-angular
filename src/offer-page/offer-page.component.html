@@ -102,11 +102,11 @@
           </div>
         </div>
         <section class="offer__map map">
-          <app-map [activeCard]="null" [offers]="neighborOffers"></app-map>
+          <app-map [activeCard]="null" [offers]="nearbyOffers() | limitToThreeOffers"></app-map>
         </section>
       </section>
       <div class="container">
-        <app-offers-list-nearby></app-offers-list-nearby>
+        <app-offers-list-nearby [neighborsOffers]="nearbyOffers"></app-offers-list-nearby>
       </div>
     </main>
   </div>

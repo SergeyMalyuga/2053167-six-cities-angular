@@ -18,8 +18,6 @@ export class CommentService {
   }
 
   postComment(id: string | undefined, comment: string, rating: number) {
-    console.log(rating);
-    console.log(id);
     return this.http.post<Comment>(`${BASE_URL}/${APIRoute.Comments}/${id}`, {comment, rating})
   }
 }

@@ -14,7 +14,7 @@ import {AppRoute} from '../../app/app.routes';
 import {Router, RouterLink} from '@angular/router';
 import {AuthorizationStatus} from '../../core/constants/const';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../core/models/app.state';
+import {AppState} from '../../core/models/app-state';
 import {logout} from '../../store/app/app.actions';
 import {AuthService} from '../../core/services/auth.service';
 import {User} from '../../core/models/user';

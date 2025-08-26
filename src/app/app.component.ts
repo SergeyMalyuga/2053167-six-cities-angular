@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {RouterOutlet} from '@angular/router';
 import {Store} from '@ngrx/store';
-import {AppState} from '../core/models/app.state';
+import {AppState} from '../core/models/app-state';
 import {checkAuthorizationStatus, loadFavoriteOffersData, loadOffersData} from '../store/app/app.actions';
 
 @Component({

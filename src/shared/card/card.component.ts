@@ -15,11 +15,11 @@ import {CapitalizePipe} from './capitalize.pipe';
 import {Router, RouterModule} from '@angular/router';
 import {AppRoute} from '../../app/app.routes';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../core/models/app.state';
+import {AppState} from '../../core/models/app-state';
 import {changeFavoriteStatus} from '../../store/app/app.actions';
 import {AuthorizationStatus} from '../../core/constants/const';
-import {selectAuthorizationStatus} from '../../store/app/app.selectors';
-import {Subject, takeUntil} from 'rxjs';
+import {selectAuthorizationStatus, selectFavoriteOffersIsLoading} from '../../store/app/app.selectors';
+import {filter, finalize, Subject, take, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-card',
@@ -73,13 +73,24 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
     this.cardMouseLeave.emit();
   }
 
-  toggleOfferFavorite() {
-    if(this.authorizationStatus() === AuthorizationStatus.Auth) {
+  toggleOfferFavorite(event: MouseEvent) {
+    const target = event.currentTarget as HTMLButtonElement;
+    if (this.authorizationStatus() === AuthorizationStatus.Auth) {
+      target.disabled = true;
       this.favoriteButtonNative?.classList.toggle('place-card__bookmark-button--active');
       this.store.dispatch(changeFavoriteStatus({
         id: this.offer?.id,
         status: +!this.isFavorite
       }));
+      this.store.select(selectFavoriteOffersIsLoading)
+        .pipe(
+          filter(isLoading => isLoading === false),
+          take(1),
+          finalize(() => {
+            target.disabled = false;
+          })
+        )
+        .subscribe();
       this.isFavorite = !this.isFavorite;
     } else {
       this.router.navigate([AppRoute.Login]);

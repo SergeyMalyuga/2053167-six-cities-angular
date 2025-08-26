@@ -4,7 +4,7 @@ import {OffersListComponent} from '../../feature/offers-list/offers-list.compone
 import {MapComponent} from '../../shared/map/map.component';
 import {HeaderComponent} from '../../shared/header/header.component';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../core/models/app.state';
+import {AppState} from '../../core/models/app-state';
 import {selectAllOffers, selectCity} from '../../store/app/app.selectors';
 import {combineLatest, map, Subject, takeUntil, tap} from 'rxjs';
 import {CitiesListComponent} from '../../feature/cities-list/cities-list';
@@ -24,7 +24,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   constructor(private store: Store<AppState>) {
   }
 
-  activeCard = signal<OfferPreview | null>(null);
+  protected activeCard = signal<OfferPreview | null>(null);
   protected currentOffers: OfferPreview[] = [];
   protected basicOffers: OfferPreview[] = [];
   protected currentCity = DEFAULT_CITY;

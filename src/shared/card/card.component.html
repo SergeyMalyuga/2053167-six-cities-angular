@@ -30,7 +30,7 @@
       </div>
       <button #favoriteButton class="place-card__bookmark-button button"
               [class.place-card__bookmark-button--active]="offer?.isFavorite && authorizationStatus() === AuthorizationStatus.Auth"
-              type="button" (click)="toggleOfferFavorite()">
+              type="button" (click)="toggleOfferFavorite($event)">
         <svg class="place-card__bookmark-icon" width="18" height="19">
           <use xlink:href="#icon-bookmark"></use>
         </svg>

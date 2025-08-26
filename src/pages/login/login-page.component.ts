@@ -4,7 +4,7 @@ import {NgIf} from '@angular/common';
 import {Router, RouterLink} from '@angular/router';
 import {AppRoute} from '../../app/app.routes';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../core/models/app.state';
+import {AppState} from '../../core/models/app-state';
 import {changeCity, loginAction} from '../../store/app/app.actions';
 import {CITY_LOCATIONS} from '../../core/constants/const';
 import {RandomCityPipe} from './random-city.pipe';

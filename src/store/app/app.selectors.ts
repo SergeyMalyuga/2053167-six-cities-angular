@@ -1,5 +1,5 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {AppState} from '../../core/models/app.state';
+import {AppState} from '../../core/models/app-state';
 import {favoriteOffersAdapter, offersAdapter} from './app.reducer';
 
 
@@ -35,3 +35,8 @@ export const selectAuthorizationStatus = createSelector(
   selectUserState,
   (state) => state.authorizationStatus
 );
+
+export const selectFavoriteOffersIsLoading = createSelector(
+  selectFavoriteOffersState,
+  state => state.isLoading
+)

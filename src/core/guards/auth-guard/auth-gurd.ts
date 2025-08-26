@@ -2,7 +2,7 @@ import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot, UrlTre
 import {inject, Injectable, signal} from '@angular/core';
 import {AppRoute} from '../../../app/app.routes';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../models/app.state';
+import {AppState} from '../../models/app-state';
 import {AuthorizationStatus} from '../../constants/const';
 import {filter, map, Observable, take} from 'rxjs';
 

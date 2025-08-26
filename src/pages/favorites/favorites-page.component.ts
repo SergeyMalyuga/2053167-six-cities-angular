@@ -4,7 +4,7 @@ import {FavoritesOffersListComponent} from '../../feature/favorites-offers-list/
 import {HeaderComponent} from '../../shared/header/header.component';
 import {AuthorizationStatus} from '../../core/constants/const';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../core/models/app.state';
+import {AppState} from '../../core/models/app-state';
 import {combineLatest, Subject, takeUntil} from 'rxjs';
 import {selectAllFavoriteOffers, selectAuthorizationStatus} from '../../store/app/app.selectors';
 import {RouterLink} from '@angular/router';

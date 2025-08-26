@@ -18,13 +18,13 @@ export const userReducer = createReducer(
     ...state
   })),
   on(checkAuthorizationStatusSuccess, (state, {user}) => ({
-    ...state, user, authorizationStatus: AuthorizationStatus.Auth
+    ...state, user: {...user}, authorizationStatus: AuthorizationStatus.Auth
   })),
   on(checkAuthorizationStatusFailure, (state) => ({
     ...state, authorizationStatus: AuthorizationStatus.NoAuth
   })),
   on(loginSuccess, (state, {user}) => ({
-    ...state, user, authorizationStatus: AuthorizationStatus.Auth
+    ...state, user: {...user}, authorizationStatus: AuthorizationStatus.Auth
   })),
   on(loginFailure, (state) => ({
     ...state

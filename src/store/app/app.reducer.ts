@@ -1,7 +1,7 @@
 import {createEntityAdapter, EntityAdapter} from '@ngrx/entity';
 import {OfferPreview} from '../../core/models/offers';
 import {ActionReducerMap} from '@ngrx/store';
-import {AppState} from '../../core/models/app.state';
+import {AppState} from '../../core/models/app-state';
 import {userReducer} from '../user/user.reducer';
 import {offerReducer} from '../offer/offer.reducer';
 import {favoriteOffersReducer} from '../favorite-offer/favorite-offer.reducer';

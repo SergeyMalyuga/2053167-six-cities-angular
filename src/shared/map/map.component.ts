@@ -12,7 +12,7 @@ import {
 import * as L from 'leaflet';
 import {OfferPreview} from '../../core/models/offers';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../core/models/app.state';
+import {AppState} from '../../core/models/app-state';
 import {City} from '../../core/models/city';
 import {selectCity} from '../../store/app/app.selectors';
 import {Subject, takeUntil} from 'rxjs';

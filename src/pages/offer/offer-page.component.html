@@ -27,7 +27,7 @@
               </h1>
               <button #toggleFavoriteButton class="offer__bookmark-button button" type="button"
                       [class.offer__bookmark-button--active]="offer()?.isFavorite && authorizationStatus() === AuthorizationStatus.Auth"
-              (click)="toggleOfferFavorite()"
+              (click)="toggleOfferFavorite($event)"
               >
 
                 <svg class="offer__bookmark-icon" width="31" height="33">

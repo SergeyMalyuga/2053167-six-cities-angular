@@ -19,13 +19,13 @@ import {HeaderComponent} from '../../shared/header/header.component';
 import {ActivatedRoute, Router} from '@angular/router';
 import {OffersService} from '../../core/services/offer.service';
 import {Offer, OfferPreview} from '../../core/models/offers';
-import {combineLatest, of, Subject, takeUntil} from 'rxjs';
+import {combineLatest, filter, finalize, of, Subject, take, takeUntil} from 'rxjs';
 import {LoaderComponent} from '../../shared/loader/loader.component';
 import {CapitalizePipe} from '../../shared/card/capitalize.pipe';
 import {User} from '../../core/models/user';
 import {Store} from '@ngrx/store';
-import {AppState} from '../../core/models/app.state';
-import {selectAuthorizationStatus, selectUser} from '../../store/app/app.selectors';
+import {AppState} from '../../core/models/app-state';
+import {selectAuthorizationStatus, selectFavoriteOffersIsLoading, selectUser} from '../../store/app/app.selectors';
 import {AuthorizationStatus} from '../../core/constants/const';
 import {CommentService} from '../../core/services/comment.service';
 import {SortCommentsByDatePipe} from './pipe/sort-comments-by-date.pipe';
@@ -49,6 +49,7 @@ export class OfferPageComponent implements OnInit, OnDestroy {
   private store = inject(Store<{ appStore: AppState }>);
   private router = inject(Router);
   private toggleFavoriteButtonNative: HTMLElement | null = null;
+  private isFavorite = false;
 
   protected route = inject(ActivatedRoute);
   protected offer = signal<Offer | undefined>(undefined);
@@ -70,6 +71,9 @@ export class OfferPageComponent implements OnInit, OnDestroy {
       }
     });
 
+    effect(() => {
+      this.isFavorite = this.offer()?.isFavorite ?? false;
+    });
 
 
     this.route.paramMap.pipe(takeUntil(this.notifier$)).subscribe(params => this.paramId.set(params.get('id')));
@@ -94,17 +98,28 @@ export class OfferPageComponent implements OnInit, OnDestroy {
     this.notifier$.complete();
   }
 
-  toggleOfferFavorite() {
+  toggleOfferFavorite(evt: MouseEvent) {
+    const target = evt.currentTarget as HTMLButtonElement;
     if(this.authorizationStatus() === AuthorizationStatus.Auth) {
+      target.disabled = true;
       this.toggleFavoriteButtonNative?.classList.toggle('offer__bookmark-button--active');
       this.store.dispatch(changeFavoriteStatus({
         id: this.offer()?.id,
-        status: +!this.offer()?.isFavorite
+        status: +!this.isFavorite
       }));
+      this.store.select(selectFavoriteOffersIsLoading)
+        .pipe(
+          filter(isLoading => isLoading === false),
+          take(1),
+          finalize(() => {
+            target.disabled = false;
+          })
+        )
+        .subscribe();
+      this.isFavorite = !this.isFavorite;
     } else {
       this.router.navigate([AppRoute.Login]);
     }
-
   }
 
   protected addNewComment(comment: Comment) {

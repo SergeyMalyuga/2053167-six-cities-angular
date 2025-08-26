@@ -1,6 +1,6 @@
 import {createReducer, on} from '@ngrx/store';
 import {DEFAULT_CITY} from '../../core/constants/const';
-import {CityState} from '../../core/models/city.state';
+import {CityState} from '../../core/models/city-state';
 import {changeCity} from '../app/app.actions';
 
 const initialState: CityState = {

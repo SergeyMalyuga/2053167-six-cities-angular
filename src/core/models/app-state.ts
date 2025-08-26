@@ -1,7 +1,7 @@
-import {OffersState} from './offers.state';
-import {FavoriteOffersState} from './offers-favorite.state';
+import {OffersState} from './offers-state';
+import {FavoriteOffersState} from './offers-favorite-state';
 import {UserState} from './user-state';
-import {CityState} from './city.state';
+import {CityState} from './city-state';
 
 export interface AppState {
   user: UserState;

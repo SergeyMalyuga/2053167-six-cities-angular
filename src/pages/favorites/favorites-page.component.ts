@@ -6,7 +6,7 @@ import {AuthorizationStatus} from '../../core/constants/const';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../core/models/app.state';
 import {combineLatest, Subject, takeUntil} from 'rxjs';
-import {selectAllFavoriteOffers, selectAuthorizationStatus} from '../../store/selectors/app.selectors';
+import {selectAllFavoriteOffers, selectAuthorizationStatus} from '../../store/app/app.selectors';
 import {RouterLink} from '@angular/router';
 import {AppRoute} from '../../app/app.routes';
 

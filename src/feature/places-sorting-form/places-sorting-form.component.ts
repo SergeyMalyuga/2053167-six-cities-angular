@@ -12,7 +12,7 @@ import {
 import {OfferPreview} from '../../core/models/offers';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../core/models/app.state';
-import {selectCity} from '../../store/selectors/app.selectors';
+import {selectCity} from '../../store/app/app.selectors';
 import {distinctUntilChanged, Subject, takeUntil} from 'rxjs';
 import {SORT_TYPE} from '../../core/constants/const';
 

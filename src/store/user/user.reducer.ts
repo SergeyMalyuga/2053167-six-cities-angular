@@ -4,7 +4,7 @@ import {
   checkAuthorizationStatus,
   checkAuthorizationStatusFailure,
   checkAuthorizationStatusSuccess, loginFailure, loginSuccess, logout, logoutFailure, logoutSuccess
-} from '../actions/app.actions';
+} from '../app/app.actions';
 import {UserState} from '../../core/models/user-state';
 
 const initialState: UserState = {

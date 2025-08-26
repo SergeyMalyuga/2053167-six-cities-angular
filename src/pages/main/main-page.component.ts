@@ -5,7 +5,7 @@ import {MapComponent} from '../../shared/map/map.component';
 import {HeaderComponent} from '../../shared/header/header.component';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../core/models/app.state';
-import {selectAllOffers, selectCity} from '../../store/selectors/app.selectors';
+import {selectAllOffers, selectCity} from '../../store/app/app.selectors';
 import {combineLatest, map, Subject, takeUntil, tap} from 'rxjs';
 import {CitiesListComponent} from '../../feature/cities-list/cities-list';
 import {AuthorizationStatus, DEFAULT_CITY, SORT_TYPE} from '../../core/constants/const';

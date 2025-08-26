@@ -25,11 +25,11 @@ import {CapitalizePipe} from '../../shared/card/capitalize.pipe';
 import {User} from '../../core/models/user';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../core/models/app.state';
-import {selectAuthorizationStatus, selectUser} from '../../store/selectors/app.selectors';
+import {selectAuthorizationStatus, selectUser} from '../../store/app/app.selectors';
 import {AuthorizationStatus} from '../../core/constants/const';
 import {CommentService} from '../../core/services/comment.service';
 import {SortCommentsByDatePipe} from './pipe/sort-comments-by-date.pipe';
-import {changeFavoriteStatus} from '../../store/actions/app.actions';
+import {changeFavoriteStatus} from '../../store/app/app.actions';
 import {LimitToThreeOffersPipe} from '../../feature/offers-list-nearby/limit-to-three-offers.pipe';
 
 

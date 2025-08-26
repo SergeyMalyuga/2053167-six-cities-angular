@@ -15,12 +15,12 @@ import {Router, RouterLink} from '@angular/router';
 import {AuthorizationStatus} from '../../core/constants/const';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../core/models/app.state';
-import {logout} from '../../store/actions/app.actions';
+import {logout} from '../../store/app/app.actions';
 import {AuthService} from '../../core/services/auth.service';
 import {User} from '../../core/models/user';
 import {combineLatest, Subject, takeUntil} from 'rxjs';
 import {Offer, OfferPreview} from '../../core/models/offers';
-import {selectAllFavoriteOffers, selectUser} from '../../store/selectors/app.selectors';
+import {selectAllFavoriteOffers, selectUser} from '../../store/app/app.selectors';
 
 @Component({
   selector: 'app-header',

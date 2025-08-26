@@ -8,8 +8,8 @@ import {
   loadFavoriteOffersData,
   loadFavoriteOffersDataSuccess,
   loadOffersDataFailure
-} from '../actions/app.actions';
-import {offersAdapter} from './app.reducer';
+} from '../app/app.actions';
+import {offersAdapter} from '../app/app.reducer';
 import {FavoriteOffersState} from '../../core/models/offers-favorite.state';
 
 export const favoriteOffersAdapter: EntityAdapter<OfferPreview> = createEntityAdapter<OfferPreview>();

@@ -1,6 +1,6 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
 import {AppState} from '../../core/models/app.state';
-import {favoriteOffersAdapter, offersAdapter} from '../reducers/app.reducer';
+import {favoriteOffersAdapter, offersAdapter} from './app.reducer';
 
 
 const selectUserState = createFeatureSelector<AppState['user']>('user');

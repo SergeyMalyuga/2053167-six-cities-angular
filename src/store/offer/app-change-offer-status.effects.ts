@@ -1,7 +1,7 @@
 import {inject} from '@angular/core';
 import {Actions, createEffect, ofType} from '@ngrx/effects';
 import {FavoriteOffersService} from '../../core/services/favorite-offers.service';
-import * as actions from '../actions/app.actions';
+import * as actions from '../app/app.actions';
 import {catchError, switchMap} from 'rxjs/operators';
 import {map, of} from 'rxjs';
 

@@ -16,9 +16,9 @@ import {Router, RouterModule} from '@angular/router';
 import {AppRoute} from '../../app/app.routes';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../core/models/app.state';
-import {changeFavoriteStatus} from '../../store/actions/app.actions';
+import {changeFavoriteStatus} from '../../store/app/app.actions';
 import {AuthorizationStatus} from '../../core/constants/const';
-import {selectAuthorizationStatus} from '../../store/selectors/app.selectors';
+import {selectAuthorizationStatus} from '../../store/app/app.selectors';
 import {Subject, takeUntil} from 'rxjs';
 
 @Component({

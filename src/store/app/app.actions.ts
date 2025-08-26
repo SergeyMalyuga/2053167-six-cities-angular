@@ -2,7 +2,6 @@ import {createAction, props} from '@ngrx/store';
 import {Offer, OfferPreview} from '../../core/models/offers';
 import {City} from '../../core/models/city';
 import {User} from '../../core/models/user';
-import {Comment} from '../../core/models/comments';
 
 export const loadOffersData = createAction('[App component] Load all offers]');
 export const loadOffersDataSuccess = createAction('[App component] Set all offers]', props<{ offers: OfferPreview[] }>());
@@ -11,10 +10,6 @@ export const loadOffersDataFailure = createAction('[App component] Set all offer
 export const loadFavoriteOffersData = createAction('[App component] Set all offers (favorite)');
 export const loadFavoriteOffersDataSuccess = createAction('[App component] Set all offers (favorite) success', props<{favoriteOffers: OfferPreview[]}>());
 export const loadFavoriteOffersDataFailure = createAction('[App component] Set all offers (favorite) failure');
-
-export const loadCommentsData = createAction('[App component] Set all offers (comments)', props<{id: string}>());
-export const loadCommentsDataSuccess = createAction('[App component] Set all offers (comments) Success', props<{comments: Comment[]}>());
-export const loadCommentsDataFailure = createAction('[App component] Set all offers (comments) Failure');
 
 export const changeFavoriteStatus = createAction('[Card component] Change status', props<{id: string | undefined, status: number}>());
 export const changeFavoriteStatusSuccess = createAction('[Card component] Change status success', props<{favoriteOffers: OfferPreview[], offer: Offer}>());

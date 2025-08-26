@@ -1,7 +1,7 @@
 import {createEntityAdapter, EntityAdapter} from '@ngrx/entity';
 import {OfferPreview} from '../../core/models/offers';
 import {createReducer, on} from '@ngrx/store';
-import {loadOffersData, loadOffersDataFailure, loadOffersDataSuccess} from '../actions/app.actions';
+import {loadOffersData, loadOffersDataFailure, loadOffersDataSuccess} from '../app/app.actions';
 import {OffersState} from '../../core/models/offers.state';
 
 export const offersAdapter: EntityAdapter<OfferPreview> = createEntityAdapter<OfferPreview>();

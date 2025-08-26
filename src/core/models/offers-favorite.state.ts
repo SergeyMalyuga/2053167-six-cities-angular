@@ -3,5 +3,5 @@ import {OfferPreview} from './offers';
 
 export interface FavoriteOffersState extends EntityState<OfferPreview> {
   isLoading: boolean;
-  error: string;
+  error: string | null;
 }

@@ -84,7 +84,6 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
     } else {
       this.router.navigate([AppRoute.Login]);
     }
-
   }
 
   protected readonly AuthorizationStatus = AuthorizationStatus;

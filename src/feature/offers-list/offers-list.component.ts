@@ -1,21 +1,6 @@
-import {
-  ChangeDetectionStrategy,
-  Component,
-  EventEmitter,
-  inject,
-  Input,
-  OnDestroy,
-  OnInit,
-  Output,
-  signal
-} from '@angular/core';
+import {ChangeDetectionStrategy, Component, EventEmitter, Input, Output} from '@angular/core';
 import {OfferPreview} from '../../core/models/offers';
 import {CardComponent} from '../../shared/card/card.component';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../core/models/app.state';
-import {AuthorizationStatus} from '../../core/constants/const';
-import {selectAuthorizationStatus} from '../../store/selectors/app.selectors';
-import {Subject, takeUntil} from 'rxjs';
 
 @Component({
   selector: 'app-offers-list',

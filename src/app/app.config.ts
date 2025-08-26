@@ -4,7 +4,7 @@ import {provideRouter} from '@angular/router';
 import {routes} from './app.routes';
 import {provideStore} from '@ngrx/store';
 import {provideEffects} from '@ngrx/effects';
-import {appReducer} from '../store/reducers/app.reducer';
+import {rootReducer} from '../store/reducers/app.reducer';
 import {AppAuthEffects} from '../store/effects/app-auth.effects';
 import {HTTP_INTERCEPTORS, provideHttpClient, withInterceptorsFromDi} from '@angular/common/http';
 import {AppOffersEffects} from '../store/effects/app-offers.effects';
@@ -17,9 +17,8 @@ import {AppChangeOfferStatusEffects} from '../store/effects/app-change-offer-sta
 
 export const appConfig: ApplicationConfig = {
   providers: [
-
     provideRouter(routes),
-    provideStore({appStore: appReducer}),
+    provideStore(rootReducer),
     provideHttpClient(
       withInterceptorsFromDi()
     ),

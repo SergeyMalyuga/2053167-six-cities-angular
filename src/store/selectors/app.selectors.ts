@@ -3,21 +3,13 @@ import {AppState} from '../../core/models/app.state';
 import {favoriteOffersAdapter, offersAdapter} from '../reducers/app.reducer';
 
 
-const selectAppState = createFeatureSelector<AppState>('appStore')
-
-export const selectOffersState = createSelector(
-  selectAppState,
-  (state: AppState) => state.offers
-);
-
-export const selectFavoriteOffers = createSelector(
-  selectAppState,
-  (state: AppState) => state.favoriteOffers
-);
+const selectUserState = createFeatureSelector<AppState['user']>('user');
+const selectFavoriteOffersState = createFeatureSelector<AppState['favoriteOffers']>('favoriteOffers');
+const selectOffersState = createFeatureSelector<AppState['offers']>('offers');
+const selectCityState = createFeatureSelector<AppState['currentCity']>('currentCity');
 
 const offersSelectors = offersAdapter.getSelectors();
 const favoriteOffersSelectors = favoriteOffersAdapter.getSelectors();
-
 
 export const selectAllOffers = createSelector(
   selectOffersState,
@@ -25,21 +17,21 @@ export const selectAllOffers = createSelector(
 );
 
 export const selectAllFavoriteOffers = createSelector(
-  selectFavoriteOffers,
+  selectFavoriteOffersState,
   favoriteOffersSelectors.selectAll
 );
 
 export const selectCity = createSelector(
-  selectAppState,
-  (state: AppState) => state.currentCity
+  selectCityState,
+  state => state.currentCity
 );
 
 export const selectUser = createSelector(
-  selectAppState,
-  (state: AppState) => state.user
+  selectUserState,
+  (state) => state.user
 );
 
 export const selectAuthorizationStatus = createSelector(
-  selectAppState,
-  (state: AppState) => state.authorizationStatus
+  selectUserState,
+  (state) => state.authorizationStatus
 );

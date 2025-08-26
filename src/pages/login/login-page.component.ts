@@ -45,7 +45,6 @@ export class LoginPageComponent {
     event.preventDefault();
     const target = event.target as HTMLElement;
     const currentCity = CITY_LOCATIONS.find((city) => city.name === target.textContent);
-    console.log(currentCity);
     if(currentCity) {
       this.store.dispatch(changeCity({city: currentCity}))
     }

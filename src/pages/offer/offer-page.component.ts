@@ -78,7 +78,6 @@ export class OfferPageComponent implements OnInit, OnDestroy {
   @ViewChild('toggleFavoriteButton') set toggleFavoriteButton(button: ElementRef | undefined) {
     if (button) {
       this.toggleFavoriteButtonNative = button.nativeElement as HTMLElement;
-      // Можно сразу добавить обработчики или выполнить действия
     }
   }
 

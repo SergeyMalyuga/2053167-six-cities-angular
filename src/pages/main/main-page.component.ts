@@ -21,7 +21,7 @@ import {LoaderComponent} from '../../shared/loader/loader.component';
 
 export class MainPageComponent implements OnInit, OnDestroy {
 
-  constructor(private store: Store<{ appStore: AppState }>) {
+  constructor(private store: Store<AppState>) {
   }
 
   activeCard = signal<OfferPreview | null>(null);
@@ -45,8 +45,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
       });
 
     this.store.select(state => state).pipe(takeUntil(this.notifier$)).subscribe(state => {
-      this.isLoading.set(state.appStore.isLoading);
-      this.authorizationStatus.set(state.appStore.authorizationStatus);
+      this.isLoading.set(state.offers.isLoading);
+      this.authorizationStatus.set(state.user.authorizationStatus);
     });
   }
 

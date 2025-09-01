@@ -1,0 +1,17 @@
+.form__error-email {
+  position: absolute;
+  width: 99%;
+  background: #ff9000;
+  top: 51px;
+  color: red;
+  text-align:  center;
+}
+
+.form__error-password {
+  position: absolute;
+  width: 99%;
+  background: #ff9000;
+  top: 123px;
+  color: red;
+  text-align:  center;
+}

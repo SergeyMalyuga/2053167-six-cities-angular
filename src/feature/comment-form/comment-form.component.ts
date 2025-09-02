@@ -1,12 +1,14 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  Component, ElementRef,
+  Component,
+  ElementRef,
   EventEmitter,
   inject,
   Input,
   Output,
-  signal, ViewChild,
+  signal,
+  ViewChild,
   WritableSignal
 } from '@angular/core';
 import {Comment} from '../../core/models/comments';
@@ -44,38 +46,42 @@ export class CommentFormComponent implements AfterViewInit {
   }
 
   onInputComment(): void {
-    this.commentForm.valueChanges.subscribe(({comment}) =>  {if (comment) {
+    this.commentForm.valueChanges.subscribe(({comment}) => {
+      if (comment) {
         this.newComment.set({...this.newComment(), comment})
-    }});
+      }
+    });
   }
 
   onRatingChanged(): void {
     const rating = Number(this.commentForm.value['rating']);
-    if(rating) {
+    if (rating) {
       this.newComment.set({...this.newComment(), rating});
     }
   }
 
   onSubmit(evt: Event): void {
     evt.preventDefault();
-    if(this.commentSubmitButtonNative) {
+    if (this.commentSubmitButtonNative) {
       this.commentSubmitButtonNative.disabled = true;
     }
     this.commentService.postComment(this.offerId, this.newComment().comment, this.newComment().rating)
       .subscribe({
         next: (offer) => this.newCommentCreated.emit(offer),
         error: () => this.unlockCommentSubmitButton(),
-        complete: () => {this.unlockCommentSubmitButton();
+        complete: () => {
+          this.unlockCommentSubmitButton();
           this.newComment.set({comment: '', rating: 0});
           this.commentForm.reset({
-          comment: '',
-          rating: null
-        })},
+            comment: '',
+            rating: null
+          })
+        },
       })
   }
 
   private unlockCommentSubmitButton() {
-    if(this.commentSubmitButtonNative) {
+    if (this.commentSubmitButtonNative) {
       this.commentSubmitButtonNative.disabled = false;
     }
   }

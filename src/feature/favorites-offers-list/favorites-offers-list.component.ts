@@ -13,8 +13,8 @@ export class FavoritesOffersListComponent implements OnChanges {
 
   @Input() favoritesOffers!: OfferPreview[];
 
-  sortFavoritesOffers: SortOffers = new Map();
-  cities: string[] = [];
+  protected sortFavoritesOffers: SortOffers = new Map();
+  protected cities: string[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
       if(changes['favoritesOffers']) {

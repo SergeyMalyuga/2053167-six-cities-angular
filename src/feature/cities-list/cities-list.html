@@ -3,7 +3,7 @@
     @for (city of CITY_LOCATIONS; track city.name) {
       <li class="locations__item">
         <a class="locations__item-link tabs__item" [class.tabs__item--active]="city.name === currentCity.name" href="#"
-           (click)="onClickCityButton($event)">
+          appCityClick [citiesListComponent]="citiesListComponent" (clickedCity)="onCItyClicked($event)" attr.data-city="{{city.name}}">
           <span>{{ city.name }}</span>
         </a>
       </li>

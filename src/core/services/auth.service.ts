@@ -6,17 +6,19 @@ import {Injectable} from '@angular/core';
 })
 
 export class AuthService {
-  AUTH_TOKEN_KEY_NAME = 'auth-token';
+  private AUTH_TOKEN_KEY_NAME = 'auth-token';
 
-  getToken = (): Token => {
+  public getToken(): Token | null {
     const token = localStorage.getItem(this.AUTH_TOKEN_KEY_NAME);
-    return token ?? '';
+    return token ?? null;
   };
 
-  setToken = (token: Token): void =>
+  public setToken(token: Token): void {
     localStorage.setItem(this.AUTH_TOKEN_KEY_NAME, token);
+  }
 
-  removeToken = (): void =>
+  public removeToken(): void {
     localStorage.removeItem(this.AUTH_TOKEN_KEY_NAME);
+  }
 }
 

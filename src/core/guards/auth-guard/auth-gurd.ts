@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
   constructor(private store: Store<AppState>) {
   }
 
-  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
+  public canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<boolean | UrlTree> {
     return this.store.select(state => state.user.authorizationStatus).pipe(
       filter(status => status !== AuthorizationStatus.Unknown),
       take(1),

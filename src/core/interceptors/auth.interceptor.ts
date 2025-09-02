@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {inject, Injectable} from '@angular/core';
 import {HttpHandler, HttpInterceptor, HttpRequest} from '@angular/common/http';
 import {AuthService} from '../services/auth.service';
 
@@ -10,8 +10,7 @@ import {AuthService} from '../services/auth.service';
 
 export class AuthInterceptor implements HttpInterceptor {
 
-  constructor(private authService: AuthService) {
-  }
+  private authService = inject(AuthService);
 
   public intercept(req: HttpRequest<Request>, next: HttpHandler) {
     const token = this.authService.getToken();

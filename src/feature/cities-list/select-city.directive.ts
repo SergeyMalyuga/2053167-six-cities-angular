@@ -1,14 +1,13 @@
-import {Directive, ElementRef, EventEmitter, HostListener, inject, Input, Output, Renderer2} from '@angular/core';
+import {Directive, ElementRef, EventEmitter, HostListener, inject, Output, Renderer2} from '@angular/core';
 import {City} from '../../core/models/city';
 import {CITY_LOCATIONS} from '../../core/constants/const';
 
 @Directive({
-  selector: '[appCityClick]',
+  selector: '[appSelectCity]',
 })
 
-export class CityClickDirective {
+export class SelectCityDirective {
 
-  @Input() citiesListComponent!: ElementRef;
   @Output() clickedCity = new EventEmitter<City | undefined>();
 
   private elementRef = inject(ElementRef);

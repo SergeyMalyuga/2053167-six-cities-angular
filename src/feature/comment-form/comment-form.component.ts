@@ -41,11 +41,11 @@ export class CommentFormComponent implements AfterViewInit {
     rating: ['', Validators.required],
   });
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.commentSubmitButtonNative = this.commentSubmitButton.nativeElement as HTMLButtonElement;
   }
 
-  onInputComment(): void {
+  protected onInputComment(): void {
     this.commentForm.valueChanges.subscribe(({comment}) => {
       if (comment) {
         this.newComment.set({...this.newComment(), comment})
@@ -53,14 +53,14 @@ export class CommentFormComponent implements AfterViewInit {
     });
   }
 
-  onRatingChanged(): void {
+  protected onRatingChanged(): void {
     const rating = Number(this.commentForm.value['rating']);
     if (rating) {
       this.newComment.set({...this.newComment(), rating});
     }
   }
 
-  onSubmit(evt: Event): void {
+  protected onSubmit(evt: Event): void {
     evt.preventDefault();
     if (this.commentSubmitButtonNative) {
       this.commentSubmitButtonNative.disabled = true;

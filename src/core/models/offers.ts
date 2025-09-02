@@ -1,4 +1,6 @@
 import {City} from './city';
+import {Host} from './host';
+import {Location} from './location';
 
 export interface Offer {
   id: string;
@@ -6,22 +8,14 @@ export interface Offer {
   type: string;
   price: number;
   city: City;
-  location: {
-    latitude: number;
-    longitude: number;
-    zoom: number;
-  };
+  location: Location;
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;
   description: string;
   bedrooms: number;
   goods: string[];
-  host: {
-    name: string;
-    avatarUrl: string;
-    isPro: boolean;
-  };
+  host: Host;
   images: string[];
   maxAdults: number;
   reviews: string[];
@@ -32,19 +26,8 @@ export interface OfferPreview {
   title: string;
   type: string;
   price: number;
-  city: {
-    name: string;
-    location: {
-      latitude: number;
-      longitude: number;
-      zoom: number;
-    };
-  };
-  location: {
-    latitude: number;
-    longitude: number;
-    zoom: number;
-  };
+  city: City;
+  location: Location;
   isFavorite: boolean;
   isPremium: boolean;
   rating: number;

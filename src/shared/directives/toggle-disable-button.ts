@@ -1,11 +1,9 @@
-import {Directive, ElementRef, inject, Input} from '@angular/core';
+import { Directive, ElementRef, inject, Input } from '@angular/core';
 
 @Directive({
-  selector: '[appToggleDisableButton],'
+  selector: '[appToggleDisableButton],',
 })
-
 export class ToggleDisableButtonDirective {
-
   private elementRef = inject(ElementRef);
 
   @Input() set disabled(isDisabled: boolean) {

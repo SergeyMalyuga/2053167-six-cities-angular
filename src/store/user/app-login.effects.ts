@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { UserService } from '../../core/services/user.service';
 import * as actions from '../app/app.actions';
 import { switchMap, map, catchError, of } from 'rxjs';
-import {AuthService} from '../../core/services/auth.service';
+import { AuthService } from '../../core/services/auth.service';
 
 export class AppLoginEffects {
   private actions$ = inject(Actions);
@@ -15,7 +15,10 @@ export class AppLoginEffects {
       ofType(actions.loginAction),
       switchMap(({ email, password }) =>
         this.userService.postUser(email, password).pipe(
-          map((user) => {this.authService.setToken(user.token); return actions.loginSuccess({ user })}),
+          map(user => {
+            this.authService.setToken(user.token);
+            return actions.loginSuccess({ user });
+          }),
           catchError(() => of(actions.loginFailure()))
         )
       )

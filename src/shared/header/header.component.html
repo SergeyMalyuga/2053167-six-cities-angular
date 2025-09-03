@@ -2,25 +2,56 @@
   <div class="container">
     <div class="header__wrapper">
       <div class="header__left">
-        <a [routerLink]="[AppRoute.Main]" class="header__logo-link header__logo-link--active">
-          <img class="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41">
+        <a
+          [routerLink]="[AppRoute.Main]"
+          class="header__logo-link header__logo-link--active">
+          <img
+            class="header__logo"
+            src="img/logo.svg"
+            alt="6 cities logo"
+            width="81"
+            height="41" />
         </a>
       </div>
       <nav class="header__nav">
         <ul class="header__nav-list">
           @if (authorizationStatus === AuthorizationStatus.Auth) {
             <li class="header__nav-item user">
-              <a (click)="navigateToFavorites($event)" class="header__nav-link header__nav-link--profile" href="#">
-                <div class="header__avatar-wrapper user__avatar-wrapper">
-                </div>
-                <span class="header__user-name user__name">{{user()?.email}}</span>
-                <span class="header__favorite-count">{{favoriteOffers()?.length}}</span>
+              <a
+                (click)="navigateToFavorites($event)"
+                class="header__nav-link header__nav-link--profile"
+                href="#">
+                <div class="header__avatar-wrapper user__avatar-wrapper"></div>
+                <span class="header__user-name user__name">{{
+                  user()?.email
+                }}</span>
+                <span class="header__favorite-count">{{
+                  favoriteOffers()?.length
+                }}</span>
               </a>
             </li>
           }
           <li class="header__nav-item">
-            <a #authNavLink class="header__nav-link" [routerLink]="authorizationStatus === AuthorizationStatus.Auth ? [AppRoute.Main] : ['/', AppRoute.Login]">
-              <span #authToggleElement (click)="logout($event)" tabindex="0" (keydown)="onKeyDown($event)"  class="header__signout">{{authorizationStatus === AuthorizationStatus.Auth ? 'Log out' : 'Sign in'}}</span>
+            <a
+              #authNavLink
+              class="header__nav-link"
+              [routerLink]="
+                authorizationStatus === AuthorizationStatus.Auth
+                  ? [AppRoute.Main]
+                  : ['/', AppRoute.Login]
+              ">
+              <span
+                #authToggleElement
+                (click)="logout($event)"
+                tabindex="0"
+                (keydown)="onKeyDown($event)"
+                class="header__signout"
+                >{{
+                  authorizationStatus === AuthorizationStatus.Auth
+                    ? 'Log out'
+                    : 'Sign in'
+                }}</span
+              >
             </a>
           </li>
         </ul>

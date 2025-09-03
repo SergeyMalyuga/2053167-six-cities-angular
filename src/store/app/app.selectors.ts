@@ -1,12 +1,13 @@
-import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {AppState} from '../../core/models/app-state';
-import {favoriteOffersAdapter, offersAdapter} from './app.reducer';
-
+import { createFeatureSelector, createSelector } from '@ngrx/store';
+import { AppState } from '../../core/models/app-state';
+import { favoriteOffersAdapter, offersAdapter } from './app.reducer';
 
 const selectUserState = createFeatureSelector<AppState['user']>('user');
-const selectFavoriteOffersState = createFeatureSelector<AppState['favoriteOffers']>('favoriteOffers');
+const selectFavoriteOffersState =
+  createFeatureSelector<AppState['favoriteOffers']>('favoriteOffers');
 const selectOffersState = createFeatureSelector<AppState['offers']>('offers');
-const selectCityState = createFeatureSelector<AppState['currentCity']>('currentCity');
+const selectCityState =
+  createFeatureSelector<AppState['currentCity']>('currentCity');
 
 const offersSelectors = offersAdapter.getSelectors();
 const favoriteOffersSelectors = favoriteOffersAdapter.getSelectors();
@@ -26,17 +27,14 @@ export const selectCity = createSelector(
   state => state.currentCity
 );
 
-export const selectUser = createSelector(
-  selectUserState,
-  (state) => state.user
-);
+export const selectUser = createSelector(selectUserState, state => state.user);
 
 export const selectAuthorizationStatus = createSelector(
   selectUserState,
-  (state) => state.authorizationStatus
+  state => state.authorizationStatus
 );
 
 export const selectFavoriteOffersIsLoading = createSelector(
   selectFavoriteOffersState,
   state => state.isLoading
-)
+);

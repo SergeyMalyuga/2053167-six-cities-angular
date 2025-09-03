@@ -1,6 +1,6 @@
-import {City} from './city';
-import {Host} from './host';
-import {Location} from './location';
+import { City } from './city';
+import { Host } from './host';
+import { Location } from './location';
 
 export interface Offer {
   id: string;
@@ -35,4 +35,3 @@ export interface OfferPreview {
 }
 
 export type SortOffers = Map<string, OfferPreview[]>;
-

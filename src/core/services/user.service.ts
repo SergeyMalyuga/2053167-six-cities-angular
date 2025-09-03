@@ -1,19 +1,20 @@
-import {HttpClient} from '@angular/common/http';
-import {User} from '../models/user';
-import {APIRoute, BASE_URL} from '../constants/const';
-import {inject, Injectable} from '@angular/core';
-import {Observable} from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { User } from '../models/user';
+import { APIRoute, BASE_URL } from '../constants/const';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class UserService {
-
   private http = inject(HttpClient);
 
   public postUser(email: string, password: string): Observable<User> {
-    return this.http.post<User>(`${BASE_URL}/${APIRoute.Login}`, {email, password});
+    return this.http.post<User>(`${BASE_URL}/${APIRoute.Login}`, {
+      email,
+      password,
+    });
   }
 
   public getUser(): Observable<User> {

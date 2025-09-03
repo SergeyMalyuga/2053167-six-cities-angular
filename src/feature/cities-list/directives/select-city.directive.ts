@@ -1,13 +1,19 @@
-import {Directive, ElementRef, EventEmitter, HostListener, inject, Output, Renderer2} from '@angular/core';
-import {City} from '../../../core/models/city';
-import {CITY_LOCATIONS} from '../../../core/constants/const';
+import {
+  Directive,
+  ElementRef,
+  EventEmitter,
+  HostListener,
+  inject,
+  Output,
+  Renderer2,
+} from '@angular/core';
+import { City } from '../../../core/models/city';
+import { CITY_LOCATIONS } from '../../../core/constants/const';
 
 @Directive({
   selector: '[appSelectCity]',
 })
-
 export class SelectCityDirective {
-
   @Output() clickedCity = new EventEmitter<City | undefined>();
 
   private elementRef = inject(ElementRef);
@@ -20,10 +26,15 @@ export class SelectCityDirective {
     const ul = this.elementRef.nativeElement.closest('ul') as HTMLElement;
 
     Array.from(ul.children).forEach(listItem => {
-      this.render.removeClass(listItem.querySelector('.locations__item-link'), 'tabs__item--active')
-    })
+      this.render.removeClass(
+        listItem.querySelector('.locations__item-link'),
+        'tabs__item--active'
+      );
+    });
 
-    const newCurrentCity = CITY_LOCATIONS.find(city => city.name === target.dataset["city"]);
+    const newCurrentCity = CITY_LOCATIONS.find(
+      city => city.name === target.dataset['city']
+    );
     this.clickedCity.emit(newCurrentCity);
   }
 }

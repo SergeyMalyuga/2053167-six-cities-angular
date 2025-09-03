@@ -7,47 +7,41 @@ import {
   Input,
   OnDestroy,
   Output,
-  ViewChild
+  ViewChild,
 } from '@angular/core';
-import {OfferPreview} from '../../core/models/offers';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../core/models/app-state';
-import {selectCity} from '../../store/app/app.selectors';
-import {distinctUntilChanged, Subject, takeUntil} from 'rxjs';
-import {SORT_TYPE} from '../../core/constants/const';
+import { OfferPreview } from '../../core/models/offers';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../core/models/app-state';
+import { selectCity } from '../../store/app/app.selectors';
+import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
+import { SORT_TYPE } from '../../core/constants/const';
 
 @Component({
   selector: 'app-places-sorting-form',
   templateUrl: './places-sorting-form.component.html',
-  changeDetection: ChangeDetectionStrategy.OnPush
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-
 export class PlacesSortingFormComponent implements AfterViewInit, OnDestroy {
-
   @Input() offers!: OfferPreview[];
   @Input() sortType!: string;
   @Output() offersChange = new EventEmitter<OfferPreview[]>();
   @Output() changeSotType = new EventEmitter<SORT_TYPE>();
   @ViewChild('sortOptionsList') sortOptionsList!: ElementRef;
 
-  constructor(private store: Store<{ appStore: AppState }>) {
-  }
+  constructor(private store: Store<{ appStore: AppState }>) {}
 
   ngAfterViewInit(): void {
-    this.store.select(selectCity)
-      .pipe(
-        distinctUntilChanged((prev, curr) =>
-          prev.name === curr.name
-        )
-      )
-      .pipe(takeUntil(this.notifier$)).subscribe(() => this.changeActiveSortElement());
+    this.store
+      .select(selectCity)
+      .pipe(distinctUntilChanged((prev, curr) => prev.name === curr.name))
+      .pipe(takeUntil(this.notifier$))
+      .subscribe(() => this.changeActiveSortElement());
   }
 
   ngOnDestroy(): void {
     this.notifier$.next();
     this.notifier$.complete();
   }
-
 
   private notifier$ = new Subject<void>();
 
@@ -66,7 +60,8 @@ export class PlacesSortingFormComponent implements AfterViewInit, OnDestroy {
     this.toggleSortOptions(false);
   }
 
-  onKeydown(event: KeyboardEvent): void { //TODO change method
+  onKeydown(event: KeyboardEvent): void {
+    //TODO change method
     if (event.key === 'Enter' || event.key === ' ') this.toggleSortOptions();
     if (event.key === 'Escape') this.toggleSortOptions(false);
   }
@@ -76,7 +71,7 @@ export class PlacesSortingFormComponent implements AfterViewInit, OnDestroy {
     if (evt.key === 'Enter' || evt.key === ' ') {
       switch (target.textContent) {
         case SORT_TYPE.POPULAR: {
-          this.sortPopular(evt)
+          this.sortPopular(evt);
           break;
         }
         case SORT_TYPE.PRICE_LOW_TO_HIGH: {
@@ -135,16 +130,23 @@ export class PlacesSortingFormComponent implements AfterViewInit, OnDestroy {
 
   changeActiveSortElement(evt?: MouseEvent | KeyboardEvent) {
     const sortList = this.sortOptionsList.nativeElement;
-    Array.from<Element>(sortList.children).forEach((item) => (item as HTMLElement).classList.remove('places__option--active'));
+    Array.from<Element>(sortList.children).forEach(item =>
+      (item as HTMLElement).classList.remove('places__option--active')
+    );
     if (evt) {
       const target = evt.target as HTMLElement;
       target.classList.add('places__option--active');
     } else {
-      Array.from<Element>(sortList.children).find((item) => (item as HTMLElement).textContent === 'Popular')?.classList?.add('places__option--active');
+      Array.from<Element>(sortList.children)
+        .find(item => (item as HTMLElement).textContent === 'Popular')
+        ?.classList?.add('places__option--active');
     }
   }
 
-  sortOffers(evt: MouseEvent | KeyboardEvent, sortType: (a: OfferPreview, b: OfferPreview) => number) {
+  sortOffers(
+    evt: MouseEvent | KeyboardEvent,
+    sortType: (a: OfferPreview, b: OfferPreview) => number
+  ) {
     this.offersChange.emit([...this.offers].sort(sortType));
     this.toggleSortOptions(false);
     this.changeActiveSortElement(evt);

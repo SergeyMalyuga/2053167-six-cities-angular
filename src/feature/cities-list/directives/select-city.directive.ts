@@ -1,6 +1,6 @@
 import {Directive, ElementRef, EventEmitter, HostListener, inject, Output, Renderer2} from '@angular/core';
-import {City} from '../../core/models/city';
-import {CITY_LOCATIONS} from '../../core/constants/const';
+import {City} from '../../../core/models/city';
+import {CITY_LOCATIONS} from '../../../core/constants/const';
 
 @Directive({
   selector: '[appSelectCity]',

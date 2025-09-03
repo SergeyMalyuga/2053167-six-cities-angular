@@ -15,7 +15,7 @@ export class OffersListComponent {
 
   @Output() cardActivated = new EventEmitter<OfferPreview | null>();
 
-  onCardActivated(offer: OfferPreview | null) {
+  protected onCardActivated(offer: OfferPreview | null) {
     this.cardActivated.emit(offer);
   }
 }

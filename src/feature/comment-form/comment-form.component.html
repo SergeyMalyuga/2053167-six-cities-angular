@@ -36,11 +36,11 @@
       </svg>
     </label>
   </div>
-  <textarea (paste)="onInputComment()" (input)="onInputComment()" class="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" formControlName="comment"></textarea>
+  <textarea class="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" formControlName="comment"></textarea>
   <div class="reviews__button-wrapper">
     <p class="reviews__help">
       To submit review please make sure to set <span class="reviews__star">rating</span> and describe your stay with at least <b class="reviews__text-amount">50 characters</b>.
     </p>
-    <button #commentSubmitButton class="reviews__submit form__submit button" type="submit">Submit</button>
+    <button #commentSubmitButton appToggleDisableButton [disabled]="isDisabled()" class="reviews__submit form__submit button" type="submit">Submit</button>
   </div>
 </form>

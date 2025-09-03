@@ -4,7 +4,7 @@ import {City} from '../../core/models/city';
 import {Store} from '@ngrx/store';
 import {AppState} from '../../core/models/app-state';
 import {changeCity} from '../../store/app/app.actions';
-import {SelectCityDirective} from './select-city.directive';
+import {SelectCityDirective} from './directives/select-city.directive';
 
 @Component({
   selector: 'app-cities-list',
@@ -18,15 +18,15 @@ export class CitiesListComponent {
   constructor(private store: Store<{ appStore: AppState }>) {
   }
 
-  protected readonly CITY_LOCATIONS = CITY_LOCATIONS;
+  public readonly CITY_LOCATIONS = CITY_LOCATIONS;
 
   @Input({required: true}) currentCity!: City;
   @Output() changeSortType = new EventEmitter<SORT_TYPE>();
 
-  protected onCItyClicked(newCurrentCity: City | undefined) {
+  public selectCity(selectedCity: City | undefined) {
     this.changeSortType.emit(SORT_TYPE.POPULAR);
-    if (newCurrentCity !== undefined) {
-      this.store.dispatch(changeCity({city: newCurrentCity}))
+    if (selectedCity !== undefined) {
+      this.store.dispatch(changeCity({city: selectedCity}))
     }
   }
 }

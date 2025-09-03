@@ -15,10 +15,10 @@ import { FavoritesOffersListItemComponent } from '../favorites-offers-list-item/
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FavoritesOffersListComponent implements OnChanges {
-  @Input() favoritesOffers!: OfferPreview[];
+  @Input() public favoritesOffers!: OfferPreview[];
 
-  protected sortFavoritesOffers: SortOffers = new Map();
-  protected cities: string[] = [];
+  public sortFavoritesOffers: SortOffers = new Map();
+  public cities: string[] = [];
 
   ngOnChanges(changes: SimpleChanges): void {
     if (changes['favoritesOffers']) {

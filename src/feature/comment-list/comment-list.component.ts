@@ -8,5 +8,5 @@ import { Comment } from '../../core/models/comments';
   imports: [CommentsListItemComponent],
 })
 export class CommentListComponent {
-  @Input() comments: Comment[] = [];
+  @Input() public comments: Comment[] = [];
 }

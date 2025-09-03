@@ -1,7 +1,6 @@
 import {
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
   inject,
   Input,
@@ -9,7 +8,6 @@ import {
   OnInit,
   Output,
   signal,
-  ViewChild,
   WritableSignal,
 } from '@angular/core';
 import { Comment } from '../../core/models/comments';
@@ -25,10 +23,9 @@ import { ToggleDisableButtonDirective } from '../../shared/directives/toggle-dis
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommentFormComponent implements OnDestroy, OnInit {
-  @Input() comments!: WritableSignal<Comment[]>;
-  @Input() offerId!: string | undefined;
-  @Output() newCommentCreated = new EventEmitter();
-  @ViewChild('commentSubmitButton') commentSubmitButton!: ElementRef;
+  @Input() public comments!: WritableSignal<Comment[]>;
+  @Input() public offerId!: string | undefined;
+  @Output() public newCommentCreated = new EventEmitter();
 
   private newComment = signal({
     comment: 'This comment has a comment.',
@@ -38,11 +35,11 @@ export class CommentFormComponent implements OnDestroy, OnInit {
   private formBuilder = inject(FormBuilder);
   private destroy$ = new Subject<void>();
 
-  protected commentForm = this.formBuilder.group({
+  public commentForm = this.formBuilder.group({
     comment: ['', [Validators.required, Validators.minLength(50)]],
     rating: ['', Validators.required],
   });
-  protected isDisabled = signal<boolean>(false);
+  public isDisabled = signal<boolean>(false);
 
   ngOnInit(): void {
     this.commentForm.valueChanges
@@ -59,14 +56,14 @@ export class CommentFormComponent implements OnDestroy, OnInit {
     this.destroy$.complete();
   }
 
-  protected onRatingChanged(): void {
+  public onRatingChanged(): void {
     const rating = Number(this.commentForm.value['rating']);
     if (rating) {
       this.newComment.set({ ...this.newComment(), rating });
     }
   }
 
-  protected onSubmit(evt: Event): void {
+  public onSubmit(evt: Event): void {
     evt.preventDefault();
     this.isDisabled.set(true);
     this.commentService

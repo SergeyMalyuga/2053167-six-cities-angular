@@ -22,10 +22,10 @@ import { SORT_TYPE } from '../../core/constants/const';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PlacesSortingFormComponent implements AfterViewInit, OnDestroy {
-  @Input() offers!: OfferPreview[];
-  @Input() sortType!: string;
-  @Output() offersChange = new EventEmitter<OfferPreview[]>();
-  @Output() changeSotType = new EventEmitter<SORT_TYPE>();
+  @Input() public offers!: OfferPreview[];
+  @Input() public sortType!: string;
+  @Output() public offersChange = new EventEmitter<OfferPreview[]>();
+  @Output() public changeSotType = new EventEmitter<SORT_TYPE>();
   @ViewChild('sortOptionsList') sortOptionsList!: ElementRef;
 
   constructor(private store: Store<{ appStore: AppState }>) {}
@@ -43,9 +43,9 @@ export class PlacesSortingFormComponent implements AfterViewInit, OnDestroy {
     this.notifier$.complete();
   }
 
-  private notifier$ = new Subject<void>();
+  public notifier$ = new Subject<void>();
 
-  private toggleSortOptions(force?: boolean) {
+  public toggleSortOptions(force?: boolean) {
     this.sortOptionsList.nativeElement.classList.toggle(
       'places__options--opened',
       force

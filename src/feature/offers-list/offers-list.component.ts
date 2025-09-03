@@ -15,11 +15,11 @@ import { CardComponent } from '../../shared/card/card.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OffersListComponent {
-  @Input() offers: OfferPreview[] | null = [];
+  @Input() public offers: OfferPreview[] | null = [];
 
-  @Output() cardActivated = new EventEmitter<OfferPreview | null>();
+  @Output() public cardActivated = new EventEmitter<OfferPreview | null>();
 
-  protected onCardActivated(offer: OfferPreview | null) {
+  public onCardActivated(offer: OfferPreview | null): void {
     this.cardActivated.emit(offer);
   }
 }

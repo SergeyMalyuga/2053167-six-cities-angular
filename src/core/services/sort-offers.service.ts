@@ -4,61 +4,36 @@ import {SORT_TYPE} from '../constants/const';
 
 @Injectable()
 export class SortOffersService {
-  sortPriceLowToHigh(offerFirst: OfferPreview, offerSecond: OfferPreview) {
+  private sortPriceLowToHigh(offerFirst: OfferPreview, offerSecond: OfferPreview) {
     return offerFirst.price - offerSecond.price;
   }
 
-  sortPriceHighToLow(offerFirst: OfferPreview, offerSecond: OfferPreview) {
+  private sortPriceHighToLow(offerFirst: OfferPreview, offerSecond: OfferPreview) {
     return offerSecond.price - offerFirst.price;
   }
 
-  sortTopRatedFirst(offerFirst: OfferPreview, offerSecond: OfferPreview) {
+  private sortTopRatedFirst(offerFirst: OfferPreview, offerSecond: OfferPreview) {
     return offerSecond.rating - offerFirst.rating;
   }
 
-  applySortPriceHighToLowSort() {
-    this.sortTypeSelected.emit(SORT_TYPE.PRICE_HIGH_TO_LOW);
-    this.sortOffers(this.sortPriceHighToLow);
-  }
-
-  applyPriceLowToHighSort() {
-    this.sortTypeSelected.emit(SORT_TYPE.PRICE_LOW_TO_HIGH);
-    this.sortOffers(this.sortPriceLowToHigh);
-  }
-
-  applyTopRatedFirstSort() {
-    this.sortTypeSelected.emit(SORT_TYPE.TOP_RATED_FIRST);
-    this.sortOffers(this.sortTopRatedFirst);
-  }
-
-  applyPopularSort() {
-    this.sortTypeSelected.emit(SORT_TYPE.POPULAR);
-    this.offersSorted.emit([...this.offers]);
-  }
-
-  sortOffers(sortType: (a: OfferPreview, b: OfferPreview) => number
+  private sortOffers(offers: OfferPreview[], sortType: (a: OfferPreview, b: OfferPreview) => number
   ) {
-    this.offersSorted.emit([...this.offers].sort(sortType));
+    return [...offers].sort(sortType);
   }
 
-  sortOffersByType(evt: MouseEvent | KeyboardEvent) {
-    const target = evt.target as HTMLElement;
-    switch (target.dataset['sortType']) {
+  public sortOffersByType(offers: OfferPreview[], sortType: SORT_TYPE): OfferPreview[] {
+    switch (sortType) {
       case SORT_TYPE.POPULAR: {
-        this.applyPopularSort();
-        break;
+        return offers;
       }
       case SORT_TYPE.PRICE_LOW_TO_HIGH: {
-        this.applyPriceLowToHighSort();
-        break;
+        return this.sortOffers(offers, this.sortPriceLowToHigh);
       }
       case SORT_TYPE.PRICE_HIGH_TO_LOW: {
-        this.applySortPriceHighToLowSort();
-        break;
+        return this.sortOffers(offers, this.sortPriceHighToLow)
       }
       case SORT_TYPE.TOP_RATED_FIRST: {
-        this.applyTopRatedFirstSort();
-        break;
+        return this.sortOffers(offers, this.sortTopRatedFirst)
       }
     }
   }

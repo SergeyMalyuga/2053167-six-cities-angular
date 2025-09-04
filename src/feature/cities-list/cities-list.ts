@@ -16,10 +16,10 @@ export class CitiesListComponent {
   public readonly CITY_LOCATIONS = CITY_LOCATIONS;
 
   @Input({ required: true }) public currentCity!: City;
-  @Output() public changeSortType = new EventEmitter<SORT_TYPE>();
+  @Output() public SortTypeChanged = new EventEmitter<SORT_TYPE>();
 
   public selectCity(city: City) {
-    this.changeSortType.emit(SORT_TYPE.POPULAR);
+    this.SortTypeChanged.emit(SORT_TYPE.POPULAR);
     this.store.dispatch(changeCity({ city }));
   }
 }

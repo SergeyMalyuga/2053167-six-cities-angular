@@ -1,91 +1,50 @@
 import {Directive, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges,} from '@angular/core';
 import {SORT_TYPE} from '../../../core/constants/const';
-import {OfferPreview} from '../../../core/models/offers';
 import {City} from '../../../core/models/city';
 
 @Directive({
   selector: '[appSetSortPlacesOptions]',
 })
 export class SetSortPlacesOptionsDirective implements OnChanges {
-  @Input() public offers!: OfferPreview[];
   @Input({required: true}) city!: City;
   @Output() public sortTypeSelected = new EventEmitter<SORT_TYPE>();
-  @Output() public offersSorted = new EventEmitter<OfferPreview[]>();
 
   @HostListener('keydown', ['$event'])
   handleSortByTypeKeydown(evt: KeyboardEvent): void {
     if (evt.key === 'Enter' || evt.key === ' ') {
       evt.preventDefault();
-      this.sortOffersByType(evt);
+      this.selectSortTypeFromEvent(evt);
     }
   }
 
   @HostListener('click', ['$event'])
   handleSortByTypeClick(evt: MouseEvent): void {
-    this.sortOffersByType(evt);
+    this.selectSortTypeFromEvent(evt);
   }
 
   ngOnChanges(changes: SimpleChanges): void {
     if(changes['city']) {
       this.sortTypeSelected.emit(SORT_TYPE.POPULAR)
     }
-
   }
 
-  sortPriceLowToHigh(offerFirst: OfferPreview, offerSecond: OfferPreview) {
-    return offerFirst.price - offerSecond.price;
-  }
-
-  sortPriceHighToLow(offerFirst: OfferPreview, offerSecond: OfferPreview) {
-    return offerSecond.price - offerFirst.price;
-  }
-
-  sortTopRatedFirst(offerFirst: OfferPreview, offerSecond: OfferPreview) {
-    return offerSecond.rating - offerFirst.rating;
-  }
-
-  applySortPriceHighToLowSort() {
-    this.sortTypeSelected.emit(SORT_TYPE.PRICE_HIGH_TO_LOW);
-    this.sortOffers(this.sortPriceHighToLow);
-  }
-
-  applyPriceLowToHighSort() {
-    this.sortTypeSelected.emit(SORT_TYPE.PRICE_LOW_TO_HIGH);
-    this.sortOffers(this.sortPriceLowToHigh);
-  }
-
-  applyTopRatedFirstSort() {
-    this.sortTypeSelected.emit(SORT_TYPE.TOP_RATED_FIRST);
-    this.sortOffers(this.sortTopRatedFirst);
-  }
-
-  applyPopularSort() {
-    this.sortTypeSelected.emit(SORT_TYPE.POPULAR);
-    this.offersSorted.emit([...this.offers]);
-  }
-
-  sortOffers(sortType: (a: OfferPreview, b: OfferPreview) => number
-  ) {
-    this.offersSorted.emit([...this.offers].sort(sortType));
-  }
-
-  sortOffersByType(evt: MouseEvent | KeyboardEvent) {
+  selectSortTypeFromEvent(evt: MouseEvent | KeyboardEvent) {
     const target = evt.target as HTMLElement;
     switch (target.dataset['sortType']) {
       case SORT_TYPE.POPULAR: {
-        this.applyPopularSort();
+        this.sortTypeSelected.emit(SORT_TYPE.POPULAR);
         break;
       }
       case SORT_TYPE.PRICE_LOW_TO_HIGH: {
-        this.applyPriceLowToHighSort();
+        this.sortTypeSelected.emit(SORT_TYPE.PRICE_LOW_TO_HIGH)
         break;
       }
       case SORT_TYPE.PRICE_HIGH_TO_LOW: {
-        this.applySortPriceHighToLowSort();
+        this.sortTypeSelected.emit(SORT_TYPE.PRICE_HIGH_TO_LOW);
         break;
       }
       case SORT_TYPE.TOP_RATED_FIRST: {
-        this.applyTopRatedFirstSort();
+        this.sortTypeSelected.emit(SORT_TYPE.TOP_RATED_FIRST);
         break;
       }
     }

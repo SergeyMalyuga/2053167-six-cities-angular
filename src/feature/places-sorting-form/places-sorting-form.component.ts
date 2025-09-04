@@ -26,9 +26,8 @@ import {City} from '../../core/models/city';
   ],
 })
 export class PlacesSortingFormComponent implements OnDestroy {
-  @Input({required: true}) public offers!: OfferPreview[];
   @Input({required: true}) city!: City;
-  @Output() public offersSorted = new EventEmitter<OfferPreview[]>();
+  @Output() public sortTypeChanged = new EventEmitter<SORT_TYPE>();
 
   private destroy$ = new Subject<void>();
   public readonly SORT_TYPE = SORT_TYPE;
@@ -45,10 +44,6 @@ export class PlacesSortingFormComponent implements OnDestroy {
   }
 
   public onSortTypeChanged(sortType: SORT_TYPE): void {
-    this.sortType.set(sortType);
-  }
-
-  public emitOffersSorted(offers: OfferPreview[]): void {
-    this.offersSorted.emit(offers);
+    this.sortTypeChanged.emit(sortType);
   }
 }

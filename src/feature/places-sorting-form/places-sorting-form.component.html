@@ -1,9 +1,9 @@
 <form class="places__sorting" action="#" method="get">
   <span class="places__sorting-caption">Sort by</span>
   <span
+    appToggleSortOptions
+    (toggleSortOptions)="setSortOptionsOpen($event)"
     class="places__sorting-type"
-    (click)="onClickPlacesSorting()"
-    (keydown)="onKeydown($event)"
     tabindex="0">
     {{ sortType }}
     <svg class="places__sorting-arrow" width="7" height="4">
@@ -13,34 +13,11 @@
   <ul
     #sortOptionsList
     class="places__options places__options--custom"
-    (mouseleave)="onSortOptionsListMouseLeave()">
-    <li
-      class="places__option places__option--active"
-      tabindex="0"
-      (click)="onClickPopular($event)"
-      (keydown)="onKeydownSortTypeElement($event)">
-      Popular
-    </li>
-    <li
-      class="places__option"
-      tabindex="0"
-      (click)="onClickPriceLowToHigh($event)"
-      (keydown)="onKeydownSortTypeElement($event)">
-      Price: low to high
-    </li>
-    <li
-      class="places__option"
-      tabindex="0"
-      (click)="onClickSortPriceHighToLowBtn($event)"
-      (keydown)="onKeydownSortTypeElement($event)">
-      Price: high to low
-    </li>
-    <li
-      class="places__option"
-      tabindex="0"
-      (click)="onClickTopRatedFirst($event)"
-      (keydown)="onKeydownSortTypeElement($event)">
-      Top rated first
-    </li>
+    [class.places__options--opened]="isSortOptionsOpen()"
+    appCloseSortOptions>
+    <li class="places__option places__option--active" tabindex="0">Popular</li>
+    <li class="places__option" tabindex="0">Price: low to high</li>
+    <li class="places__option" tabindex="0">Price: high to low</li>
+    <li class="places__option" tabindex="0">Top rated first</li>
   </ul>
 </form>

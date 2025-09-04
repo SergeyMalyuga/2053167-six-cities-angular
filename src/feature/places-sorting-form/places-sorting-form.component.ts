@@ -4,9 +4,11 @@ import {
   Component,
   ElementRef,
   EventEmitter,
+  inject,
   Input,
   OnDestroy,
   Output,
+  signal,
   ViewChild,
 } from '@angular/core';
 import { OfferPreview } from '../../core/models/offers';
@@ -15,37 +17,44 @@ import { AppState } from '../../core/models/app-state';
 import { selectCity } from '../../store/app/app.selectors';
 import { distinctUntilChanged, Subject, takeUntil } from 'rxjs';
 import { SORT_TYPE } from '../../core/constants/const';
+import { ToggleSortOptionsDirective } from './directives/toggle-sort-options.directive';
+import { CloseSortOptionsDirective } from './directives/close-sort-options.directive';
 
 @Component({
   selector: 'app-places-sorting-form',
   templateUrl: './places-sorting-form.component.html',
   changeDetection: ChangeDetectionStrategy.OnPush,
+  imports: [ToggleSortOptionsDirective, CloseSortOptionsDirective],
 })
-export class PlacesSortingFormComponent implements AfterViewInit, OnDestroy {
+export class PlacesSortingFormComponent implements OnDestroy {
   @Input() public offers!: OfferPreview[];
   @Input() public sortType!: string;
   @Output() public offersChange = new EventEmitter<OfferPreview[]>();
   @Output() public changeSotType = new EventEmitter<SORT_TYPE>();
   @ViewChild('sortOptionsList') sortOptionsList!: ElementRef;
 
-  constructor(private store: Store<{ appStore: AppState }>) {}
+  private destroy$ = new Subject<void>();
+  private store = inject(Store<AppState>);
+  public isSortOptionsOpen = signal<boolean>(false);
 
-  ngAfterViewInit(): void {
-    this.store
-      .select(selectCity)
-      .pipe(distinctUntilChanged((prev, curr) => prev.name === curr.name))
-      .pipe(takeUntil(this.notifier$))
-      .subscribe(() => this.changeActiveSortElement());
-  }
+  // ngAfterViewInit(): void {
+  //   this.store
+  //     .select(selectCity)
+  //     .pipe(distinctUntilChanged((prev, curr) => prev.name === curr.name))
+  //     .pipe(takeUntil(this.destroy$))
+  //     .subscribe(() => this.changeActiveSortElement());
+  // }
 
   ngOnDestroy(): void {
-    this.notifier$.next();
-    this.notifier$.complete();
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
-  public notifier$ = new Subject<void>();
+  public setSortOptionsOpen(isOpen: boolean): void {
+    this.isSortOptionsOpen.set(isOpen);
+  }
 
-  public toggleSortOptions(force?: boolean) {
+  /*public toggleSortOptions(force?: boolean) {
     this.sortOptionsList.nativeElement.classList.toggle(
       'places__options--opened',
       force
@@ -150,5 +159,5 @@ export class PlacesSortingFormComponent implements AfterViewInit, OnDestroy {
     this.offersChange.emit([...this.offers].sort(sortType));
     this.toggleSortOptions(false);
     this.changeActiveSortElement(evt);
-  }
+  }*/
 }

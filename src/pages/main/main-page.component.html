@@ -40,11 +40,8 @@
               >
               <app-places-sorting-form
                 [offers]="basicOffers"
-                [sortType]="currentSortType()"
-                (offersChange)="changeOffers($event)"
-                (changeSotType)="
-                  changeCurrentSortType($event)
-                "></app-places-sorting-form>
+                [city]="currentCity"
+                (offersSorted)="changeOffers($event)"></app-places-sorting-form>
               <app-offers-list
                 (cardActivated)="handleCardMouseEnter($event)"
                 [offers]="currentOffers"></app-offers-list>

@@ -1,37 +1,9 @@
-import {Directive, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges,} from '@angular/core';
-import {SORT_TYPE} from '../../../core/constants/const';
-import {OfferPreview} from '../../../core/models/offers';
-import {City} from '../../../core/models/city';
+import {Injectable} from '@angular/core';
+import {OfferPreview} from '../models/offers';
+import {SORT_TYPE} from '../constants/const';
 
-@Directive({
-  selector: '[appSetSortPlacesOptions]',
-})
-export class SetSortPlacesOptionsDirective implements OnChanges {
-  @Input() public offers!: OfferPreview[];
-  @Input({required: true}) city!: City;
-  @Output() public sortTypeSelected = new EventEmitter<SORT_TYPE>();
-  @Output() public offersSorted = new EventEmitter<OfferPreview[]>();
-
-  @HostListener('keydown', ['$event'])
-  handleSortByTypeKeydown(evt: KeyboardEvent): void {
-    if (evt.key === 'Enter' || evt.key === ' ') {
-      evt.preventDefault();
-      this.sortOffersByType(evt);
-    }
-  }
-
-  @HostListener('click', ['$event'])
-  handleSortByTypeClick(evt: MouseEvent): void {
-    this.sortOffersByType(evt);
-  }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    if(changes['city']) {
-      this.sortTypeSelected.emit(SORT_TYPE.POPULAR)
-    }
-
-  }
-
+@Injectable()
+export class SortOffersService {
   sortPriceLowToHigh(offerFirst: OfferPreview, offerSecond: OfferPreview) {
     return offerFirst.price - offerSecond.price;
   }

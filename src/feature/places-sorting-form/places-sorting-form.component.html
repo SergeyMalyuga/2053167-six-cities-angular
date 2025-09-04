@@ -2,10 +2,10 @@
   <span class="places__sorting-caption">Sort by</span>
   <span
     appToggleSortOptions
-    (toggleSortOptions)="setSortOptionsOpen($event)"
+    (toggleSortOptions)="onSortOptionsToggled($event)"
     class="places__sorting-type"
     tabindex="0">
-    {{ sortType }}
+    {{ sortType() }}
     <svg class="places__sorting-arrow" width="7" height="4">
       <use xlink:href="#icon-arrow-select"></use>
     </svg>
@@ -15,9 +15,57 @@
     class="places__options places__options--custom"
     [class.places__options--opened]="isSortOptionsOpen()"
     appCloseSortOptions>
-    <li class="places__option places__option--active" tabindex="0">Popular</li>
-    <li class="places__option" tabindex="0">Price: low to high</li>
-    <li class="places__option" tabindex="0">Price: high to low</li>
-    <li class="places__option" tabindex="0">Top rated first</li>
+    <li
+      appSetSortPlacesOptions
+      (sortTypeSelected)="onSortTypeChanged($event)"
+      [city]="city"
+      (offersSorted)="emitOffersSorted($event)"
+      [offers]="offers"
+      [attr.data-sort-type]="SORT_TYPE.POPULAR"
+      class="places__option"
+      [class.places__option--active]="sortType() === SORT_TYPE.POPULAR"
+      tabindex="0">
+      Popular
+    </li>
+    <li
+      appSetSortPlacesOptions
+      (sortTypeSelected)="onSortTypeChanged($event)"
+      (offersSorted)="emitOffersSorted($event)"
+      [city]="city"
+      [offers]="offers"
+      [attr.data-sort-type]="SORT_TYPE.PRICE_LOW_TO_HIGH"
+      class="places__option"
+      [class.places__option--active]="
+        sortType() === SORT_TYPE.PRICE_LOW_TO_HIGH
+      "
+      tabindex="0">
+      Price: low to high
+    </li>
+    <li
+      appSetSortPlacesOptions
+      (sortTypeSelected)="onSortTypeChanged($event)"
+      [city]="city"
+      (offersSorted)="emitOffersSorted($event)"
+      [offers]="offers"
+      [attr.data-sort-type]="SORT_TYPE.PRICE_HIGH_TO_LOW"
+      class="places__option"
+      [class.places__option--active]="
+        sortType() === SORT_TYPE.PRICE_HIGH_TO_LOW
+      "
+      tabindex="0">
+      Price: high to low
+    </li>
+    <li
+      appSetSortPlacesOptions
+      (sortTypeSelected)="onSortTypeChanged($event)"
+      (offersSorted)="emitOffersSorted($event)"
+      [city]="city"
+      [offers]="offers"
+      [attr.data-sort-type]="SORT_TYPE.TOP_RATED_FIRST"
+      class="places__option"
+      [class.places__option--active]="sortType() === SORT_TYPE.TOP_RATED_FIRST"
+      tabindex="0">
+      Top rated first
+    </li>
   </ul>
 </form>

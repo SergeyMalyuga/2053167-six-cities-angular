@@ -1,4 +1,10 @@
-import {Directive, EventEmitter, HostListener, Output, signal,} from '@angular/core';
+import {
+  Directive,
+  EventEmitter,
+  HostListener,
+  Output,
+  signal,
+} from '@angular/core';
 
 @Directive({
   selector: '[appToggleSortOptions]',
@@ -13,17 +19,12 @@ export class ToggleSortOptionsDirective {
     this.toggleOptions();
   }
 
-  @HostListener('mouseleave')
-  onOptionsLeave() {
-    if(this.isOpen() === true) {
-      this.toggleOptions();
-    }
-  }
-
   @HostListener('keydown', ['$event'])
   onKeydown(evt: KeyboardEvent): void {
-    evt.preventDefault();
-    if (evt.key === 'Enter' || evt.key === ' ') this.toggleOptions();
+    if (evt.key === 'Enter' || evt.key === ' ') {
+      evt.preventDefault();
+      this.toggleOptions();
+    }
     if (evt.key === 'Escape' && this.isOpen() === true) this.toggleOptions();
   }
 

@@ -9,7 +9,6 @@ import {
   loadFavoriteOffersDataFailure,
   loadFavoriteOffersDataSuccess,
 } from '../app/app.actions';
-import { offersAdapter } from '../app/app.reducer';
 import { FavoriteOffersState } from '../../core/models/offers-favorite-state';
 
 export const favoriteOffersAdapter: EntityAdapter<OfferPreview> =
@@ -42,12 +41,7 @@ export const favoriteOffersReducer = createReducer(
     ...state,
     isLoading: true,
   })),
-  on(changeFavoriteStatusSuccess, (state, { favoriteOffers, offer }) => ({
-    ...state,
-    offers: offersAdapter.updateOne(
-      { id: offer.id, changes: { isFavorite: offer.isFavorite } },
-      { ...state }
-    ),
+  on(changeFavoriteStatusSuccess, (state, { favoriteOffers }) => ({
     ...favoriteOffersAdapter.setAll(favoriteOffers, {
       ...state,
       isLoading: false,

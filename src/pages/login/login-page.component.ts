@@ -5,9 +5,19 @@ import { Router, RouterLink } from '@angular/router';
 import { AppRoute } from '../../app/app.routes';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../core/models/app-state';
-import { changeCity, loginAction } from '../../store/app/app.actions';
-import { CITY_LOCATIONS } from '../../core/constants/const';
+import {
+  changeCity,
+  loadFavoriteOffersData,
+  loadOffersData,
+  loginAction,
+} from '../../store/app/app.actions';
+import {
+  AuthorizationStatus,
+  CITY_LOCATIONS,
+} from '../../core/constants/const';
 import { RandomCityPipe } from './random-city.pipe';
+import { selectAuthorizationStatus } from '../../store/app/app.selectors';
+import { filter, take } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -34,7 +44,17 @@ export class LoginPageComponent {
       if (email && password) {
         this.store.dispatch(loginAction({ email, password }));
       }
-      this.router.navigate([AppRoute.Main]);
+      this.store
+        .select(selectAuthorizationStatus)
+        .pipe(
+          filter(auth => auth === AuthorizationStatus.Auth),
+          take(1)
+        )
+        .subscribe(() => {
+          this.store.dispatch(loadOffersData());
+          this.store.dispatch(loadFavoriteOffersData());
+          this.router.navigate([AppRoute.Main]);
+        });
     }
   }
 

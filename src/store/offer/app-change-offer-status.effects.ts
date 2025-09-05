@@ -14,19 +14,16 @@ export class AppChangeOfferStatusEffects {
       ofType(actions.changeFavoriteStatus),
       switchMap(({ id, status }) =>
         this.favoriteOffersService.changeOfferStatus(id, status).pipe(
-          switchMap(
-            (
-              offer // ✅ Правильный синтаксис switchMap
-            ) =>
-              this.favoriteOffersService.getFavoriteOffers().pipe(
-                map(offers =>
-                  actions.changeFavoriteStatusSuccess({
-                    favoriteOffers: offers,
-                    offer,
-                  })
-                ),
-                catchError(() => of(actions.changeFavoriteStatusFailure()))
-              )
+          switchMap(offer =>
+            this.favoriteOffersService.getFavoriteOffers().pipe(
+              map(offers =>
+                actions.changeFavoriteStatusSuccess({
+                  favoriteOffers: offers,
+                  offer,
+                })
+              ),
+              catchError(() => of(actions.changeFavoriteStatusFailure()))
+            )
           )
         )
       )

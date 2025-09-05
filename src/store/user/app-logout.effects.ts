@@ -1,4 +1,4 @@
-import {inject, Injectable} from '@angular/core';
+import { inject, Injectable } from '@angular/core';
 import { Actions, ofType } from '@ngrx/effects';
 import * as actions from '../app/app.actions';
 import { map, of, switchMap } from 'rxjs';

@@ -8,12 +8,12 @@ import {
   Output,
   signal,
 } from '@angular/core';
-import {Comment} from '../../core/models/comments';
-import {CommentService} from '../../core/services/comment.service';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
-import {Subject, takeUntil} from 'rxjs';
-import {ToggleDisableButtonDirective} from '../../shared/directives/toggle-disable-button';
-import {CommentFormValue} from '../../core/models/comment-form-value';
+import { Comment } from '../../core/models/comments';
+import { CommentService } from '../../core/services/comment.service';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
+import { ToggleDisableButtonDirective } from '../../shared/directives/toggle-disable-button';
+import { CommentFormValue } from '../../core/models/comment-form-value';
 
 @Component({
   selector: 'app-comment-form',
@@ -22,8 +22,8 @@ import {CommentFormValue} from '../../core/models/comment-form-value';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommentFormComponent implements OnDestroy {
-  @Input({required: true}) public comments!: Comment[];
-  @Input({required: true}) public offerId!: string | undefined;
+  @Input({ required: true }) public comments!: Comment[];
+  @Input({ required: true }) public offerId!: string | undefined;
   @Output() public newCommentCreated = new EventEmitter();
 
   private commentService = inject(CommentService);
@@ -44,14 +44,11 @@ export class CommentFormComponent implements OnDestroy {
   public onSubmit(evt: Event): void {
     evt.preventDefault();
     if (this.commentForm.valid) {
-      const {comment, rating} = this.commentForm.value as CommentFormValue;
+      const { comment, rating } = this.commentForm.value as CommentFormValue;
       this.isDisabled.set(true);
       this.commentService
-        .postComment(
-          this.offerId,
-          comment,
-          Number(rating)
-        ).pipe(takeUntil(this.destroySubject))
+        .postComment(this.offerId, comment, Number(rating))
+        .pipe(takeUntil(this.destroySubject))
         .subscribe({
           next: offer => this.newCommentCreated.emit(offer),
           error: () => this.isDisabled.set(false),

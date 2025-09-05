@@ -10,17 +10,20 @@ import {
   signal,
   ViewChild,
 } from '@angular/core';
-import {AppRoute} from '../../app/app.routes';
-import {Router, RouterLink} from '@angular/router';
-import {AuthorizationStatus} from '../../core/constants/const';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../core/models/app-state';
-import {logout} from '../../store/app/app.actions';
-import {AuthService} from '../../core/services/auth.service';
-import {User} from '../../core/models/user';
-import {combineLatest, Subject, takeUntil} from 'rxjs';
-import {OfferPreview} from '../../core/models/offers';
-import {selectAllFavoriteOffers, selectUser,} from '../../store/app/app.selectors';
+import { AppRoute } from '../../app/app.routes';
+import { Router, RouterLink } from '@angular/router';
+import { AuthorizationStatus } from '../../core/constants/const';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../core/models/app-state';
+import { loadFavoriteOffersData, logout } from '../../store/app/app.actions';
+import { AuthService } from '../../core/services/auth.service';
+import { User } from '../../core/models/user';
+import { combineLatest, Subject, takeUntil } from 'rxjs';
+import { OfferPreview } from '../../core/models/offers';
+import {
+  selectAllFavoriteOffers,
+  selectUser,
+} from '../../store/app/app.selectors';
 
 @Component({
   selector: 'app-header',
@@ -29,6 +32,24 @@ import {selectAllFavoriteOffers, selectUser,} from '../../store/app/app.selector
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
+  @Input() authorizationStatus!: AuthorizationStatus;
+  @ViewChild('authToggleElement') authToggleElement!: ElementRef;
+  @ViewChild('authNavLink') authNavLink!: ElementRef;
+
+  private store = inject(Store<{ appStore: AppState }>);
+  private route = inject(Router);
+  private authService = inject(AuthService);
+  private authToggleElementNative: HTMLElement | null = null;
+  private notifier$ = new Subject<void>();
+  public user = signal<User | undefined>(undefined);
+  public favoriteOffers = signal<OfferPreview[] | null>(null);
+  public readonly AppRoute = AppRoute;
+  public readonly AuthorizationStatus = AuthorizationStatus;
+
+  ngAfterViewInit(): void {
+    this.authToggleElementNative = this.authToggleElement?.nativeElement;
+  }
+
   ngOnInit(): void {
     combineLatest([
       this.store.select(selectUser),
@@ -45,26 +66,6 @@ export class HeaderComponent implements OnInit, OnDestroy, AfterViewInit {
     this.notifier$.next();
     this.notifier$.complete();
   }
-
-  private store = inject(Store<{ appStore: AppState }>);
-  private route = inject(Router);
-  private authService = inject(AuthService);
-  private authToggleElementNative: HTMLElement | null = null;
-  protected user = signal<User | undefined>(undefined);
-  protected favoriteOffers = signal<OfferPreview[] | null>(null);
-  private notifier$ = new Subject<void>();
-
-  ngAfterViewInit(): void {
-    this.authToggleElementNative = this.authToggleElement?.nativeElement;
-  }
-
-  @Input() authorizationStatus!: AuthorizationStatus;
-
-  protected readonly AppRoute = AppRoute;
-  protected readonly AuthorizationStatus = AuthorizationStatus;
-
-  @ViewChild('authToggleElement') authToggleElement!: ElementRef;
-  @ViewChild('authNavLink') authNavLink!: ElementRef;
 
   logout(evt: MouseEvent) {
     this.handleLogout(evt);

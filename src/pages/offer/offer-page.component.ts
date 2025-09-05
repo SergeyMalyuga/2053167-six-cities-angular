@@ -2,12 +2,10 @@ import {
   ChangeDetectionStrategy,
   Component,
   effect,
-  ElementRef,
   inject,
   OnDestroy,
   OnInit,
   signal,
-  ViewChild,
 } from '@angular/core';
 import { CommentFormComponent } from '../../feature/comment-form/comment-form.component';
 import { Comment } from '../../core/models/comments';
@@ -43,6 +41,7 @@ import { CommentService } from '../../core/services/comment.service';
 import { SortCommentsByDatePipe } from './pipe/sort-comments-by-date.pipe';
 import { changeFavoriteStatus } from '../../store/app/app.actions';
 import { LimitToThreeOffersPipe } from '../../feature/offers-list-nearby/limit-to-three-offers.pipe';
+import { ToggleOfferFavoriteDirective } from './directives/toggle-offer-favorite.directive';
 
 @Component({
   selector: 'app-offer',
@@ -57,6 +56,7 @@ import { LimitToThreeOffersPipe } from '../../feature/offers-list-nearby/limit-t
     CapitalizePipe,
     SortCommentsByDatePipe,
     LimitToThreeOffersPipe,
+    ToggleOfferFavoriteDirective,
   ],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
@@ -67,18 +67,18 @@ export class OfferPageComponent implements OnInit, OnDestroy {
   private commentsService = inject(CommentService);
   private store = inject(Store<{ appStore: AppState }>);
   private router = inject(Router);
-  private toggleFavoriteButtonNative: HTMLElement | null = null;
-  private isFavorite = false;
 
-  protected route = inject(ActivatedRoute);
-  protected offer = signal<Offer | undefined>(undefined);
-  protected user = signal<User | undefined>(undefined);
-  protected authorizationStatus = signal<AuthorizationStatus>(
+  public isFavorite = false;
+  public route = inject(ActivatedRoute);
+  public offer = signal<Offer | undefined>(undefined);
+  public user = signal<User | undefined>(undefined);
+  public authorizationStatus = signal<AuthorizationStatus>(
     AuthorizationStatus.Unknown
   );
-  protected comments = signal<Comment[]>([]);
-  protected nearbyOffers = signal<OfferPreview[]>([]);
-  protected readonly AppRoute = AppRoute;
+  public comments = signal<Comment[]>([]);
+  public nearbyOffers = signal<OfferPreview[]>([]);
+  public isFavoriteButtonDisabled = signal<boolean>(false);
+  public readonly AppRoute = AppRoute;
 
   constructor() {
     effect(() => {
@@ -110,14 +110,6 @@ export class OfferPageComponent implements OnInit, OnDestroy {
       .subscribe(params => this.paramId.set(params.get('id')));
   }
 
-  @ViewChild('toggleFavoriteButton') set toggleFavoriteButton(
-    button: ElementRef | undefined
-  ) {
-    if (button) {
-      this.toggleFavoriteButtonNative = button.nativeElement as HTMLElement;
-    }
-  }
-
   ngOnInit() {
     combineLatest([
       this.store.select(selectUser),
@@ -135,13 +127,9 @@ export class OfferPageComponent implements OnInit, OnDestroy {
     this.destroySubject.complete();
   }
 
-  toggleOfferFavorite(evt: MouseEvent) {
-    const target = evt.currentTarget as HTMLButtonElement;
+  handleOfferFavoriteToggled() {
     if (this.authorizationStatus() === AuthorizationStatus.Auth) {
-      target.disabled = true;
-      this.toggleFavoriteButtonNative?.classList.toggle(
-        'offer__bookmark-button--active'
-      );
+      this.isFavoriteButtonDisabled.set(true);
       this.store.dispatch(
         changeFavoriteStatus({
           id: this.offer()?.id,
@@ -154,7 +142,7 @@ export class OfferPageComponent implements OnInit, OnDestroy {
           filter(isLoading => isLoading === false),
           take(1),
           finalize(() => {
-            target.disabled = false;
+            this.isFavoriteButtonDisabled.set(false);
           })
         )
         .subscribe();

@@ -39,8 +39,6 @@ import { SortOffersService } from '../../core/services/sort-offers.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainPageComponent implements OnInit, OnDestroy {
-  constructor(private store: Store<AppState>) {}
-
   protected activeCard = signal<OfferPreview | null>(null);
   protected currentOffers: OfferPreview[] = [];
   protected basicOffers: OfferPreview[] = [];
@@ -53,6 +51,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   private destroySubject = new Subject<void>();
   private sortService = inject(SortOffersService);
+  private store = inject(Store<AppState>);
 
   ngOnInit(): void {
     combineLatest([

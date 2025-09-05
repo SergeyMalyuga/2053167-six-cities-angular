@@ -26,6 +26,9 @@
                 {{ offer()?.title }}
               </h1>
               <button
+                appToggleOfferFavorite
+                [disabled]="isFavoriteButtonDisabled()"
+                [authorizationStatus]="authorizationStatus()"
                 #toggleFavoriteButton
                 class="offer__bookmark-button button"
                 type="button"
@@ -33,7 +36,7 @@
                   offer()?.isFavorite &&
                   authorizationStatus() === AuthorizationStatus.Auth
                 "
-                (click)="toggleOfferFavorite($event)">
+                (offerFavoriteToggled)="handleOfferFavoriteToggled()">
                 <svg class="offer__bookmark-icon" width="31" height="33">
                   <use xlink:href="#icon-bookmark"></use>
                 </svg>

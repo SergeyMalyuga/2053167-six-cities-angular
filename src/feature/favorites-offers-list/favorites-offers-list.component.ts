@@ -15,7 +15,7 @@ import { FavoritesOffersListItemComponent } from '../favorites-offers-list-item/
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FavoritesOffersListComponent implements OnChanges {
-  @Input({required: true}) public favoritesOffers!: OfferPreview[];
+  @Input({ required: true }) public favoritesOffers!: OfferPreview[];
 
   public sortFavoritesOffers: SortOffers = new Map();
   public cities: string[] = [];

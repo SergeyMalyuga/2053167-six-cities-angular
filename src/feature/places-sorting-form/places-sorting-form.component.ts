@@ -13,7 +13,7 @@ import { SORT_TYPE } from '../../core/constants/const';
 import { ToggleSortOptionsDirective } from './directives/toggle-sort-options.directive';
 import { CloseSortOptionsDirective } from './directives/close-sort-options.directive';
 import { SetSortPlacesOptionsDirective } from './directives/set-sort-places-options.directive';
-import {City} from '../../core/models/city';
+import { City } from '../../core/models/city';
 
 @Component({
   selector: 'app-places-sorting-form',
@@ -26,7 +26,7 @@ import {City} from '../../core/models/city';
   ],
 })
 export class PlacesSortingFormComponent implements OnDestroy {
-  @Input({required: true}) city!: City;
+  @Input({ required: true }) city!: City;
   @Output() public sortTypeChanged = new EventEmitter<SORT_TYPE>();
 
   private destroy$ = new Subject<void>();

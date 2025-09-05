@@ -1,27 +1,28 @@
 import {
   ChangeDetectionStrategy,
-  Component, inject,
+  Component,
+  inject,
   OnDestroy,
   OnInit,
   signal,
 } from '@angular/core';
-import {OfferPreview} from '../../core/models/offers';
-import {OffersListComponent} from '../../feature/offers-list/offers-list.component';
-import {MapComponent} from '../../shared/map/map.component';
-import {HeaderComponent} from '../../shared/header/header.component';
-import {Store} from '@ngrx/store';
-import {AppState} from '../../core/models/app-state';
-import {selectAllOffers, selectCity} from '../../store/app/app.selectors';
-import {combineLatest, map, Subject, takeUntil, tap} from 'rxjs';
-import {CitiesListComponent} from '../../feature/cities-list/cities-list';
+import { OfferPreview } from '../../core/models/offers';
+import { OffersListComponent } from '../../feature/offers-list/offers-list.component';
+import { MapComponent } from '../../shared/map/map.component';
+import { HeaderComponent } from '../../shared/header/header.component';
+import { Store } from '@ngrx/store';
+import { AppState } from '../../core/models/app-state';
+import { selectAllOffers, selectCity } from '../../store/app/app.selectors';
+import { combineLatest, map, Subject, takeUntil, tap } from 'rxjs';
+import { CitiesListComponent } from '../../feature/cities-list/cities-list';
 import {
   AuthorizationStatus,
   DEFAULT_CITY,
   SORT_TYPE,
 } from '../../core/constants/const';
-import {PlacesSortingFormComponent} from '../../feature/places-sorting-form/places-sorting-form.component';
-import {LoaderComponent} from '../../shared/loader/loader.component';
-import {SortOffersService} from '../../core/services/sort-offers.service';
+import { PlacesSortingFormComponent } from '../../feature/places-sorting-form/places-sorting-form.component';
+import { LoaderComponent } from '../../shared/loader/loader.component';
+import { SortOffersService } from '../../core/services/sort-offers.service';
 
 @Component({
   selector: 'app-main',
@@ -38,8 +39,7 @@ import {SortOffersService} from '../../core/services/sort-offers.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainPageComponent implements OnInit, OnDestroy {
-  constructor(private store: Store<AppState>) {
-  }
+  constructor(private store: Store<AppState>) {}
 
   protected activeCard = signal<OfferPreview | null>(null);
   protected currentOffers: OfferPreview[] = [];
@@ -60,7 +60,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
       this.store.select(selectCity),
     ])
       .pipe(
-        tap(([, city]) => (this.currentCity = {...city})),
+        tap(([, city]) => (this.currentCity = { ...city })),
         map(([offers, city]) =>
           offers.filter(offer => offer.city.name === city.name)
         ),
@@ -95,10 +95,14 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
   handleSortTypeChanged(sortType: SORT_TYPE): void {
     this.currentSortType.set(sortType);
-    this.currentOffers = this.sortService.sortOffersByType(this.basicOffers, sortType);
+    this.currentOffers = this.sortService.sortOffersByType(
+      this.basicOffers,
+      sortType
+    );
   }
 
-  onCurrentSortTypeChanged(sortType: SORT_TYPE) { //TODO проверить нужен ли метод
+  onCurrentSortTypeChanged(sortType: SORT_TYPE) {
+    //TODO проверить нужен ли метод
     this.currentSortType.set(sortType);
   }
 }

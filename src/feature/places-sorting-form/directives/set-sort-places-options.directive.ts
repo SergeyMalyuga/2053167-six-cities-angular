@@ -1,12 +1,20 @@
-import {Directive, EventEmitter, HostListener, Input, OnChanges, Output, SimpleChanges,} from '@angular/core';
-import {SORT_TYPE} from '../../../core/constants/const';
-import {City} from '../../../core/models/city';
+import {
+  Directive,
+  EventEmitter,
+  HostListener,
+  Input,
+  OnChanges,
+  Output,
+  SimpleChanges,
+} from '@angular/core';
+import { SORT_TYPE } from '../../../core/constants/const';
+import { City } from '../../../core/models/city';
 
 @Directive({
   selector: '[appSetSortPlacesOptions]',
 })
 export class SetSortPlacesOptionsDirective implements OnChanges {
-  @Input({required: true}) city!: City;
+  @Input({ required: true }) city!: City;
   @Output() public sortTypeSelected = new EventEmitter<SORT_TYPE>();
 
   @HostListener('keydown', ['$event'])
@@ -23,8 +31,8 @@ export class SetSortPlacesOptionsDirective implements OnChanges {
   }
 
   ngOnChanges(changes: SimpleChanges): void {
-    if(changes['city']) {
-      this.sortTypeSelected.emit(SORT_TYPE.POPULAR)
+    if (changes['city']) {
+      this.sortTypeSelected.emit(SORT_TYPE.POPULAR);
     }
   }
 
@@ -36,7 +44,7 @@ export class SetSortPlacesOptionsDirective implements OnChanges {
         break;
       }
       case SORT_TYPE.PRICE_LOW_TO_HIGH: {
-        this.sortTypeSelected.emit(SORT_TYPE.PRICE_LOW_TO_HIGH)
+        this.sortTypeSelected.emit(SORT_TYPE.PRICE_LOW_TO_HIGH);
         break;
       }
       case SORT_TYPE.PRICE_HIGH_TO_LOW: {

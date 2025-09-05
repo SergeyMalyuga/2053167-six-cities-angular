@@ -8,13 +8,12 @@ import {
   OnInit,
   Output,
   signal,
-  WritableSignal,
 } from '@angular/core';
-import { Comment } from '../../core/models/comments';
-import { CommentService } from '../../core/services/comment.service';
-import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Subject, takeUntil } from 'rxjs';
-import { ToggleDisableButtonDirective } from '../../shared/directives/toggle-disable-button';
+import {Comment} from '../../core/models/comments';
+import {CommentService} from '../../core/services/comment.service';
+import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import {Subject, takeUntil} from 'rxjs';
+import {ToggleDisableButtonDirective} from '../../shared/directives/toggle-disable-button';
 
 @Component({
   selector: 'app-comment-form',
@@ -23,8 +22,8 @@ import { ToggleDisableButtonDirective } from '../../shared/directives/toggle-dis
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommentFormComponent implements OnDestroy, OnInit {
-  @Input() public comments!: WritableSignal<Comment[]>;
-  @Input() public offerId!: string | undefined;
+  @Input({required: true}) public comments!:Comment[];
+  @Input({required: true}) public offerId!: string | undefined;
   @Output() public newCommentCreated = new EventEmitter();
 
   private newComment = signal({

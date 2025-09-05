@@ -10,7 +10,9 @@
       <div class="tabs">
         <app-cities-list
           [currentCity]="currentCity"
-          (SortTypeChanged)="onCurrentSortTypeChanged($event)"></app-cities-list>
+          (SortTypeChanged)="
+            onCurrentSortTypeChanged($event)
+          "></app-cities-list>
       </div>
       <div class="cities">
         @if (currentOffers.length === 0) {
@@ -40,8 +42,9 @@
               >
               <app-places-sorting-form
                 [city]="currentCity"
-                (sortTypeChanged)="handleSortTypeChanged($event)"
-                ></app-places-sorting-form>
+                (sortTypeChanged)="
+                  handleSortTypeChanged($event)
+                "></app-places-sorting-form>
               <app-offers-list
                 (cardActivated)="handleCardMouseEnter($event)"
                 [offers]="currentOffers"></app-offers-list>

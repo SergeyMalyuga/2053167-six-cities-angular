@@ -28,7 +28,7 @@ import { AppRoute } from '../../app/app.routes';
 })
 export class FavoritesPageComponent implements OnInit, OnDestroy {
   private store = inject(Store<{ appStore: AppState }>);
-  private notifier$ = new Subject<void>();
+  private destroySubject = new Subject<void>();
   protected favoritesOffers = signal<OfferPreview[]>([]);
   protected authorizationStatus = signal<AuthorizationStatus>(
     AuthorizationStatus.Unknown
@@ -39,7 +39,7 @@ export class FavoritesPageComponent implements OnInit, OnDestroy {
       this.store.select(selectAuthorizationStatus),
       this.store.select(selectAllFavoriteOffers),
     ])
-      .pipe(takeUntil(this.notifier$))
+      .pipe(takeUntil(this.destroySubject))
       .subscribe(([authorizationStatus, favoriteOffers]) => {
         this.favoritesOffers.set([...favoriteOffers]);
         this.authorizationStatus.set(authorizationStatus);
@@ -47,8 +47,8 @@ export class FavoritesPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.notifier$.next();
-    this.notifier$.complete();
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 
   protected readonly AppRoute = AppRoute;

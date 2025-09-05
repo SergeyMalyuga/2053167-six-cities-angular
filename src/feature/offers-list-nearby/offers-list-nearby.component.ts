@@ -9,5 +9,5 @@ import { LimitToThreeOffersPipe } from './limit-to-three-offers.pipe';
   imports: [CardComponent, LimitToThreeOffersPipe],
 })
 export class OffersListNearbyComponent {
-  @Input() public neighborsOffers!: Signal<OfferPreview[]>;
+  @Input({required: true}) public neighborsOffers!: Signal<OfferPreview[]>;
 }

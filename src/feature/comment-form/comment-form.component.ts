@@ -5,7 +5,6 @@ import {
   inject,
   Input,
   OnDestroy,
-  OnInit,
   Output,
   signal,
 } from '@angular/core';
@@ -14,6 +13,7 @@ import {CommentService} from '../../core/services/comment.service';
 import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Subject, takeUntil} from 'rxjs';
 import {ToggleDisableButtonDirective} from '../../shared/directives/toggle-disable-button';
+import {CommentFormValue} from '../../core/models/comment-form-value';
 
 @Component({
   selector: 'app-comment-form',
@@ -21,18 +21,14 @@ import {ToggleDisableButtonDirective} from '../../shared/directives/toggle-disab
   imports: [ReactiveFormsModule, ToggleDisableButtonDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CommentFormComponent implements OnDestroy, OnInit {
-  @Input({required: true}) public comments!:Comment[];
+export class CommentFormComponent implements OnDestroy {
+  @Input({required: true}) public comments!: Comment[];
   @Input({required: true}) public offerId!: string | undefined;
   @Output() public newCommentCreated = new EventEmitter();
 
-  private newComment = signal({
-    comment: 'This comment has a comment.',
-    rating: 0,
-  });
   private commentService = inject(CommentService);
   private formBuilder = inject(FormBuilder);
-  private destroy$ = new Subject<void>();
+  private destroySubject = new Subject<void>();
 
   public commentForm = this.formBuilder.group({
     comment: ['', [Validators.required, Validators.minLength(50)]],
@@ -40,48 +36,33 @@ export class CommentFormComponent implements OnDestroy, OnInit {
   });
   public isDisabled = signal<boolean>(false);
 
-  ngOnInit(): void {
-    this.commentForm.valueChanges
-      .pipe(takeUntil(this.destroy$))
-      .subscribe(({ comment }) => {
-        if (comment) {
-          this.newComment.set({ ...this.newComment(), comment });
-        }
-      });
-  }
-
   public ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
-  }
-
-  public onRatingChanged(): void {
-    const rating = Number(this.commentForm.value['rating']);
-    if (rating) {
-      this.newComment.set({ ...this.newComment(), rating });
-    }
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 
   public onSubmit(evt: Event): void {
     evt.preventDefault();
-    this.isDisabled.set(true);
-    this.commentService
-      .postComment(
-        this.offerId,
-        this.newComment().comment,
-        this.newComment().rating
-      )
-      .subscribe({
-        next: offer => this.newCommentCreated.emit(offer),
-        error: () => this.isDisabled.set(false),
-        complete: () => {
-          this.isDisabled.set(false);
-          this.newComment.set({ comment: '', rating: 0 });
-          this.commentForm.reset({
-            comment: '',
-            rating: null,
-          });
-        },
-      });
+    if (this.commentForm.valid) {
+      const {comment, rating} = this.commentForm.value as CommentFormValue;
+      this.isDisabled.set(true);
+      this.commentService
+        .postComment(
+          this.offerId,
+          comment,
+          Number(rating)
+        ).pipe(takeUntil(this.destroySubject))
+        .subscribe({
+          next: offer => this.newCommentCreated.emit(offer),
+          error: () => this.isDisabled.set(false),
+          complete: () => {
+            this.isDisabled.set(false);
+            this.commentForm.reset({
+              comment: '',
+              rating: null,
+            });
+          },
+        });
+    }
   }
 }

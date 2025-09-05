@@ -15,7 +15,7 @@ import { CardComponent } from '../../shared/card/card.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OffersListComponent {
-  @Input() public offers: OfferPreview[] | null = [];
+  @Input({required: true}) public offers: OfferPreview[] | null = [];
 
   @Output() public cardActivated = new EventEmitter<OfferPreview | null>();
 

@@ -29,14 +29,14 @@ export class PlacesSortingFormComponent implements OnDestroy {
   @Input({ required: true }) city!: City;
   @Output() public sortTypeChanged = new EventEmitter<SORT_TYPE>();
 
-  private destroy$ = new Subject<void>();
+  private destroySubject = new Subject<void>();
   public readonly SORT_TYPE = SORT_TYPE;
   public isSortOptionsOpen = signal<boolean>(false);
   public sortType = signal<SORT_TYPE>(SORT_TYPE.POPULAR);
 
   public ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 
   public onSortOptionsToggled(isOpen: boolean): void {

@@ -51,7 +51,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     AuthorizationStatus.Unknown
   );
 
-  private destroy$ = new Subject<void>();
+  private destroySubject = new Subject<void>();
   private sortService = inject(SortOffersService);
 
   ngOnInit(): void {
@@ -64,7 +64,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
         map(([offers, city]) =>
           offers.filter(offer => offer.city.name === city.name)
         ),
-        takeUntil(this.destroy$)
+        takeUntil(this.destroySubject)
       )
       .subscribe(offers => {
         this.currentOffers = [...offers];
@@ -73,7 +73,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
 
     this.store
       .select(state => state)
-      .pipe(takeUntil(this.destroy$))
+      .pipe(takeUntil(this.destroySubject))
       .subscribe(state => {
         this.isLoading.set(state.offers.isLoading);
         this.authorizationStatus.set(state.user.authorizationStatus);
@@ -81,8 +81,8 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 
   handleCardMouseEnter(offer: OfferPreview | null) {

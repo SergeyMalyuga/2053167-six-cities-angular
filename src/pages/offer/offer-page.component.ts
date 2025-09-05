@@ -61,7 +61,7 @@ import { LimitToThreeOffersPipe } from '../../feature/offers-list-nearby/limit-t
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OfferPageComponent implements OnInit, OnDestroy {
-  private notifier$ = new Subject<void>();
+  private destroySubject = new Subject<void>();
   private paramId = signal<string | null>(null);
   private offersService = inject(OffersService);
   private commentsService = inject(CommentService);
@@ -86,17 +86,17 @@ export class OfferPageComponent implements OnInit, OnDestroy {
       if (id) {
         this.offersService
           .getOfferById(id)
-          .pipe(takeUntil(this.notifier$))
+          .pipe(takeUntil(this.destroySubject))
           .subscribe(offer => {
             this.offer.set(offer);
           });
         this.commentsService
           .getComments(id)
-          .pipe(takeUntil(this.notifier$))
+          .pipe(takeUntil(this.destroySubject))
           .subscribe(comments => this.comments.set(comments));
         this.offersService
           .getNearbyOffers(id)
-          .pipe(takeUntil(this.notifier$))
+          .pipe(takeUntil(this.destroySubject))
           .subscribe(nearby => this.nearbyOffers.set(nearby));
       }
     });
@@ -106,7 +106,7 @@ export class OfferPageComponent implements OnInit, OnDestroy {
     });
 
     this.route.paramMap
-      .pipe(takeUntil(this.notifier$))
+      .pipe(takeUntil(this.destroySubject))
       .subscribe(params => this.paramId.set(params.get('id')));
   }
 
@@ -123,7 +123,7 @@ export class OfferPageComponent implements OnInit, OnDestroy {
       this.store.select(selectUser),
       this.store.select(selectAuthorizationStatus),
     ])
-      .pipe(takeUntil(this.notifier$))
+      .pipe(takeUntil(this.destroySubject))
       .subscribe(([user, authStatus]) => {
         this.user.set(user);
         this.authorizationStatus.set(authStatus);
@@ -131,8 +131,8 @@ export class OfferPageComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy(): void {
-    this.notifier$.next();
-    this.notifier$.complete();
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 
   toggleOfferFavorite(evt: MouseEvent) {

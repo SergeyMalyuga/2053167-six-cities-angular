@@ -9,6 +9,6 @@ import { CardComponent } from '../../shared/card/card.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FavoritesOffersListItemComponent {
-  @Input() public offers: OfferPreview[] | undefined = [];
-  @Input() public city: string | undefined = undefined;
+  @Input({required: true}) public offers: OfferPreview[] | undefined = [];
+  @Input({required: true}) public city: string | undefined = undefined;
 }

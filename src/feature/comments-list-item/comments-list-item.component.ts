@@ -9,6 +9,6 @@ import { DateFormatPipe } from './date-format.pipe';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class CommentsListItemComponent {
-  @Input() public comment: Comment | undefined;
+  @Input({required: true}) public comment: Comment | undefined;
   public readonly Math = Math;
 }

@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class UserService {
-  private http = inject(HttpClient);
+  private http: HttpClient = inject(HttpClient);
 
   public postUser(email: string, password: string): Observable<User> {
     return this.http.post<User>(`${BASE_URL}/${APIRoute.Login}`, {

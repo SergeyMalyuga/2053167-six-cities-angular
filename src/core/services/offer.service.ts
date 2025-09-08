@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class OffersService {
-  private http = inject(HttpClient);
+  private http: HttpClient = inject(HttpClient);
 
   public getOffers(): Observable<OfferPreview[]> {
     return this.http.get<OfferPreview[]>(`${BASE_URL}/${APIRoute.Offers}`);

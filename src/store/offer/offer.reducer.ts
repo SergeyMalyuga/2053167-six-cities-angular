@@ -1,14 +1,9 @@
 import { createEntityAdapter, EntityAdapter } from '@ngrx/entity';
 import { OfferPreview } from '../../core/models/offers';
 import { createReducer, on } from '@ngrx/store';
-import {
-  changeFavoriteStatus,
-  changeFavoriteStatusSuccess,
-  loadOffersData,
-  loadOffersDataFailure,
-  loadOffersDataSuccess,
-} from '../app/app.actions';
 import { OffersState } from '../../core/models/offers-state';
+import * as effectActions from './actions/effect.actions';
+import * as favoriteOfferActions from '../favorite-offer/actions/favorite-offer.actions';
 
 export const offersAdapter: EntityAdapter<OfferPreview> =
   createEntityAdapter<OfferPreview>();
@@ -20,21 +15,21 @@ const initialState: OffersState = offersAdapter.getInitialState({
 
 export const offerReducer = createReducer(
   initialState,
-  on(loadOffersData, state => ({
+  on(effectActions.loadOffersData, state => ({
     ...state,
     isLoading: true,
   })),
-  on(loadOffersDataSuccess, (state, { offers }) => ({
+  on(effectActions.loadOffersDataSuccess, (state, { offers }) => ({
     ...offersAdapter.setAll(offers, { ...state, isLoading: false }),
   })),
-  on(loadOffersDataFailure, state => ({
+  on(effectActions.loadOffersDataFailure, state => ({
     ...state,
     isLoading: false,
   })),
-  on(changeFavoriteStatus, state => ({
+  on(favoriteOfferActions.changeFavoriteStatus, state => ({
     ...state,
   })),
-  on(changeFavoriteStatusSuccess, (state, { offer }) => {
+  on(favoriteOfferActions.changeFavoriteStatusSuccess, (state, { offer }) => {
     return offersAdapter.updateOne(
       {
         id: offer.id,

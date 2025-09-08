@@ -9,7 +9,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class CommentService {
-  private http = inject(HttpClient);
+  private http: HttpClient = inject(HttpClient);
 
   public getComments(id: string | undefined): Observable<Comment[]> {
     return this.http.get<Comment[]>(`${BASE_URL}/${APIRoute.Comments}/${id}`);

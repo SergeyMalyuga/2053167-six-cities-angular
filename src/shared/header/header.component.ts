@@ -12,7 +12,6 @@ import { Router, RouterLink } from '@angular/router';
 import { AuthorizationStatus } from '../../core/constants/const';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../core/models/app-state';
-import { logout } from '../../store/app/app.actions';
 import { AuthService } from '../../core/services/auth.service';
 import { User } from '../../core/models/user';
 import { combineLatest, Subject, takeUntil } from 'rxjs';
@@ -22,6 +21,7 @@ import {
   selectUser,
 } from '../../store/app/app.selectors';
 import { AppLogoutClickDirective } from './directives/logout-click.directive';
+import { logout } from '../../store/user/actions/user.actions';
 
 @Component({
   selector: 'app-header',

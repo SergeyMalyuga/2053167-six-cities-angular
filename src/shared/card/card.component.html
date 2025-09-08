@@ -38,7 +38,7 @@
         appToggleOfferFavorite
         [authorizationStatus]="authorizationStatus()"
         [isOfferPage]="false"
-        #favoriteButton
+        [disabled]="isFavoriteButtonDisabled()"
         class="place-card__bookmark-button button"
         [class.place-card__bookmark-button--active]="
           offer?.isFavorite &&

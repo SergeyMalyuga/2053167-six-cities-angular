@@ -1,7 +1,7 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  Component,
+  Component, inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -26,28 +26,26 @@ import { Subject, takeUntil } from 'rxjs';
 export class MapComponent
   implements OnInit, AfterViewInit, OnChanges, OnDestroy
 {
-  private notifier$ = new Subject<void>();
+  @Input({required: true}) public activeCard!: OfferPreview | null;
+  @Input({required: true}) public offers: OfferPreview[] = [];
 
-  currentCity!: City;
+  private destroySubject = new Subject<void>();
+  private currentCity!: City;
   private markers: L.Marker[] = [];
   private map!: L.Map;
   private centroid!: L.LatLngExpression;
+  private store = inject(Store<AppState>);
 
-  constructor(private store: Store<{ appStore: AppState }>) {}
-
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.store
       .select(selectCity)
-      .pipe(takeUntil(this.notifier$))
+      .pipe(takeUntil(this.destroySubject))
       .subscribe(city => (this.currentCity = city));
     this.centroid = [
       this.currentCity.location.latitude,
       this.currentCity.location.longitude,
     ];
   }
-
-  @Input() activeCard!: OfferPreview | null;
-  @Input() offers: OfferPreview[] = [];
 
   private defaultCustomIcon = new L.Icon({
     iconUrl: '/img/pin.svg',
@@ -81,11 +79,11 @@ export class MapComponent
     this.addMarkers();
   }
 
-  ngAfterViewInit(): void {
+  public ngAfterViewInit(): void {
     this.initMap();
   }
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (!this.map) return;
     if (changes['activeCard']) {
       this.markers.forEach(marker => this.map.removeLayer(marker));
@@ -106,12 +104,12 @@ export class MapComponent
     }
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     if (this.map) {
       this.map.remove();
     }
-    this.notifier$.next();
-    this.notifier$.complete();
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 
   private addMarkers(): void {

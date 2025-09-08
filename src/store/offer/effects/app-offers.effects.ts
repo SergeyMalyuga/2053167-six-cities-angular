@@ -1,9 +1,10 @@
 import { Actions, createEffect, ofType } from '@ngrx/effects';
-import { OffersService } from '../../core/services/offer.service';
+import { OffersService } from '../../../core/services/offer.service';
 import { inject, Injectable } from '@angular/core';
-import * as actions from '../app/app.actions';
+
 import { catchError, switchMap } from 'rxjs/operators';
 import { map, of } from 'rxjs';
+import * as actions from '../actions/effect.actions';
 
 @Injectable()
 export class AppOffersEffects {

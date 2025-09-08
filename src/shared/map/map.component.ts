@@ -1,7 +1,8 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  Component, inject,
+  Component,
+  inject,
   Input,
   OnChanges,
   OnDestroy,
@@ -26,8 +27,8 @@ import { Subject, takeUntil } from 'rxjs';
 export class MapComponent
   implements OnInit, AfterViewInit, OnChanges, OnDestroy
 {
-  @Input({required: true}) public activeCard!: OfferPreview | null;
-  @Input({required: true}) public offers: OfferPreview[] = [];
+  @Input({ required: true }) public activeCard!: OfferPreview | null;
+  @Input({ required: true }) public offers: OfferPreview[] = [];
 
   private destroySubject = new Subject<void>();
   private currentCity!: City;

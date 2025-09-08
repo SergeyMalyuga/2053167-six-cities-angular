@@ -15,7 +15,6 @@ import { Router, RouterModule } from '@angular/router';
 import { AppRoute } from '../../app/app.routes';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../core/models/app-state';
-import { changeFavoriteStatus } from '../../store/app/app.actions';
 import { AuthorizationStatus } from '../../core/constants/const';
 import {
   selectAuthorizationStatus,
@@ -23,6 +22,7 @@ import {
 } from '../../store/app/app.selectors';
 import { filter, finalize, Subject, take, takeUntil } from 'rxjs';
 import { ToggleOfferFavoriteDirective } from '../../pages/offer/directives/toggle-offer-favorite.directive';
+import { changeFavoriteStatus } from '../../store/favorite-offer/actions/favorite-offer.actions';
 
 @Component({
   selector: 'app-card',

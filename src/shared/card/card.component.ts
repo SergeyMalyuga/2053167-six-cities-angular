@@ -1,8 +1,6 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
   Component,
-  ElementRef,
   EventEmitter,
   inject,
   Input,
@@ -10,7 +8,6 @@ import {
   OnInit,
   Output,
   signal,
-  ViewChild,
 } from '@angular/core';
 import { OfferPreview } from '../../core/models/offers';
 import { CapitalizePipe } from './capitalize.pipe';
@@ -25,69 +22,58 @@ import {
   selectFavoriteOffersIsLoading,
 } from '../../store/app/app.selectors';
 import { filter, finalize, Subject, take, takeUntil } from 'rxjs';
+import { ToggleOfferFavoriteDirective } from '../../pages/offer/directives/toggle-offer-favorite.directive';
 
 @Component({
   selector: 'app-card',
   templateUrl: './card.component.html',
-  imports: [CapitalizePipe, RouterModule],
+  imports: [CapitalizePipe, RouterModule, ToggleOfferFavoriteDirective],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
+export class CardComponent implements OnInit, OnDestroy {
+  @Input({ required: true }) public offer: OfferPreview | undefined = undefined;
+  @Input({ required: true }) public isFavoritePage = false;
+  @Input({ required: true }) public isOfferPage = false;
+
+  @Output() public cardMouseEnter = new EventEmitter<OfferPreview>();
+  @Output() public cardMouseLeave = new EventEmitter<void>();
+
   private store = inject(Store<{ appStore: AppState }>);
-  private notifier$ = new Subject<void>();
+  private destroySubject = new Subject<void>();
   private router = inject(Router);
   private isFavorite = false;
-
-  protected authorizationStatus = signal<AuthorizationStatus>(
+  public readonly AuthorizationStatus = AuthorizationStatus;
+  public isFavoriteButtonDisabled = signal<boolean>(false);
+  public authorizationStatus = signal<AuthorizationStatus>(
     AuthorizationStatus.NoAuth
   );
-  protected readonly Math = Math;
-  protected readonly AppRoute = AppRoute;
+  public readonly Math = Math;
+  public readonly AppRoute = AppRoute;
 
-  @Input() offer: OfferPreview | undefined = undefined;
-  @Input() isFavoritePage = false;
-  @Input() isOfferPage = false;
-
-  @Output() cardMouseEnter = new EventEmitter<OfferPreview>();
-  @Output() cardMouseLeave = new EventEmitter<void>();
-
-  @ViewChild('favoriteButton') favoriteButton!: ElementRef;
-
-  private favoriteButtonNative: HTMLElement | null = null;
-
-  ngOnInit(): void {
+  public ngOnInit(): void {
     this.isFavorite = this.offer ? this.offer.isFavorite : false;
     this.store
       .select(selectAuthorizationStatus)
-      .pipe(takeUntil(this.notifier$))
+      .pipe(takeUntil(this.destroySubject))
       .subscribe(auth => this.authorizationStatus.set(auth));
   }
 
-  ngAfterViewInit(): void {
-    this.favoriteButtonNative = this.favoriteButton
-      .nativeElement as HTMLElement;
+  public ngOnDestroy(): void {
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 
-  ngOnDestroy(): void {
-    this.notifier$.next();
-    this.notifier$.complete();
-  }
-
-  onMouseEnter() {
+  public onMouseEnter(): void {
     this.cardMouseEnter.emit(this.offer);
   }
 
-  onMouseLeave = () => {
+  public onMouseLeave(): void {
     this.cardMouseLeave.emit();
-  };
+  }
 
-  toggleOfferFavorite(event: MouseEvent) {
-    const target = event.currentTarget as HTMLButtonElement;
+  public handleOfferFavoriteToggled(): void {
     if (this.authorizationStatus() === AuthorizationStatus.Auth) {
-      target.disabled = true;
-      this.favoriteButtonNative?.classList.toggle(
-        'place-card__bookmark-button--active'
-      );
+      this.isFavoriteButtonDisabled.set(true);
       this.store.dispatch(
         changeFavoriteStatus({
           id: this.offer?.id,
@@ -100,7 +86,7 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
           filter(isLoading => isLoading === false),
           take(1),
           finalize(() => {
-            target.disabled = false;
+            this.isFavoriteButtonDisabled.set(false);
           })
         )
         .subscribe();
@@ -109,6 +95,4 @@ export class CardComponent implements OnInit, OnDestroy, AfterViewInit {
       this.router.navigate([AppRoute.Login]);
     }
   }
-
-  protected readonly AuthorizationStatus = AuthorizationStatus;
 }

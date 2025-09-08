@@ -53,7 +53,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
   private sortService = inject(SortOffersService);
   private store = inject(Store<AppState>);
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     combineLatest([
       this.store.select(selectAllOffers),
       this.store.select(selectCity),
@@ -79,12 +79,12 @@ export class MainPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.destroySubject.next();
     this.destroySubject.complete();
   }
 
-  handleCardMouseEnter(offer: OfferPreview | null) {
+  public handleCardMouseEnter(offer: OfferPreview | null): void {
     if (offer === null) {
       this.activeCard.set(null);
     } else {
@@ -92,7 +92,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  handleSortTypeChanged(sortType: SORT_TYPE): void {
+  public handleSortTypeChanged(sortType: SORT_TYPE): void {
     this.currentSortType.set(sortType);
     this.currentOffers = this.sortService.sortOffersByType(
       this.basicOffers,
@@ -100,7 +100,7 @@ export class MainPageComponent implements OnInit, OnDestroy {
     );
   }
 
-  onCurrentSortTypeChanged(sortType: SORT_TYPE) {
+  public onCurrentSortTypeChanged(sortType: SORT_TYPE): void {
     //TODO проверить нужен ли метод
     this.currentSortType.set(sortType);
   }

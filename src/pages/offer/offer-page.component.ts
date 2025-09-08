@@ -21,7 +21,6 @@ import {
   combineLatest,
   filter,
   finalize,
-  of,
   Subject,
   take,
   takeUntil,
@@ -78,7 +77,8 @@ export class OfferPageComponent implements OnInit, OnDestroy {
   public comments = signal<Comment[]>([]);
   public nearbyOffers = signal<OfferPreview[]>([]);
   public isFavoriteButtonDisabled = signal<boolean>(false);
-  public readonly AppRoute = AppRoute;
+  public readonly Math = Math;
+  public readonly AuthorizationStatus = AuthorizationStatus;
 
   constructor() {
     effect(() => {
@@ -101,7 +101,7 @@ export class OfferPageComponent implements OnInit, OnDestroy {
       }
     });
 
-    effect(() => {
+    effect((): void => {
       this.isFavorite = this.offer()?.isFavorite ?? false;
     });
 
@@ -110,7 +110,7 @@ export class OfferPageComponent implements OnInit, OnDestroy {
       .subscribe(params => this.paramId.set(params.get('id')));
   }
 
-  ngOnInit() {
+  public ngOnInit(): void {
     combineLatest([
       this.store.select(selectUser),
       this.store.select(selectAuthorizationStatus),
@@ -122,12 +122,12 @@ export class OfferPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy(): void {
+  public ngOnDestroy(): void {
     this.destroySubject.next();
     this.destroySubject.complete();
   }
 
-  handleOfferFavoriteToggled() {
+  public handleOfferFavoriteToggled(): void {
     if (this.authorizationStatus() === AuthorizationStatus.Auth) {
       this.isFavoriteButtonDisabled.set(true);
       this.store.dispatch(
@@ -152,11 +152,7 @@ export class OfferPageComponent implements OnInit, OnDestroy {
     }
   }
 
-  protected addNewComment(comment: Comment) {
+  public addNewComment(comment: Comment): void {
     this.comments.update(currentOffers => [comment, ...currentOffers]);
   }
-
-  protected readonly Math = Math;
-  protected readonly of = of;
-  protected readonly AuthorizationStatus = AuthorizationStatus;
 }

@@ -29,12 +29,13 @@ import { AppRoute } from '../../app/app.routes';
 export class FavoritesPageComponent implements OnInit, OnDestroy {
   private store = inject(Store<{ appStore: AppState }>);
   private destroySubject = new Subject<void>();
-  protected favoritesOffers = signal<OfferPreview[]>([]);
-  protected authorizationStatus = signal<AuthorizationStatus>(
+  public favoritesOffers = signal<OfferPreview[]>([]);
+  public authorizationStatus = signal<AuthorizationStatus>(
     AuthorizationStatus.Unknown
   );
+  public readonly AppRoute = AppRoute;
 
-  ngOnInit(): void {
+  public ngOnInit(): void {
     combineLatest([
       this.store.select(selectAuthorizationStatus),
       this.store.select(selectAllFavoriteOffers),
@@ -46,10 +47,8 @@ export class FavoritesPageComponent implements OnInit, OnDestroy {
       });
   }
 
-  ngOnDestroy() {
+  public ngOnDestroy(): void {
     this.destroySubject.next();
     this.destroySubject.complete();
   }
-
-  protected readonly AppRoute = AppRoute;
 }

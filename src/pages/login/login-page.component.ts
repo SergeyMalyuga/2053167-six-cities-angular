@@ -38,7 +38,10 @@ export class LoginPageComponent {
   private store = inject(Store<{ appStore: AppState }>);
   private router = inject(Router);
 
-  onSubmit() {
+  public readonly AppRoute = AppRoute;
+  public readonly CITY_LOCATIONS = CITY_LOCATIONS;
+
+  public onSubmit(): void {
     if (this.loginGroup.valid) {
       const { email, password } = this.loginGroup.getRawValue();
       if (email && password) {
@@ -58,7 +61,7 @@ export class LoginPageComponent {
     }
   }
 
-  navigateToCityOffers(event: MouseEvent) {
+  public navigateToCityOffers(event: MouseEvent): void {
     event.preventDefault();
     const target = event.target as HTMLElement;
     const currentCity = CITY_LOCATIONS.find(
@@ -69,7 +72,4 @@ export class LoginPageComponent {
     }
     this.router.navigate([AppRoute.Main]);
   }
-
-  protected readonly AppRoute = AppRoute;
-  protected readonly CITY_LOCATIONS = CITY_LOCATIONS;
 }

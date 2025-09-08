@@ -29,7 +29,7 @@
                 appToggleOfferFavorite
                 [disabled]="isFavoriteButtonDisabled()"
                 [authorizationStatus]="authorizationStatus()"
-                #toggleFavoriteButton
+                [isOfferPage]="true"
                 class="offer__bookmark-button button"
                 type="button"
                 [class.offer__bookmark-button--active]="

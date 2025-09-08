@@ -14,7 +14,8 @@ import { AuthorizationStatus } from '../../../core/constants/const';
 })
 export class ToggleOfferFavoriteDirective {
   @Input({ required: true }) public authorizationStatus!: AuthorizationStatus;
-  @Output() offerFavoriteToggled = new EventEmitter();
+  @Input({ required: true }) public isOfferPage = false;
+  @Output() public offerFavoriteToggled = new EventEmitter();
 
   private toggleFavoriteButton = inject(ElementRef);
 
@@ -22,34 +23,17 @@ export class ToggleOfferFavoriteDirective {
   toggleOfferFavorite(): void {
     const toggleFavoriteButtonNative = this.toggleFavoriteButton
       .nativeElement as HTMLButtonElement;
-    console.log(1);
     if (this.authorizationStatus === AuthorizationStatus.Auth) {
-      console.log(2);
-      toggleFavoriteButtonNative?.classList.toggle(
-        'offer__bookmark-button--active'
-      );
+      if (this.isOfferPage) {
+        toggleFavoriteButtonNative?.classList.toggle(
+          'offer__bookmark-button--active'
+        );
+      } else {
+        toggleFavoriteButtonNative?.classList.toggle(
+          'place-card__bookmark-button--active'
+        );
+      }
     }
     this.offerFavoriteToggled.emit();
   }
 }
-/*      this.store.dispatch(
-        changeFavoriteStatus({
-          id: this.offer()?.id,
-          status: +!this.isFavorite,
-        })
-      );
-      this.store
-        .select(selectFavoriteOffersIsLoading)
-        .pipe(
-          filter(isLoading => isLoading === false),
-          take(1),
-          finalize(() => {
-            target.disabled = false;
-          })
-        )
-        .subscribe();
-      this.isFavorite = !this.isFavorite;
-      else {
-      this.router.navigate([AppRoute.Login]);
-    }
-      */

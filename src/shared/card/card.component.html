@@ -35,6 +35,9 @@
         <span class="place-card__price-text">&#47;&nbsp;night</span>
       </div>
       <button
+        appToggleOfferFavorite
+        [authorizationStatus]="authorizationStatus()"
+        [isOfferPage]="false"
         #favoriteButton
         class="place-card__bookmark-button button"
         [class.place-card__bookmark-button--active]="
@@ -42,7 +45,7 @@
           authorizationStatus() === AuthorizationStatus.Auth
         "
         type="button"
-        (click)="toggleOfferFavorite($event)">
+        (click)="handleOfferFavoriteToggled()">
         <svg class="place-card__bookmark-icon" width="18" height="19">
           <use xlink:href="#icon-bookmark"></use>
         </svg>

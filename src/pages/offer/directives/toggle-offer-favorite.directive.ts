@@ -20,10 +20,11 @@ export class ToggleOfferFavoriteDirective {
   private toggleFavoriteButton = inject(ElementRef);
 
   @HostListener('click', ['$event'])
-  toggleOfferFavorite(): void {
-    const toggleFavoriteButtonNative = this.toggleFavoriteButton
-      .nativeElement as HTMLButtonElement;
+  toggleOfferFavorite(evt: MouseEvent): void {
     if (this.authorizationStatus === AuthorizationStatus.Auth) {
+      evt.stopPropagation();
+      const toggleFavoriteButtonNative = this.toggleFavoriteButton
+        .nativeElement as HTMLButtonElement;
       if (this.isOfferPage) {
         toggleFavoriteButtonNative?.classList.toggle(
           'offer__bookmark-button--active'

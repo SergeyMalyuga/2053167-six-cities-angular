@@ -7,28 +7,28 @@ export class SortOffersService {
   private sortPriceLowToHigh(
     offerFirst: OfferPreview,
     offerSecond: OfferPreview
-  ) {
+  ): number {
     return offerFirst.price - offerSecond.price;
   }
 
   private sortPriceHighToLow(
     offerFirst: OfferPreview,
     offerSecond: OfferPreview
-  ) {
+  ): number {
     return offerSecond.price - offerFirst.price;
   }
 
   private sortTopRatedFirst(
     offerFirst: OfferPreview,
     offerSecond: OfferPreview
-  ) {
+  ): number {
     return offerSecond.rating - offerFirst.rating;
   }
 
   private sortOffers(
     offers: OfferPreview[],
     sortType: (a: OfferPreview, b: OfferPreview) => number
-  ) {
+  ): OfferPreview[] {
     return [...offers].sort(sortType);
   }
 

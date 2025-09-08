@@ -8,7 +8,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class FavoriteOffersService {
-  private http = inject(HttpClient);
+  private http: HttpClient = inject(HttpClient);
 
   public getFavoriteOffers(): Observable<OfferPreview[]> {
     return this.http.get<OfferPreview[]>(`${BASE_URL}/${APIRoute.Favorite}`);

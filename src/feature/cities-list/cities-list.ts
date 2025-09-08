@@ -13,12 +13,12 @@ import { changeCity } from '../../store/city/actions/city.actions';
 export class CitiesListComponent {
   constructor(private store: Store<{ appStore: AppState }>) {}
 
-  public readonly CITY_LOCATIONS = CITY_LOCATIONS;
+  public readonly CITY_LOCATIONS: City[] = CITY_LOCATIONS;
 
   @Input({ required: true }) public currentCity!: City;
   @Output() public SortTypeChanged = new EventEmitter<SORT_TYPE>();
 
-  public selectCity(city: City) {
+  public selectCity(city: City): void {
     this.SortTypeChanged.emit(SORT_TYPE.POPULAR);
     this.store.dispatch(changeCity({ city }));
   }

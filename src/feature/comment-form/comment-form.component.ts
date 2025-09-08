@@ -7,6 +7,7 @@ import {
   OnDestroy,
   Output,
   signal,
+  WritableSignal,
 } from '@angular/core';
 import { Comment } from '../../core/models/comments';
 import { CommentService } from '../../core/services/comment.service';
@@ -24,7 +25,8 @@ import { CommentFormValue } from '../../core/models/comment-form-value';
 export class CommentFormComponent implements OnDestroy {
   @Input({ required: true }) public comments!: Comment[];
   @Input({ required: true }) public offerId!: string | undefined;
-  @Output() public newCommentCreated = new EventEmitter();
+  @Output() public newCommentCreated: EventEmitter<Comment> =
+    new EventEmitter<Comment>();
 
   private commentService = inject(CommentService);
   private formBuilder = inject(FormBuilder);
@@ -34,7 +36,7 @@ export class CommentFormComponent implements OnDestroy {
     comment: ['', [Validators.required, Validators.minLength(50)]],
     rating: ['', Validators.required],
   });
-  public isDisabled = signal<boolean>(false);
+  public isDisabled: WritableSignal<boolean> = signal<boolean>(false);
 
   public ngOnDestroy(): void {
     this.destroySubject.next();
@@ -50,7 +52,7 @@ export class CommentFormComponent implements OnDestroy {
         .postComment(this.offerId, comment, Number(rating))
         .pipe(takeUntil(this.destroySubject))
         .subscribe({
-          next: offer => this.newCommentCreated.emit(offer),
+          next: (comment: Comment) => this.newCommentCreated.emit(comment),
           error: () => this.isDisabled.set(false),
           complete: () => {
             this.isDisabled.set(false);

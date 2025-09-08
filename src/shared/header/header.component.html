@@ -18,9 +18,8 @@
           @if (authorizationStatus === AuthorizationStatus.Auth) {
             <li class="header__nav-item user">
               <a
-                (click)="navigateToFavorites($event)"
                 class="header__nav-link header__nav-link--profile"
-                href="#">
+                [routerLink]="AppRoute.Favorites">
                 <div class="header__avatar-wrapper user__avatar-wrapper"></div>
                 <span class="header__user-name user__name">{{
                   user()?.email
@@ -33,7 +32,6 @@
           }
           <li class="header__nav-item">
             <a
-              #authNavLink
               class="header__nav-link"
               [routerLink]="
                 authorizationStatus === AuthorizationStatus.Auth
@@ -41,10 +39,14 @@
                   : ['/', AppRoute.Login]
               ">
               <span
-                #authToggleElement
-                (click)="logout($event)"
+                appLogoutClick
+                (logout)="onLogout()"
+                [attr.data-logout]="
+                  authorizationStatus === AuthorizationStatus.Auth
+                    ? 'true'
+                    : null
+                "
                 tabindex="0"
-                (keydown)="onKeyDown($event)"
                 class="header__signout"
                 >{{
                   authorizationStatus === AuthorizationStatus.Auth

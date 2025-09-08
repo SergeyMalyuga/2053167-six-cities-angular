@@ -3,20 +3,29 @@
 } @else {
   <div class="page page--gray page--main">
     <app-header [authorizationStatus]="authorizationStatus()"></app-header>
-    <main class="page__main page__main--index" [class.page__main--index-empty]="currentOffers.length === 0">
+    <main
+      class="page__main page__main--index"
+      [class.page__main--index-empty]="currentOffers.length === 0">
       <h1 class="visually-hidden">Cities</h1>
       <div class="tabs">
-        <app-cities-list [currentCity]="currentCity" (changeSortType)="changeCurrentSortType($event)"></app-cities-list>
+        <app-cities-list
+          [currentCity]="currentCity"
+          (SortTypeChanged)="
+            onCurrentSortTypeChanged($event)
+          "></app-cities-list>
       </div>
       <div class="cities">
         @if (currentOffers.length === 0) {
           <div class="cities">
-            <div class="cities__places-container cities__places-container--empty container">
+            <div
+              class="cities__places-container cities__places-container--empty container">
               <section class="cities__no-places">
                 <div class="cities__status-wrapper tabs__content">
                   <b class="cities__status">No places to stay available</b>
-                  <p class="cities__status-description">We could not find any property available at the moment in
-                    Dusseldorf</p>
+                  <p class="cities__status-description">
+                    We could not find any property available at the moment in
+                    Dusseldorf
+                  </p>
                 </div>
               </section>
               <div class="cities__right-section"></div>
@@ -26,18 +35,25 @@
           <div class="cities__places-container container">
             <section class="cities__places places">
               <h2 class="visually-hidden">Places</h2>
-              <b class="places__found">{{ currentOffers.length }} {{ currentOffers.length > 1 ? 'places' : 'place' }} to
-                stay in {{ currentCity.name }}</b>
-              <app-places-sorting-form [offers]="basicOffers"
-                                       [sortType]="currentSortType()"
-                                       (offersChange)="changeOffers($event)"
-                                       (changeSotType)="changeCurrentSortType($event)"></app-places-sorting-form>
-              <app-offers-list (cardActivated)="handleCardMouseEnter($event)"
-                               [offers]="currentOffers"></app-offers-list>
+              <b class="places__found"
+                >{{ currentOffers.length }}
+                {{ currentOffers.length > 1 ? 'places' : 'place' }} to stay in
+                {{ currentCity.name }}</b
+              >
+              <app-places-sorting-form
+                [city]="currentCity"
+                (sortTypeChanged)="
+                  handleSortTypeChanged($event)
+                "></app-places-sorting-form>
+              <app-offers-list
+                (cardActivated)="handleCardMouseEnter($event)"
+                [offers]="currentOffers"></app-offers-list>
             </section>
             <div class="cities__right-section">
               <section class="cities__map map">
-                <app-map [activeCard]="activeCard()" [offers]="currentOffers"></app-map>
+                <app-map
+                  [activeCard]="activeCard()"
+                  [offers]="currentOffers"></app-map>
               </section>
             </div>
           </div>
@@ -46,4 +62,3 @@
     </main>
   </div>
 }
-

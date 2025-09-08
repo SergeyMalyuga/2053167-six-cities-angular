@@ -1,82 +1,65 @@
 import {
-  AfterViewInit,
   ChangeDetectionStrategy,
-  Component, ElementRef,
+  Component,
   EventEmitter,
   inject,
   Input,
+  OnDestroy,
   Output,
-  signal, ViewChild,
-  WritableSignal
+  signal,
 } from '@angular/core';
-import {Comment} from '../../core/models/comments';
-import {CommentService} from '../../core/services/comment.service';
-import {FormBuilder, ReactiveFormsModule, Validators} from '@angular/forms';
+import { Comment } from '../../core/models/comments';
+import { CommentService } from '../../core/services/comment.service';
+import { FormBuilder, ReactiveFormsModule, Validators } from '@angular/forms';
+import { Subject, takeUntil } from 'rxjs';
+import { ToggleDisableButtonDirective } from '../../shared/directives/toggle-disable-button';
+import { CommentFormValue } from '../../core/models/comment-form-value';
 
 @Component({
   selector: 'app-comment-form',
   templateUrl: './comment-form.component.html',
-  imports: [
-    ReactiveFormsModule
-  ],
-  changeDetection: ChangeDetectionStrategy.OnPush
+  imports: [ReactiveFormsModule, ToggleDisableButtonDirective],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
+export class CommentFormComponent implements OnDestroy {
+  @Input({ required: true }) public comments!: Comment[];
+  @Input({ required: true }) public offerId!: string | undefined;
+  @Output() public newCommentCreated = new EventEmitter();
 
-export class CommentFormComponent implements AfterViewInit {
-
-  @Input() comments!: WritableSignal<Comment[]>;
-  @Input() offerId!: string | undefined;
-  @Output() newCommentCreated = new EventEmitter();
-  @ViewChild('commentSubmitButton') commentSubmitButton!: ElementRef;
-
-  private newComment = signal({comment: 'This comment has a comment.', rating: 0});
   private commentService = inject(CommentService);
-  private commentSubmitButtonNative: HTMLButtonElement | null = null;
   private formBuilder = inject(FormBuilder);
+  private destroySubject = new Subject<void>();
 
-  protected commentForm = this.formBuilder.group({
+  public commentForm = this.formBuilder.group({
     comment: ['', [Validators.required, Validators.minLength(50)]],
     rating: ['', Validators.required],
   });
+  public isDisabled = signal<boolean>(false);
 
-  ngAfterViewInit(): void {
-    this.commentSubmitButtonNative = this.commentSubmitButton.nativeElement as HTMLButtonElement;
+  public ngOnDestroy(): void {
+    this.destroySubject.next();
+    this.destroySubject.complete();
   }
 
-  onInputComment(): void {
-    this.commentForm.valueChanges.subscribe(({comment}) =>  {if (comment) {
-        this.newComment.set({...this.newComment(), comment})
-    }});
-  }
-
-  onRatingChanged(): void {
-    const rating = Number(this.commentForm.value['rating']);
-    if(rating) {
-      this.newComment.set({...this.newComment(), rating});
-    }
-  }
-
-  onSubmit(evt: Event): void {
+  public onSubmit(evt: Event): void {
     evt.preventDefault();
-    if(this.commentSubmitButtonNative) {
-      this.commentSubmitButtonNative.disabled = true;
-    }
-    this.commentService.postComment(this.offerId, this.newComment().comment, this.newComment().rating)
-      .subscribe({
-        next: (offer) => this.newCommentCreated.emit(offer),
-        error: () => this.unlockCommentSubmitButton(),
-        complete: () => {this.unlockCommentSubmitButton();
-          this.newComment.set({comment: '', rating: 0});
-          this.commentForm.reset({
-          comment: '',
-          rating: null
-        })},
-      })
-  }
-
-  private unlockCommentSubmitButton() {
-    if(this.commentSubmitButtonNative) {
-      this.commentSubmitButtonNative.disabled = false;
+    if (this.commentForm.valid) {
+      const { comment, rating } = this.commentForm.value as CommentFormValue;
+      this.isDisabled.set(true);
+      this.commentService
+        .postComment(this.offerId, comment, Number(rating))
+        .pipe(takeUntil(this.destroySubject))
+        .subscribe({
+          next: offer => this.newCommentCreated.emit(offer),
+          error: () => this.isDisabled.set(false),
+          complete: () => {
+            this.isDisabled.set(false);
+            this.commentForm.reset({
+              comment: '',
+              rating: null,
+            });
+          },
+        });
     }
   }
 }

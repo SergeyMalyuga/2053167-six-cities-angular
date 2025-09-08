@@ -6,4 +6,3 @@ export interface City {
     zoom: number;
   };
 }
-

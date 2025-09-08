@@ -1,26 +1,26 @@
-import {HttpClient} from '@angular/common/http';
-import {Offer, OfferPreview} from '../models/offers';
-import {APIRoute, BASE_URL} from '../constants/const';
-import {Injectable} from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Offer, OfferPreview } from '../models/offers';
+import { APIRoute, BASE_URL } from '../constants/const';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class OffersService {
-  constructor(private http: HttpClient) {
-  }
+  private http = inject(HttpClient);
 
-  getOffers() {
+  public getOffers(): Observable<OfferPreview[]> {
     return this.http.get<OfferPreview[]>(`${BASE_URL}/${APIRoute.Offers}`);
   }
 
-  getOfferById(id: string) {
+  public getOfferById(id: string): Observable<Offer> {
     return this.http.get<Offer>(`${BASE_URL}/${APIRoute.Offers}/${id}`);
   }
 
-
-  getNearbyOffers(id: string | undefined) {
-    return this.http.get<OfferPreview[]>(`${BASE_URL}/${APIRoute.Offers}/${id}/nearby`);
+  public getNearbyOffers(id: string | undefined): Observable<OfferPreview[]> {
+    return this.http.get<OfferPreview[]>(
+      `${BASE_URL}/${APIRoute.Offers}/${id}/nearby`
+    );
   }
 }

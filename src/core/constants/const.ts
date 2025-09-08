@@ -1,4 +1,4 @@
-import {City} from '../models/city';
+import { City } from '../models/city';
 
 export const CITY_LOCATIONS: City[] = [
   {
@@ -6,49 +6,49 @@ export const CITY_LOCATIONS: City[] = [
     location: {
       latitude: 48.8534,
       longitude: 2.3488,
-      zoom: 10
-    }
+      zoom: 10,
+    },
   },
   {
     name: 'Cologne',
     location: {
       latitude: 50.9333,
       longitude: 6.95,
-      zoom: 10
-    }
+      zoom: 10,
+    },
   },
   {
     name: 'Brussels',
     location: {
       latitude: 50.8504,
       longitude: 4.34878,
-      zoom: 10
-    }
+      zoom: 10,
+    },
   },
   {
     name: 'Amsterdam',
     location: {
       latitude: 52.3909553943508,
       longitude: 4.85309666406198,
-      zoom: 10
-    }
+      zoom: 10,
+    },
   },
   {
     name: 'Hamburg',
     location: {
       latitude: 53.5753,
       longitude: 10.0153,
-      zoom: 10
-    }
+      zoom: 10,
+    },
   },
   {
     name: 'Dusseldorf',
     location: {
       latitude: 51.2217,
       longitude: 6.77616,
-      zoom: 10
-    }
-  }
+      zoom: 10,
+    },
+  },
 ];
 
 export const DEFAULT_CITY: City = {
@@ -56,15 +56,15 @@ export const DEFAULT_CITY: City = {
   location: {
     latitude: 48.8534,
     longitude: 2.3488,
-    zoom: 10
-  }
-}
+    zoom: 10,
+  },
+};
 
 export enum SORT_TYPE {
   POPULAR = 'Popular',
   PRICE_LOW_TO_HIGH = 'Price: low to high',
   PRICE_HIGH_TO_LOW = 'Price: high to low',
-  TOP_RATED_FIRST = 'Top rated first'
+  TOP_RATED_FIRST = 'Top rated first',
 }
 
 export enum AuthorizationStatus {

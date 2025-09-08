@@ -1,23 +1,28 @@
-import {HttpClient} from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 
-import {APIRoute, BASE_URL} from '../constants/const';
-import {Comment} from '../models/comments';
-import {Injectable} from '@angular/core';
+import { APIRoute, BASE_URL } from '../constants/const';
+import { Comment } from '../models/comments';
+import { inject, Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
-
 export class CommentService {
+  private http = inject(HttpClient);
 
-  constructor(private http: HttpClient) {
+  public getComments(id: string | undefined): Observable<Comment[]> {
+    return this.http.get<Comment[]>(`${BASE_URL}/${APIRoute.Comments}/${id}`);
   }
 
-  getComments(id: string | undefined) {
-    return this.http.get<Comment[]>(`${BASE_URL}/${APIRoute.Comments}/${id}`)
-  }
-
-  postComment(id: string | undefined, comment: string, rating: number) {
-    return this.http.post<Comment>(`${BASE_URL}/${APIRoute.Comments}/${id}`, {comment, rating})
+  public postComment(
+    id: string | undefined,
+    comment: string,
+    rating: number
+  ): Observable<Comment> {
+    return this.http.post<Comment>(`${BASE_URL}/${APIRoute.Comments}/${id}`, {
+      comment,
+      rating,
+    });
   }
 }

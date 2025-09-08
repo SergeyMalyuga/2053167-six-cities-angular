@@ -1,8 +1,11 @@
 <section class="near-places places">
   <h2 class="near-places__title">Other places in the neighbourhood</h2>
   <div class="near-places__list places__list">
-    @for (offer of (neighborsOffers() | limitToThreeOffers); track offer.id ) {
-      <app-card [isOfferPage]=true [offer]="offer"></app-card>
+    @for (offer of neighborsOffers() | limitToThreeOffers; track offer.id) {
+      <app-card
+        [isOfferPage]="true"
+        [isFavoritePage]="false"
+        [offer]="offer"></app-card>
     }
   </div>
 </section>

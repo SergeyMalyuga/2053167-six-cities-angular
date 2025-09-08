@@ -1,26 +1,41 @@
-<div [class]="'page' + (favoritesOffers().length === 0 ? 'page--favorites-empty' : '')">
+<div
+  [class]="
+    'page' + (favoritesOffers().length === 0 ? 'page--favorites-empty' : '')
+  ">
   <app-header [authorizationStatus]="authorizationStatus()"></app-header>
-  <main [class]="'page__main page__main--favorites' + (favoritesOffers().length === 0 ? 'page__main--favorites-empty' : '')">
+  <main
+    [class]="
+      'page__main page__main--favorites' +
+      (favoritesOffers().length === 0 ? 'page__main--favorites-empty' : '')
+    ">
     <div class="page__favorites-container container">
       @if (favoritesOffers().length === 0) {
         <section class="favorites favorites--empty">
           <h1 class="visually-hidden">Favorites (empty)</h1>
           <div class="favorites__status-wrapper">
             <b class="favorites__status">Nothing yet saved.</b>
-            <p class="favorites__status-description">Save properties to narrow down search or plan your future trips.</p>
+            <p class="favorites__status-description">
+              Save properties to narrow down search or plan your future trips.
+            </p>
           </div>
         </section>
       } @else {
         <section class="favorites">
           <h1 class="favorites__title">Saved listing</h1>
-          <app-favorites-offers-list [favoritesOffers]="favoritesOffers()"></app-favorites-offers-list>
+          <app-favorites-offers-list
+            [favoritesOffers]="favoritesOffers()"></app-favorites-offers-list>
         </section>
       }
     </div>
   </main>
   <footer class="footer container">
     <a class="footer__logo-link" [routerLink]="[AppRoute.Main]">
-      <img class="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33">
+      <img
+        class="footer__logo"
+        src="img/logo.svg"
+        alt="6 cities logo"
+        width="64"
+        height="33" />
     </a>
   </footer>
 </div>

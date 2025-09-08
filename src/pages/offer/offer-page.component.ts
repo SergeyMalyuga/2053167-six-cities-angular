@@ -38,9 +38,9 @@ import {
 import { AuthorizationStatus } from '../../core/constants/const';
 import { CommentService } from '../../core/services/comment.service';
 import { SortCommentsByDatePipe } from './pipe/sort-comments-by-date.pipe';
-import { changeFavoriteStatus } from '../../store/app/app.actions';
 import { LimitToThreeOffersPipe } from '../../feature/offers-list-nearby/limit-to-three-offers.pipe';
 import { ToggleOfferFavoriteDirective } from './directives/toggle-offer-favorite.directive';
+import { changeFavoriteStatus } from '../../store/favorite-offer/actions/favorite-offer.actions';
 
 @Component({
   selector: 'app-offer',

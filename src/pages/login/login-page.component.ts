@@ -6,18 +6,16 @@ import { AppRoute } from '../../app/app.routes';
 import { Store } from '@ngrx/store';
 import { AppState } from '../../core/models/app-state';
 import {
-  changeCity,
-  loadFavoriteOffersData,
-  loadOffersData,
-  loginAction,
-} from '../../store/app/app.actions';
-import {
   AuthorizationStatus,
   CITY_LOCATIONS,
 } from '../../core/constants/const';
 import { RandomCityPipe } from './random-city.pipe';
 import { selectAuthorizationStatus } from '../../store/app/app.selectors';
 import { filter, take } from 'rxjs';
+import { loadOffersData } from '../../store/offer/actions/effect.actions';
+import { loadFavoriteOffersData } from '../../store/favorite-offer/actions/favorite-offer.actions';
+import { loginAction } from '../../store/user/actions/user.actions';
+import { changeCity } from '../../store/city/actions/city.actions';
 
 @Component({
   selector: 'app-login',

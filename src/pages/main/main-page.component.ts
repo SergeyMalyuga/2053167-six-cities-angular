@@ -5,6 +5,7 @@ import {
   OnDestroy,
   OnInit,
   signal,
+  WritableSignal,
 } from '@angular/core';
 import { OfferPreview } from '../../core/models/offers';
 import { OffersListComponent } from '../../feature/offers-list/offers-list.component';
@@ -23,6 +24,7 @@ import {
 import { PlacesSortingFormComponent } from '../../feature/places-sorting-form/places-sorting-form.component';
 import { LoaderComponent } from '../../shared/loader/loader.component';
 import { SortOffersService } from '../../core/services/sort-offers.service';
+import { City } from '../../core/models/city';
 
 @Component({
   selector: 'app-main',
@@ -39,19 +41,21 @@ import { SortOffersService } from '../../core/services/sort-offers.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class MainPageComponent implements OnInit, OnDestroy {
-  protected activeCard = signal<OfferPreview | null>(null);
+  protected activeCard: WritableSignal<OfferPreview | null> =
+    signal<OfferPreview | null>(null);
   protected currentOffers: OfferPreview[] = [];
   protected basicOffers: OfferPreview[] = [];
-  protected currentCity = DEFAULT_CITY;
-  protected isLoading = signal<boolean>(false);
-  protected currentSortType = signal<string>(SORT_TYPE.POPULAR);
-  protected authorizationStatus = signal<AuthorizationStatus>(
-    AuthorizationStatus.Unknown
+  protected currentCity: City = DEFAULT_CITY;
+  protected isLoading: WritableSignal<boolean> = signal<boolean>(false);
+  protected currentSortType: WritableSignal<string> = signal<string>(
+    SORT_TYPE.POPULAR
   );
+  protected authorizationStatus: WritableSignal<AuthorizationStatus> =
+    signal<AuthorizationStatus>(AuthorizationStatus.Unknown);
 
-  private destroySubject = new Subject<void>();
-  private sortService = inject(SortOffersService);
-  private store = inject(Store<AppState>);
+  private destroySubject: Subject<void> = new Subject<void>();
+  private sortService: SortOffersService = inject(SortOffersService);
+  private store: Store<AppState> = inject(Store<AppState>);
 
   public ngOnInit(): void {
     combineLatest([
@@ -59,21 +63,25 @@ export class MainPageComponent implements OnInit, OnDestroy {
       this.store.select(selectCity),
     ])
       .pipe(
-        tap(([, city]) => (this.currentCity = { ...city })),
-        map(([offers, city]) =>
-          offers.filter(offer => offer.city.name === city.name)
+        tap(
+          ([, city]: [OfferPreview[], City]) => (this.currentCity = { ...city })
+        ),
+        map(([offers, city]: [OfferPreview[], City]): OfferPreview[] =>
+          offers.filter(
+            (offer: OfferPreview): boolean => offer.city.name === city.name
+          )
         ),
         takeUntil(this.destroySubject)
       )
-      .subscribe(offers => {
+      .subscribe((offers: OfferPreview[]): void => {
         this.currentOffers = [...offers];
         this.basicOffers = [...offers];
       });
 
     this.store
-      .select(state => state)
+      .select((state: AppState): AppState => state)
       .pipe(takeUntil(this.destroySubject))
-      .subscribe(state => {
+      .subscribe((state: AppState): void => {
         this.isLoading.set(state.offers.isLoading);
         this.authorizationStatus.set(state.user.authorizationStatus);
       });
@@ -101,7 +109,6 @@ export class MainPageComponent implements OnInit, OnDestroy {
   }
 
   public onCurrentSortTypeChanged(sortType: SORT_TYPE): void {
-    //TODO проверить нужен ли метод
     this.currentSortType.set(sortType);
   }
 }

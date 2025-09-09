@@ -6,6 +6,7 @@ import {
   OnDestroy,
   OnInit,
   signal,
+  WritableSignal,
 } from '@angular/core';
 import { CommentFormComponent } from '../../feature/comment-form/comment-form.component';
 import { Comment } from '../../core/models/comments';
@@ -14,7 +15,7 @@ import { MapComponent } from '../../shared/map/map.component';
 import { OffersListNearbyComponent } from '../../feature/offers-list-nearby/offers-list-nearby.component';
 import { AppRoute } from '../../app/app.routes';
 import { HeaderComponent } from '../../shared/header/header.component';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute, ParamMap, Router } from '@angular/router';
 import { OffersService } from '../../core/services/offer.service';
 import { Offer, OfferPreview } from '../../core/models/offers';
 import {
@@ -60,44 +61,55 @@ import { changeFavoriteStatus } from '../../store/favorite-offer/actions/favorit
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class OfferPageComponent implements OnInit, OnDestroy {
-  private destroySubject = new Subject<void>();
-  private paramId = signal<string | null>(null);
-  private offersService = inject(OffersService);
-  private commentsService = inject(CommentService);
-  private store = inject(Store<{ appStore: AppState }>);
-  private router = inject(Router);
+  private destroySubject: Subject<void> = new Subject<void>();
+  private paramId: WritableSignal<string | null> = signal<string | null>(null);
+  private offersService: OffersService = inject(OffersService);
+  private commentsService: CommentService = inject(CommentService);
+  private store: Store<AppState> = inject(Store<AppState>);
+  private router: Router = inject(Router);
+  private route: ActivatedRoute = inject(ActivatedRoute);
 
   public isFavorite = false;
-  public route = inject(ActivatedRoute);
-  public offer = signal<Offer | undefined>(undefined);
-  public user = signal<User | undefined>(undefined);
-  public authorizationStatus = signal<AuthorizationStatus>(
-    AuthorizationStatus.Unknown
+  public offer: WritableSignal<Offer | undefined> = signal<Offer | undefined>(
+    undefined
   );
-  public comments = signal<Comment[]>([]);
-  public nearbyOffers = signal<OfferPreview[]>([]);
-  public isFavoriteButtonDisabled = signal<boolean>(false);
-  public readonly Math = Math;
-  public readonly AuthorizationStatus = AuthorizationStatus;
+  public user: WritableSignal<User | undefined> = signal<User | undefined>(
+    undefined
+  );
+  public authorizationStatus: WritableSignal<AuthorizationStatus> =
+    signal<AuthorizationStatus>(AuthorizationStatus.Unknown);
+  public comments: WritableSignal<Comment[]> = signal<Comment[]>([]);
+  public nearbyOffers: WritableSignal<OfferPreview[]> = signal<OfferPreview[]>(
+    []
+  );
+  public isFavoriteButtonDisabled: WritableSignal<boolean> =
+    signal<boolean>(false);
+  public readonly Math: Math = Math;
+  public readonly AuthorizationStatus: typeof AuthorizationStatus =
+    AuthorizationStatus;
 
   constructor() {
-    effect(() => {
-      const id = this.paramId();
+    effect((): void => {
+      const id: string | null = this.paramId();
       if (id) {
         this.offersService
           .getOfferById(id)
           .pipe(takeUntil(this.destroySubject))
-          .subscribe(offer => {
+          .subscribe((offer: Offer): void => {
             this.offer.set(offer);
           });
         this.commentsService
           .getComments(id)
           .pipe(takeUntil(this.destroySubject))
-          .subscribe(comments => this.comments.set(comments));
+          .subscribe((comments: Comment[]): void =>
+            this.comments.set(comments)
+          );
         this.offersService
           .getNearbyOffers(id)
           .pipe(takeUntil(this.destroySubject))
-          .subscribe(nearby => this.nearbyOffers.set(nearby));
+          .subscribe((nearby: OfferPreview[]): void =>
+            this.nearbyOffers.set(nearby)
+          );
       }
     });
 
@@ -107,7 +119,7 @@ export class OfferPageComponent implements OnInit, OnDestroy {
 
     this.route.paramMap
       .pipe(takeUntil(this.destroySubject))
-      .subscribe(params => this.paramId.set(params.get('id')));
+      .subscribe((params: ParamMap) => this.paramId.set(params.get('id')));
   }
 
   public ngOnInit(): void {
@@ -116,10 +128,12 @@ export class OfferPageComponent implements OnInit, OnDestroy {
       this.store.select(selectAuthorizationStatus),
     ])
       .pipe(takeUntil(this.destroySubject))
-      .subscribe(([user, authStatus]) => {
-        this.user.set(user);
-        this.authorizationStatus.set(authStatus);
-      });
+      .subscribe(
+        ([user, authStatus]: [User | undefined, AuthorizationStatus]): void => {
+          this.user.set(user);
+          this.authorizationStatus.set(authStatus);
+        }
+      );
   }
 
   public ngOnDestroy(): void {
@@ -139,7 +153,7 @@ export class OfferPageComponent implements OnInit, OnDestroy {
       this.store
         .select(selectFavoriteOffersIsLoading)
         .pipe(
-          filter(isLoading => isLoading === false),
+          filter((isLoading: boolean): boolean => isLoading === false),
           take(1),
           finalize(() => {
             this.isFavoriteButtonDisabled.set(false);
@@ -153,6 +167,9 @@ export class OfferPageComponent implements OnInit, OnDestroy {
   }
 
   public addNewComment(comment: Comment): void {
-    this.comments.update(currentOffers => [comment, ...currentOffers]);
+    this.comments.update((currentOffers: Comment[]): Comment[] => [
+      comment,
+      ...currentOffers,
+    ]);
   }
 }

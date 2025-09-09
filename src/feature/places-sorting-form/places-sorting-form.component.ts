@@ -6,8 +6,8 @@ import {
   OnDestroy,
   Output,
   signal,
+  WritableSignal,
 } from '@angular/core';
-import { OfferPreview } from '../../core/models/offers';
 import { Subject } from 'rxjs';
 import { SORT_TYPE } from '../../core/constants/const';
 import { ToggleSortOptionsDirective } from './directives/toggle-sort-options.directive';
@@ -26,13 +26,16 @@ import { City } from '../../core/models/city';
   ],
 })
 export class PlacesSortingFormComponent implements OnDestroy {
-  @Input({ required: true }) city!: City;
-  @Output() public sortTypeChanged = new EventEmitter<SORT_TYPE>();
+  @Input({ required: true }) public city!: City;
+  @Output() public sortTypeChanged: EventEmitter<SORT_TYPE> =
+    new EventEmitter<SORT_TYPE>();
 
-  private destroySubject = new Subject<void>();
-  public readonly SORT_TYPE = SORT_TYPE;
-  public isSortOptionsOpen = signal<boolean>(false);
-  public sortType = signal<SORT_TYPE>(SORT_TYPE.POPULAR);
+  private destroySubject: Subject<void> = new Subject<void>();
+  public readonly SORT_TYPE: typeof SORT_TYPE = SORT_TYPE;
+  public isSortOptionsOpen: WritableSignal<boolean> = signal<boolean>(false);
+  public sortType: WritableSignal<SORT_TYPE> = signal<SORT_TYPE>(
+    SORT_TYPE.POPULAR
+  );
 
   public ngOnDestroy(): void {
     this.destroySubject.next();
@@ -43,7 +46,8 @@ export class PlacesSortingFormComponent implements OnDestroy {
     this.isSortOptionsOpen.set(isOpen);
   }
 
-  public onSortTypeChanged(sortType: SORT_TYPE): void {
+  public handleSortTypeChanged(sortType: SORT_TYPE): void {
+    this.sortType.set(sortType);
     this.sortTypeChanged.emit(sortType);
   }
 }

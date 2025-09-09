@@ -4,18 +4,20 @@ import {
   HostListener,
   Output,
   signal,
+  WritableSignal,
 } from '@angular/core';
 
 @Directive({
   selector: '[appToggleSortOptions]',
 })
 export class ToggleSortOptionsDirective {
-  @Output() toggleSortOptions = new EventEmitter<boolean>();
+  @Output() toggleSortOptions: EventEmitter<boolean> =
+    new EventEmitter<boolean>();
 
-  private isOpen = signal<boolean>(false);
+  private isOpen: WritableSignal<boolean> = signal<boolean>(false);
 
   @HostListener('click')
-  onSortClick() {
+  onSortClick(): void {
     this.toggleOptions();
   }
 
@@ -28,7 +30,7 @@ export class ToggleSortOptionsDirective {
     if (evt.key === 'Escape' && this.isOpen() === true) this.toggleOptions();
   }
 
-  private toggleOptions() {
+  private toggleOptions(): void {
     this.isOpen.set(!this.isOpen());
     this.toggleSortOptions.emit(this.isOpen());
   }

@@ -16,7 +16,8 @@ export class CitiesListComponent {
   public readonly CITY_LOCATIONS: City[] = CITY_LOCATIONS;
 
   @Input({ required: true }) public currentCity!: City;
-  @Output() public SortTypeChanged = new EventEmitter<SORT_TYPE>();
+  @Output() public SortTypeChanged: EventEmitter<SORT_TYPE> =
+    new EventEmitter<SORT_TYPE>();
 
   public selectCity(city: City): void {
     this.SortTypeChanged.emit(SORT_TYPE.POPULAR);

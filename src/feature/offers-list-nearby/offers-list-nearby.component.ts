@@ -1,4 +1,4 @@
-import { Component, Input, Signal } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { OfferPreview } from '../../core/models/offers';
 import { CardComponent } from '../../shared/card/card.component';
 import { LimitToThreeOffersPipe } from './limit-to-three-offers.pipe';
@@ -9,5 +9,5 @@ import { LimitToThreeOffersPipe } from './limit-to-three-offers.pipe';
   imports: [CardComponent, LimitToThreeOffersPipe],
 })
 export class OffersListNearbyComponent {
-  @Input({ required: true }) public neighborsOffers!: Signal<OfferPreview[]>;
+  @Input({ required: true }) public neighborsOffers!: OfferPreview[];
 }

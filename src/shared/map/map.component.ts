@@ -30,18 +30,18 @@ export class MapComponent
   @Input({ required: true }) public activeCard!: OfferPreview | null;
   @Input({ required: true }) public offers: OfferPreview[] = [];
 
-  private destroySubject = new Subject<void>();
+  private destroySubject: Subject<void> = new Subject<void>();
   private currentCity!: City;
   private markers: L.Marker[] = [];
   private map!: L.Map;
   private centroid!: L.LatLngExpression;
-  private store = inject(Store<AppState>);
+  private store: Store<AppState> = inject(Store<AppState>);
 
   public ngOnInit(): void {
     this.store
       .select(selectCity)
       .pipe(takeUntil(this.destroySubject))
-      .subscribe(city => (this.currentCity = city));
+      .subscribe((city: City): City => (this.currentCity = city));
     this.centroid = [
       this.currentCity.location.latitude,
       this.currentCity.location.longitude,
@@ -114,7 +114,7 @@ export class MapComponent
   }
 
   private addMarkers(): void {
-    this.offers?.forEach(offer => {
+    this.offers?.forEach((offer: OfferPreview): void => {
       const marker = L.marker([
         offer.location.latitude,
         offer.location.longitude,

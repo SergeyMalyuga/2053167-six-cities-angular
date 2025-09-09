@@ -9,5 +9,5 @@ import { AppRoute } from '../../app/app.routes';
   imports: [RouterModule],
 })
 export class NotFoundPageComponent {
-  public readonly AppRoute = AppRoute;
+  public readonly AppRoute: typeof AppRoute = AppRoute;
 }

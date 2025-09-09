@@ -15,7 +15,8 @@ import { City } from '../../../core/models/city';
 })
 export class SetSortPlacesOptionsDirective implements OnChanges {
   @Input({ required: true }) city!: City;
-  @Output() public sortTypeSelected = new EventEmitter<SORT_TYPE>();
+  @Output() public sortTypeSelected: EventEmitter<SORT_TYPE> =
+    new EventEmitter<SORT_TYPE>();
 
   @HostListener('keydown', ['$event'])
   handleSortByTypeKeydown(evt: KeyboardEvent): void {
@@ -36,7 +37,7 @@ export class SetSortPlacesOptionsDirective implements OnChanges {
     }
   }
 
-  selectSortTypeFromEvent(evt: MouseEvent | KeyboardEvent) {
+  selectSortTypeFromEvent(evt: MouseEvent | KeyboardEvent): void {
     const target = evt.target as HTMLElement;
     switch (target.dataset['sortType']) {
       case SORT_TYPE.POPULAR: {

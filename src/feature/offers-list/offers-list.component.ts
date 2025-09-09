@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
   signal,
+  WritableSignal,
 } from '@angular/core';
 import { OfferPreview } from '../../core/models/offers';
 import { CardComponent } from '../../shared/card/card.component';
@@ -26,13 +27,13 @@ import { AuthorizationStatus } from '../../core/constants/const';
 export class OffersListComponent implements OnInit {
   @Input({ required: true }) public offers: OfferPreview[] | null = [];
 
-  @Output() public cardActivated = new EventEmitter<OfferPreview | null>();
+  @Output() public cardActivated: EventEmitter<OfferPreview | null> =
+    new EventEmitter<OfferPreview | null>();
 
-  private store = inject(Store<AppState>);
-  private destroySubject = new Subject<void>();
-  public authorizationStatus = signal<AuthorizationStatus>(
-    AuthorizationStatus.NoAuth
-  );
+  private store: Store<AppState> = inject(Store<AppState>);
+  private destroySubject: Subject<void> = new Subject<void>();
+  public authorizationStatus: WritableSignal<AuthorizationStatus> =
+    signal<AuthorizationStatus>(AuthorizationStatus.NoAuth);
   public onCardActivated(offer: OfferPreview | null): void {
     this.cardActivated.emit(offer);
   }

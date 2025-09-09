@@ -16,7 +16,7 @@
     appCloseSortOptions>
     <li
       appSetSortPlacesOptions
-      (sortTypeSelected)="onSortTypeChanged($event)"
+      (sortTypeSelected)="handleSortTypeChanged($event)"
       [city]="city"
       [attr.data-sort-type]="SORT_TYPE.POPULAR"
       class="places__option"
@@ -26,7 +26,7 @@
     </li>
     <li
       appSetSortPlacesOptions
-      (sortTypeSelected)="onSortTypeChanged($event)"
+      (sortTypeSelected)="handleSortTypeChanged($event)"
       [city]="city"
       [attr.data-sort-type]="SORT_TYPE.PRICE_LOW_TO_HIGH"
       class="places__option"
@@ -38,7 +38,7 @@
     </li>
     <li
       appSetSortPlacesOptions
-      (sortTypeSelected)="onSortTypeChanged($event)"
+      (sortTypeSelected)="handleSortTypeChanged($event)"
       [city]="city"
       [attr.data-sort-type]="SORT_TYPE.PRICE_HIGH_TO_LOW"
       class="places__option"
@@ -50,7 +50,7 @@
     </li>
     <li
       appSetSortPlacesOptions
-      (sortTypeSelected)="onSortTypeChanged($event)"
+      (sortTypeSelected)="handleSortTypeChanged($event)"
       [city]="city"
       [attr.data-sort-type]="SORT_TYPE.TOP_RATED_FIRST"
       class="places__option"

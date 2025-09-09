@@ -8,6 +8,7 @@ import {
   OnInit,
   Output,
   signal,
+  WritableSignal,
 } from '@angular/core';
 import { OfferPreview } from '../../core/models/offers';
 import { CapitalizePipe } from './capitalize.pipe';
@@ -35,27 +36,32 @@ export class CardComponent implements OnInit, OnDestroy {
   @Input({ required: true }) public isFavoritePage = false;
   @Input({ required: true }) public isOfferPage = false;
 
-  @Output() public cardMouseEnter = new EventEmitter<OfferPreview>();
-  @Output() public cardMouseLeave = new EventEmitter<void>();
+  @Output() public cardMouseEnter: EventEmitter<OfferPreview> =
+    new EventEmitter<OfferPreview>();
+  @Output() public cardMouseLeave: EventEmitter<void> =
+    new EventEmitter<void>();
 
-  private store = inject(Store<{ appStore: AppState }>);
-  private destroySubject = new Subject<void>();
-  private router = inject(Router);
+  private store: Store<AppState> = inject(Store<AppState>);
+  private destroySubject: Subject<void> = new Subject<void>();
+  private router: Router = inject(Router);
   private isFavorite = false;
-  public readonly AuthorizationStatus = AuthorizationStatus;
-  public isFavoriteButtonDisabled = signal<boolean>(false);
-  public authorizationStatus = signal<AuthorizationStatus>(
-    AuthorizationStatus.NoAuth
-  );
-  public readonly Math = Math;
-  public readonly AppRoute = AppRoute;
+  public readonly AuthorizationStatus: typeof AuthorizationStatus =
+    AuthorizationStatus;
+  public isFavoriteButtonDisabled: WritableSignal<boolean> =
+    signal<boolean>(false);
+  public authorizationStatus: WritableSignal<AuthorizationStatus> =
+    signal<AuthorizationStatus>(AuthorizationStatus.NoAuth);
+  public readonly Math: Math = Math;
+  public readonly AppRoute: typeof AppRoute = AppRoute;
 
   public ngOnInit(): void {
     this.isFavorite = this.offer ? this.offer.isFavorite : false;
     this.store
       .select(selectAuthorizationStatus)
       .pipe(takeUntil(this.destroySubject))
-      .subscribe(auth => this.authorizationStatus.set(auth));
+      .subscribe((auth: AuthorizationStatus): void =>
+        this.authorizationStatus.set(auth)
+      );
   }
 
   public ngOnDestroy(): void {
@@ -83,9 +89,9 @@ export class CardComponent implements OnInit, OnDestroy {
       this.store
         .select(selectFavoriteOffersIsLoading)
         .pipe(
-          filter(isLoading => isLoading === false),
+          filter((isLoading: boolean): boolean => isLoading === false),
           take(1),
-          finalize(() => {
+          finalize((): void => {
             this.isFavoriteButtonDisabled.set(false);
           })
         )

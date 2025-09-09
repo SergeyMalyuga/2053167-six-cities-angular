@@ -5,6 +5,7 @@ import {
   OnDestroy,
   OnInit,
   signal,
+  WritableSignal,
 } from '@angular/core';
 import { OfferPreview } from '../../core/models/offers';
 import { FavoritesOffersListComponent } from '../../feature/favorites-offers-list/favorites-offers-list.component';
@@ -27,13 +28,14 @@ import { AppRoute } from '../../app/app.routes';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class FavoritesPageComponent implements OnInit, OnDestroy {
-  private store = inject(Store<{ appStore: AppState }>);
-  private destroySubject = new Subject<void>();
-  public favoritesOffers = signal<OfferPreview[]>([]);
-  public authorizationStatus = signal<AuthorizationStatus>(
-    AuthorizationStatus.Unknown
-  );
-  public readonly AppRoute = AppRoute;
+  private store: Store<AppState> = inject(Store<AppState>);
+  private destroySubject: Subject<void> = new Subject<void>();
+  public favoritesOffers: WritableSignal<OfferPreview[]> = signal<
+    OfferPreview[]
+  >([]);
+  public authorizationStatus: WritableSignal<AuthorizationStatus> =
+    signal<AuthorizationStatus>(AuthorizationStatus.Unknown);
+  public readonly AppRoute: typeof AppRoute = AppRoute;
 
   public ngOnInit(): void {
     combineLatest([
@@ -41,10 +43,15 @@ export class FavoritesPageComponent implements OnInit, OnDestroy {
       this.store.select(selectAllFavoriteOffers),
     ])
       .pipe(takeUntil(this.destroySubject))
-      .subscribe(([authorizationStatus, favoriteOffers]) => {
-        this.favoritesOffers.set([...favoriteOffers]);
-        this.authorizationStatus.set(authorizationStatus);
-      });
+      .subscribe(
+        ([authorizationStatus, favoriteOffers]: [
+          AuthorizationStatus,
+          OfferPreview[],
+        ]): void => {
+          this.favoritesOffers.set([...favoriteOffers]);
+          this.authorizationStatus.set(authorizationStatus);
+        }
+      );
   }
 
   public ngOnDestroy(): void {

@@ -16,6 +16,7 @@ import { loadOffersData } from '../../store/offer/actions/effect.actions';
 import { loadFavoriteOffersData } from '../../store/favorite-offer/actions/favorite-offer.actions';
 import { loginAction } from '../../store/user/actions/user.actions';
 import { changeCity } from '../../store/city/actions/city.actions';
+import { City } from '../../core/models/city';
 
 @Component({
   selector: 'app-login',
@@ -24,7 +25,7 @@ import { changeCity } from '../../store/city/actions/city.actions';
   imports: [ReactiveFormsModule, NgIf, RouterLink, RandomCityPipe],
 })
 export class LoginPageComponent {
-  private fb = new FormBuilder();
+  private fb: FormBuilder = new FormBuilder();
   loginGroup = this.fb.group({
     email: ['', [Validators.required, Validators.email]],
     password: [
@@ -33,11 +34,11 @@ export class LoginPageComponent {
     ],
   });
 
-  private store = inject(Store<{ appStore: AppState }>);
+  private store: Store<AppState> = inject(Store<{ appStore: AppState }>);
   private router = inject(Router);
 
-  public readonly AppRoute = AppRoute;
-  public readonly CITY_LOCATIONS = CITY_LOCATIONS;
+  public readonly AppRoute: typeof AppRoute = AppRoute;
+  public readonly CITY_LOCATIONS: City[] = CITY_LOCATIONS;
 
   public onSubmit(): void {
     if (this.loginGroup.valid) {
@@ -48,10 +49,12 @@ export class LoginPageComponent {
       this.store
         .select(selectAuthorizationStatus)
         .pipe(
-          filter(auth => auth === AuthorizationStatus.Auth),
+          filter(
+            (auth: AuthorizationStatus) => auth === AuthorizationStatus.Auth
+          ),
           take(1)
         )
-        .subscribe(() => {
+        .subscribe((): void => {
           this.store.dispatch(loadOffersData());
           this.store.dispatch(loadFavoriteOffersData());
           this.router.navigate([AppRoute.Main]);

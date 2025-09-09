@@ -20,7 +20,7 @@ export class FavoritesOffersListComponent implements OnChanges {
   public sortFavoritesOffers: SortOffers = new Map();
   public cities: string[] = [];
 
-  ngOnChanges(changes: SimpleChanges): void {
+  public ngOnChanges(changes: SimpleChanges): void {
     if (changes['favoritesOffers']) {
       this.sortFavoritesOffers.clear();
       this.favoritesOffers.forEach(offer => {

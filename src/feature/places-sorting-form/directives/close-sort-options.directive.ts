@@ -6,7 +6,7 @@ import { Directive, ElementRef, HostListener, inject } from '@angular/core';
 export class CloseSortOptionsDirective {
   private elementRef = inject(ElementRef);
 
-  private toggleSortOptions(force?: boolean) {
+  private toggleSortOptions(force?: boolean): void {
     this.elementRef.nativeElement.classList.toggle(
       'places__options--opened',
       force
